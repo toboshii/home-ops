@@ -1,0 +1,25 @@
+# Editors
+.vscode/
+# Trash
+.DS_Store
+Thumbs.db
+# k8s
+kubeconfig
+# vscode-sops
+.decrypted~*.yaml
+# Binaries
+bin
+/flux
+*.iso
+# Temp folders
+.temp*
+.private/
+.logs/
+.task/
+# Terraform
+.terraform*
+terraform.tfstate*
+# Ansible
+server/ansible/inventory/e2e/hosts.yml
+xanmanning.k3s*
+node_modules

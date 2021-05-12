@@ -1,0 +1,11 @@
+---
+
+# Configure a registry mirror, useful for having a pull-through cache
+# mirror_registry:
+#   address: "https://registry-cache.56k.jp"
+
+# # Configure private registries
+# private_registries:
+# - address: "https://registry.56k.jp"
+#   username: "admin"
+#   password: "password"
