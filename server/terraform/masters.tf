@@ -18,6 +18,10 @@ resource "proxmox_vm_qemu" "kube-master" {
     tag      = 40
     firewall = true
   }
+   network {
+    model    = "virtio"
+    bridge   = "vmbr1"
+  }
   disk {
     type    = "scsi"
     storage = "ceph-block-fast"
@@ -34,6 +38,7 @@ resource "proxmox_vm_qemu" "kube-master" {
   scsihw       = "virtio-scsi-pci"
   os_type      = "cloud-init"
   ipconfig0    = "ip=${each.value.cidr},gw=${each.value.gw}"
+  ipconfig1    = "ip=${each.value.ceph_cidr}"
   ciuser       = "ubuntu"
   cipassword   = data.sops_file.secrets.data["k8s.user_password"]
   searchdomain = var.common.search_domain

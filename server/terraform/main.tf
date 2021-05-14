@@ -18,7 +18,6 @@ provider "proxmox" {
     pm_tls_insecure = true
     pm_api_url = "https://10.75.30.20:8006/api2/json"
     pm_user = "root@pam"
-    pm_password = "Pablo123"
 }
 
 provider "sops" {}
