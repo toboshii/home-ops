@@ -12,10 +12,6 @@ spec:
     image: ceph/ceph:v15.2.11
   crashCollector:
     disable: true
-  dashboard:
-    enabled: true
-    port: 7000
-    ssl: false
   healthCheck:
     daemonHealth:
       mon:
