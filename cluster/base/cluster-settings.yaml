@@ -6,4 +6,5 @@ metadata:
   namespace: flux-system
 data:
   METALLB_LB_RANGE: 10.75.42.100-10.75.42.120
+  LB_COREDNS_IP: 10.75.45.100
   LB_TRAEFIK_IP: 10.75.45.101
