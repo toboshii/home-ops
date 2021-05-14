@@ -2,9 +2,9 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
-  name: k8s-at-home-charts
+  name: infracloudio-charts
   namespace: flux-system
 spec:
   interval: 10m
-  url: https://k8s-at-home.com/charts/
+  url: https://infracloudio.github.io/charts
   timeout: 3m

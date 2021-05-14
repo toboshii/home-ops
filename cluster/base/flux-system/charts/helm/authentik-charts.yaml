@@ -2,9 +2,9 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
-  name: k8s-at-home-charts
+  name: authentik-charts
   namespace: flux-system
 spec:
   interval: 10m
-  url: https://k8s-at-home.com/charts/
+  url: https://docker.beryju.org/chartrepo/authentik
   timeout: 3m
