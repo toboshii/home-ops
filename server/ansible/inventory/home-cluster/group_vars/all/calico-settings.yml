@@ -14,3 +14,5 @@ calico:
     # this network should not exist or be defined anywhere in your network
     # e.g. 192.168.169.0/24
     externalIPs: 10.75.45.0/24
+  node:
+    cidr: 10.75.40.0/24

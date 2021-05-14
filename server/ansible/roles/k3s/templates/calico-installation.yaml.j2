@@ -17,3 +17,6 @@ spec:
       {% endif %}
       natOutgoing: Enabled
       nodeSelector: all()
+    nodeAddressAutodetectionV4:
+      cidrs:
+      - {{ calico.node.cidr }}
