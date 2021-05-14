@@ -5,5 +5,4 @@ resources:
 - helm-release.yaml
 - storage
 - rook-direct-mount
-#- service-monitors
 - snapshot-controller

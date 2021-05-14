@@ -17,3 +17,10 @@ spec:
       mon:
         disabled: false
         interval: 45s
+  monitoring:
+    enabled: true
+    rulesNamespace: rook-ceph
+    externalMgrEndpoints:
+    - ip: "10.75.33.20"
+    - ip: "10.75.33.21"
+    externalMgrPrometheusPort: 9283
