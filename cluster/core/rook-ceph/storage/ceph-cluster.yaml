@@ -12,6 +12,8 @@ spec:
     image: ceph/ceph:v15.2.11
   crashCollector:
     disable: true
+  dashboard:
+    enabled: true
   healthCheck:
     daemonHealth:
       mon:
