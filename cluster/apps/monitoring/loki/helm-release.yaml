@@ -52,4 +52,5 @@ spec:
         enabled: true
         type: LoadBalancer
         port: 1514
-        loadBalancerIP: "${LB_LOKI_IP}"
+        externalIPs: 
+        - "${LB_LOKI_IP}"
