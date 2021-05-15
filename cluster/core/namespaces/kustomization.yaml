@@ -5,4 +5,5 @@ resources:
 - kasten-io.yaml
 - monitoring.yaml
 - networking.yaml
+- security.yaml
 - rook-ceph.yaml

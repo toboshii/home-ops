@@ -5,4 +5,5 @@ resources:
 - kasten-io
 - monitoring
 - networking
+- security
 - system-upgrade
