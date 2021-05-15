@@ -38,6 +38,7 @@ spec:
       SMTP_PORT: 587
       SMTP_USERNAME: "apikey"
       SMTP_PASSWORD: "${SECRET_SENDGRID_API_KEY}"
+      DATABASE_URL: "postgresql://vaultwarden:${SECRET_VAULTWARDEN_DB_PASSWORD}@postgresql/vaultwarden"
     ingress:
       enabled: true
       ingressClassName: "traefik"
