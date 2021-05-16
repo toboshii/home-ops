@@ -3,6 +3,7 @@
   "semanticCommits": "enabled",
   "dependencyDashboard": true,
   "dependencyDashboardTitle": "Renovate Dashboard",
+  "commitBody": "Signed-off-by: Toboshii Nakama <toboshii@users.noreply.github.com>",
   "suppressNotifications": ["prIgnoreNotification"],
   "rebaseWhen": "conflicted",
   "kubernetes": {
@@ -24,7 +25,11 @@
         // helm releases
         "registryUrl=(?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *version: (?<currentValue>.*)\n",
         // cert-manager crd
-        "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n.*\\/(?<currentValue>.*?)\\/"
+        "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n.*\\/(?<currentValue>.*?)\\/",
+        // kube-prometheus-stack crd
+        "registryUrl=(?<registryUrl>.*?)\n *tag: (?<depName>[a-zA-Z-]+)-(?<currentValue>.*)\n",
+        // rook-ceph crd
+        "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n *tag: (?<currentValue>.*)\n",
       ],
       "datasourceTemplate": "helm"
     },
