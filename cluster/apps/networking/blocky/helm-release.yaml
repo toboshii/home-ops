@@ -43,6 +43,18 @@ spec:
           protocol: UDP
           targetPort: 53
         externalTrafficPolicy: Local
+    ingress:
+      enabled: true
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+      hosts:
+      - host: "blocky.${SECRET_DOMAIN}"
+        paths:
+          - path: /
+            pathType: Prefix
+      tls:
+      - hosts:
+        - "blocky.${SECRET_DOMAIN}"
     config: |
       upstream:
         externalResolvers:
