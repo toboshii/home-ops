@@ -5,7 +5,9 @@ metadata:
   name: cluster-settings
   namespace: flux-system
 data:
+  GATEWAY_IP: 10.75.1.1
   METALLB_LB_RANGE: 10.75.42.100-10.75.42.120
   LB_COREDNS_IP: 10.75.45.100
   LB_TRAEFIK_IP: 10.75.45.101
   LB_LOKI_IP: 10.75.45.102
+  LB_BLOCKY_IP: 10.75.45.105
