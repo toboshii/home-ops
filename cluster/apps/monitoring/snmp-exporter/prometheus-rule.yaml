@@ -31,12 +31,12 @@ spec:
   groups:
   - name: ups.rules
     rules:
-    - alert: UPS15MinutesRemaining
+    - alert: UPS5MinutesRemaining
       annotations:
         description: ZPM almost depleted
-        summary: ZPM {{$labels.instance}} has less than 15 minutes of battery left,
+        summary: ZPM {{$labels.instance}} has less than 5 minutes of battery left,
           systems are starting to power down. Bye
-      expr: upsAdvBatteryRunTimeRemaining/60/100 <= 15
+      expr: upsAdvBatteryRunTimeRemaining/60/100 <= 5
       for: 10s
       labels:
         severity: critical
