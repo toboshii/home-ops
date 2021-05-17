@@ -78,7 +78,7 @@ spec:
               - dfw-k8s-cuda1
     resources:
       limits:
-        nvidia.com/gpu: 4
+        nvidia.com/gpu: 1
     tolerations:
     - key: "nvidia.com/gpu"
       operator: "Exists"
