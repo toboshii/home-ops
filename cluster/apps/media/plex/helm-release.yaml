@@ -1,0 +1,105 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: plex
+  namespace: media
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: plex
+      version: 4.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      repository: ghcr.io/k8s-at-home/plex
+      tag: v1.22.3.4392-d7c624def
+    env:
+      TZ: "America/Chicago"
+    podSecurityContext:
+      supplementalGroups:
+      - 5600
+    service:
+      enabled: true
+      type: LoadBalancer
+      externalIPs: 
+      - "${LB_PLEX_IP}"
+      externalTrafficPolicy: Local
+      port:
+        port: 32400
+      annotations:
+        traefik.ingress.kubernetes.io/service.serversscheme: https
+    ingress:
+      enabled: true
+      ingressClassName: "traefik"
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        external-dns/is-public: "true"
+        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+      hosts:
+      - host: "plex.${SECRET_DOMAIN}"
+        paths:
+        - path: /
+          pathType: Prefix
+      tls:
+      - hosts:
+        - "plex.${SECRET_DOMAIN}"
+    persistence:
+      config:
+        enabled: true
+        existingClaim: plex-config-v1
+      tmp:
+        enabled: true
+        emptyDir:
+          enabled: true
+          medium: "Memory"
+    additionalVolumeMounts:
+    - name: media-franxx
+      mountPath: "/media-franxx"
+      readOnly: true
+    additionalVolumes:
+    - name: media-franxx
+      persistentVolumeClaim:
+        claimName: nfs-media-franxx-pvc
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+              - dfw-k8s-cuda1
+    resources:
+      limits:
+        nvidia.com/gpu: 4
+    tolerations:
+    - key: "nvidia.com/gpu"
+      operator: "Exists"
+      effect: "PreferNoSchedule"
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: "plex-promtail"
+    addons:
+      promtail:
+        enabled: true
+        image:
+          repository: grafana/promtail
+          tag: 2.2.1
+        loki: http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push
+        logs:
+        - name: promtail/plex
+          path: "/config/Library/Application Support/Plex Media Server/Logs/*.log"
+        - name: promtail/plex/plugins
+          path: "/config/Library/Application Support/Plex Media Server/Logs/PMS Plugin Logs/*.log"
+        volumeMounts:
+        - name: config
+          mountPath: /config
+          readOnly: true
+        securityContext:
+          runAsUser: 0

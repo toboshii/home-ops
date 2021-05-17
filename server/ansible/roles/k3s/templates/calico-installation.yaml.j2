@@ -19,4 +19,6 @@ spec:
       nodeSelector: all()
     nodeAddressAutodetectionV4:
       cidrs:
-      - {{ calico.node.cidr }}
+      {% for cidr in calico.node.cidrs %}
+      - {{ cidr }}
+      {% endfor %}

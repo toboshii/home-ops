@@ -3,6 +3,7 @@
 - hosts:
   - master-nodes
   - worker-nodes
+  - gpu-nodes
   - storage
   become: true
   gather_facts: true

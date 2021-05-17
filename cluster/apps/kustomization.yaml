@@ -6,6 +6,7 @@ resources:
 - flux-system
 - kasten-io
 - kube-system
+- media
 - monitoring
 - networking
 - security

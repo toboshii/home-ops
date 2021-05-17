@@ -22,4 +22,5 @@ terraform.tfstate*
 # Ansible
 server/ansible/inventory/e2e/hosts.yml
 xanmanning.k3s*
+nvidia.nvidia_driver*
 node_modules

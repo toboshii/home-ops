@@ -4,5 +4,5 @@
 # ...requires a rsyslog server already set up
 rsyslog:
   enabled: false
-  ip: 192.168.69.155
+  ip: 10.75.45.102
   port: 1514

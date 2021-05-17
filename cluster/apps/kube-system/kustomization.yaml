@@ -6,4 +6,5 @@ resources:
 - metrics-server
 - node-feature-discovery
 - node-problem-detector
+- nvidia-device-plugin
 - reloader
