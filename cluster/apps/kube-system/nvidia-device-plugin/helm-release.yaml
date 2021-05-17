@@ -19,6 +19,8 @@ spec:
     image:
       repository: nvcr.io/nvidia/k8s-device-plugin
       tag: v0.9.0
+    nodeSelector:
+      gpu: nvidia
     tolerations:
     - key: nvidia.com/gpu
       operator: Exists
