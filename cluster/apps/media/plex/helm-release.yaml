@@ -22,6 +22,9 @@ spec:
       tag: v1.22.3.4392-d7c624def
     env:
       TZ: "America/Chicago"
+      ADVERTISE_IP: "http://${LB_PLEX_IP}:32400/"
+      ALLOWED_NETWORKS: "10.0.0.0/8,172.16.0.0/16"
+      PLEX_CLAIM: "${SECRET_PLEX_CLAIM_TOKEN}"
     podSecurityContext:
       supplementalGroups:
       - 5600
@@ -67,15 +70,6 @@ spec:
     - name: media-franxx
       persistentVolumeClaim:
         claimName: nfs-media-franxx-pvc
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-              - dfw-k8s-cuda1
     resources:
       limits:
         nvidia.com/gpu: 1
