@@ -29,6 +29,9 @@ spec:
       serviceMonitor:
         enabled: true
     promtail:
+      tolerations:
+      - operator: Exists
+        effect: NoSchedule
       serviceMonitor:
         enabled: true
       extraScrapeConfigs:
