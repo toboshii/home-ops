@@ -29,7 +29,7 @@ spec:
       endTime: "6:00"
       timeZone: "America/Chicago"
     tolerations:
-    - key: "node-role.kubernetes.io/master"
-      operator: "Exists"
+    - operator: "Exists"
+      effect: "NoSchedule"
     metrics:
       create: true
