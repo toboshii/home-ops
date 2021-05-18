@@ -4,7 +4,7 @@ kind: PersistentVolume
 metadata:
   name: nfs-media-franxx-pv
 spec:
-  storageClassName: media-franxx
+  storageClassName: ""
   capacity:
     storage: 1Mi
   accessModes:
@@ -28,7 +28,7 @@ metadata:
 spec:
   accessModes:
   - ReadWriteMany
-  storageClassName: media-franxx
+  storageClassName: ""
   resources:
     requests:
       storage: 1Mi
