@@ -26,6 +26,8 @@ spec:
       adminPassword: "${SECRET_KEYCLOAK_ADMIN_PASSWORD}"
       managementPassword: "${SECRET_KEYCLOAK_MANAGEMENT_PASSWORD}"
     proxyAddressForwarding: true
+    service:
+      type: ClusterIP
     ingress:
       enabled: true
       ingressClassName: "traefik"
