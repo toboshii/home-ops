@@ -76,7 +76,6 @@ spec:
     tolerations:
     - key: "nvidia.com/gpu"
       operator: "Exists"
-      effect: "NoSchedule"
     podAnnotations:
       configmap.reloader.stakater.com/reload: "plex-promtail"
     addons:

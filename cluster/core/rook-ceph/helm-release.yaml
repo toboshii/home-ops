@@ -21,10 +21,7 @@ spec:
     csi:
       kubeletDirPath: /var/lib/kubelet
       pluginTolerations:
-      - key: "node-role.kubernetes.io/master"
-        operator: "Exists"
-      - key: "CriticalAddonsOnly"
-        operator: "Exists"
+      - operator: "Exists"
     resources:
       requests:
         cpu: 100m
