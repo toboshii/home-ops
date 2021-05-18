@@ -23,10 +23,11 @@ spec:
     authentik:
       secret_key: "${SECRET_AUTHENTIK_SECRET_KEY}"
       postgresql:
+        host: "authentik-postgresql"
         name: "authentik"
         user: "authentik"
       redis:
-        host: "authentik-redis"
+        host: "authentik-redis-master"
       email:
         host: "smtp.sendgrid.net"
         port: 587
