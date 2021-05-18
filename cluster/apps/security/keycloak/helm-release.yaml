@@ -5,7 +5,6 @@ metadata:
   name: keycloak
   namespace: security
 spec:
-  releaseName: keycloak
   interval: 5m
   chart:
     spec:
