@@ -9,37 +9,38 @@ spec:
   chart:
     spec:
       chart: keycloak
-      version: 2.4.8
+      version: 11.0.0
       sourceRef:
         kind: HelmRepository
-        name: bitnami-charts
+        name: codecentric-charts
         namespace: flux-system
       interval: 5m
   values:
-    nameOverride: keycloak
-    fullnameOverride: keycloak
     image:
-      repository: bitnami/keycloak
-      tag: 13.0.0-debian-10-r0
-    auth:
-      createAdminUser: true
-      adminPassword: "${SECRET_KEYCLOAK_ADMIN_PASSWORD}"
-      managementPassword: "${SECRET_KEYCLOAK_MANAGEMENT_PASSWORD}"
-    proxyAddressForwarding: true
-    service:
-      type: ClusterIP
+      repository: jboss/keycloak
+      tag: 13.0.0
+    extraEnv:
+    - name: PROXY_ADDRESS_FORWARDING
+      value: "true"
+    - name: KEYCLOAK_USER
+      value: "${SECRET_KEYCLOAK_ADMIN_USER}"
+    - name: KEYCLOAK_PASSWORD
+      value: "${SECRET_KEYCLOAK_ADMIN_PASSWORD}"
     ingress:
       enabled: true
-      ingressClassName: "traefik"
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         external-dns/is-public: "true"
         external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-      hostname: "idp.${SECRET_DOMAIN}"
-      tls: true
+      rules:
+      - host: "idp.${SECRET_DOMAIN}"
+        paths:
+        - /
+      tls:
+      - hosts:
+        - "idp.${SECRET_DOMAIN}"
     postgresql:
       enabled: true
       postgresqlPassword: "${SECRET_KEYCLOAK_POSTGRES_PASSWORD}"
       persistence:
-        enabled: true
         size: 10Gi
