@@ -26,6 +26,7 @@ spec:
         host: "authentik-postgresql"
         name: "authentik"
         user: "authentik"
+        password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
       redis:
         host: "authentik-redis-master"
       email:
