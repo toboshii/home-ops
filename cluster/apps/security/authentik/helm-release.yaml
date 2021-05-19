@@ -34,6 +34,7 @@ spec:
         port: 587
         use_tls: true
         username: "apikey"
+        password: "${SECRET_SENDGRID_API_KEY}"
         from: "no-reply@${SECRET_DOMAIN}"
 
     ingress:
