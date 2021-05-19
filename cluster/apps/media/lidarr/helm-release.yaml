@@ -27,7 +27,7 @@ spec:
       ingressClassName: "traefik"
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        traefik.ingress.kubernetes.io/router.middlewares: "authentik@kubernetescrd"
+        traefik.ingress.kubernetes.io/router.middlewares: "security-ak-outpost-traefik@kubernetescrd"
       hosts:
       - host: "music.${SECRET_DOMAIN}"
         paths:
