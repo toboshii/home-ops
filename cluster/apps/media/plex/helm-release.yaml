@@ -70,16 +70,12 @@ spec:
     - name: media-franxx
       persistentVolumeClaim:
         claimName: nfs-media-franxx-pvc
+    resources:
+      limits:
+        nvidia.com/gpu: 1
     tolerations:
     - key: "nvidia.com/gpu"
       operator: "Exists"
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: feature.node.kubernetes.io/pci-0300_10de.present
-              operator: Exists
     podAnnotations:
       configmap.reloader.stakater.com/reload: "plex-promtail"
     addons:
