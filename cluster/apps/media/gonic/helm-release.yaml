@@ -30,7 +30,7 @@ spec:
     env:
       TZ: "America/Chicago"
       GONIC_MUSIC_PATH: "/media-franxx/Audio/Music"
-      GONIC_PODCAST_PATH: "/media-franxx/Library/Podcasts"
+      GONIC_PODCAST_PATH: "/media-franxx/Audio/Podcasts"
       GONIC_CACHE_PATH: "/data/cache"
       GONIC_SCAN_INTERVAL: "120"
     ingress:
