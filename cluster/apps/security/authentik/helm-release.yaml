@@ -44,13 +44,13 @@ spec:
         external-dns/is-public: "true"
         external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
       hosts:
-        - host: "auth2.${SECRET_DOMAIN}"
+        - host: "id.${SECRET_DOMAIN}"
           paths:
             - path: "/"
               pathType: Prefix
       tls:
         - hosts: 
-            - "auth2.${SECRET_DOMAIN}"
+            - "id.${SECRET_DOMAIN}"
 
     postgresql:
       enabled: true
