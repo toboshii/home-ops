@@ -30,7 +30,8 @@ spec:
     service:
       enabled: true
       type: LoadBalancer
-      loadBalancerIP: "${LB_JELLYFIN_IP}"
+      externalIPs: 
+      - "${LB_JELLYFIN_IP}"
       externalTrafficPolicy: Local
       port:
         port: 8096
