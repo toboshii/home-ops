@@ -27,14 +27,15 @@ spec:
       ingressClassName: "traefik"
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        traefik.ingress.kubernetes.io/router.middlewares: "authentik@kubernetescrd"
       hosts:
-      - host: "sonarr.${SECRET_DOMAIN}"
+      - host: "series.${SECRET_DOMAIN}"
         paths:
         - path: /
           pathType: Prefix
       tls:
       - hosts:
-        - "sonarr.${SECRET_DOMAIN}"
+        - "series.${SECRET_DOMAIN}"
       additionalIngresses:
       - enabled: true
         nameSuffix: "api"
@@ -42,13 +43,13 @@ spec:
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
-        - host: "sonarr.${SECRET_DOMAIN}"
+        - host: "series.${SECRET_DOMAIN}"
           paths:
           - path: /api
             pathType: Prefix
         tls:
         - hosts:
-          - "sonarr.${SECRET_DOMAIN}"
+          - "series.${SECRET_DOMAIN}"
     persistence:
       config:
         enabled: true

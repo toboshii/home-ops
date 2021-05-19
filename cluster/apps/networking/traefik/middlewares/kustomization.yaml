@@ -1,6 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+- authentik.yaml
 - cloudflare.yaml
 - rfc1918.yaml
 - redirect-path.yaml
