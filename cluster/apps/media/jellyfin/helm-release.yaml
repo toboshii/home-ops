@@ -22,6 +22,8 @@ spec:
     env:
       TZ: "America/Chicago"
       JELLYFIN_CACHE_DIR: "/config/cache"
+      NVIDIA_DRIVER_CAPABILITIES: all
+      NVIDIA_VISIBLE_DEVICES: all
     podSecurityContext:
       supplementalGroups:
       - 5600
