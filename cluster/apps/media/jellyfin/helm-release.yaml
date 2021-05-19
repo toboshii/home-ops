@@ -67,7 +67,6 @@ spec:
     resources:
       limits:
         memory: 8000Mi
-        nvidia.com/gpu: 1
     tolerations:
     - key: "nvidia.com/gpu"
       operator: "Exists"
