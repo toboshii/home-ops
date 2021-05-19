@@ -3,4 +3,4 @@ kind: Kustomization
 commonLabels:
   grafana_dashboard: "1"
 resources:
-- https://github.com/prometheus-operator/kube-prometheus/raw/v0.8.0/manifests/grafana-dashboardDefinitions.yaml
+- https://github.com/prometheus-operator/kube-prometheus/raw/v0.7.0/manifests/grafana-dashboardDefinitions.yaml
