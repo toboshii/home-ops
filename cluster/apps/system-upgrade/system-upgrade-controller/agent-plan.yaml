@@ -16,6 +16,9 @@ spec:
       operator: NotIn
       values:
       - "true"
+  tolerations:
+  - operator: "Exists"
+    effect: "NoSchedule"
   prepare:
     image: rancher/k3s-upgrade
     args:
