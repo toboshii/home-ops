@@ -19,8 +19,8 @@ spec:
   values:
     fullnameOverride: authentik
     image:
-      name: docker.beryju.org/authentik/server
-      tag: gh-next
+      name: ghcr.io/goauthentik/server
+      tag: 2021.5.3
     authentik:
       secret_key: "${SECRET_AUTHENTIK_SECRET_KEY}"
       postgresql:
