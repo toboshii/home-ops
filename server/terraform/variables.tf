@@ -19,7 +19,7 @@ variable "masters" {
       cores       = 4
       gw          = "10.75.40.1"
       macaddr     = "02:DE:4D:48:28:01"
-      memory      = 4096
+      memory      = 6144
       disk        = "40G"
       target_node = "dfw-srv-pve1"
     },
@@ -30,7 +30,7 @@ variable "masters" {
       cores       = 4
       gw          = "10.75.40.1"
       macaddr     = "02:DE:4D:48:28:02"
-      memory      = 4096
+      memory      = 6144
       disk        = "40G"
       target_node = "dfw-srv-pve2"
     },
@@ -41,7 +41,7 @@ variable "masters" {
       cores       = 4
       gw          = "10.75.40.1"
       macaddr     = "02:DE:4D:48:28:03"
-      memory      = 4096
+      memory      = 6144
       disk        = "40G"
       target_node = "dfw-srv-pve3"
     }
