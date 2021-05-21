@@ -49,7 +49,7 @@ spec:
         name: 56k
         client_id: "${SECRET_GRAFANA_OAUTH_CLIENT_ID}"
         client_secret: "${SECRET_GRAFANA_OAUTH_CLIENT_SECRET}"
-        scopes: openid,email,profile
+        scopes: "openid email profile"
         auth_url: https://id.${SECRET_DOMAIN}/application/o/authorize/
         token_url: https://id.${SECRET_DOMAIN}/application/o/token/
         api_url: https://id.${SECRET_DOMAIN}/application/o/userinfo/
