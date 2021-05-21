@@ -53,7 +53,7 @@ spec:
         auth_url: https://id.${SECRET_DOMAIN}/application/o/authorize/
         token_url: https://id.${SECRET_DOMAIN}/application/o/token/
         api_url: https://id.${SECRET_DOMAIN}/application/o/userinfo/
-        role_attribute_path: "contains(groups[*], 'Grafana Admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer"
+        role_attribute_path: "contains(groups[*], 'Grafana Admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'"
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
