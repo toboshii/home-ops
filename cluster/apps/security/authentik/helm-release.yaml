@@ -38,8 +38,12 @@ spec:
         password: "${SECRET_SENDGRID_API_KEY}"
         from: "no-reply@${SECRET_DOMAIN}"
     persistence:
-      config:
+      media:
         enabled: true
+        mountPath: /media
+        storageClass: rook-ceph-block
+        accessMode: ReadWriteOnce
+        size: 5Gi
     ingress:
       enabled: true
       ingressClassName: "traefik"
