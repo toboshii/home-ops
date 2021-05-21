@@ -37,7 +37,9 @@ spec:
         username: "apikey"
         password: "${SECRET_SENDGRID_API_KEY}"
         from: "no-reply@${SECRET_DOMAIN}"
-
+    persistence:
+      config:
+        enabled: true
     ingress:
       enabled: true
       ingressClassName: "traefik"
@@ -53,7 +55,6 @@ spec:
       tls:
         - hosts: 
             - "id.${SECRET_DOMAIN}"
-
     postgresql:
       enabled: true
       postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
