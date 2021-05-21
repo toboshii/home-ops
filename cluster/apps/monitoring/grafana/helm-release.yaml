@@ -136,13 +136,10 @@ spec:
           datasource: Prometheus
         lidarr:
           url: https://raw.githubusercontent.com/k8s-at-home/grafana-dashboards/main/lidarr.json
-          datasource: Prometheus
         radarr:
-          url: https://raw.githubusercontent.com/toboshii/grafana-dashboards/bugfix/wrong-datasource/radarr.json
-          datasource: Prometheus
+          url: https://raw.githubusercontent.com/k8s-at-home/grafana-dashboards/main/radarr.json
         sonarr:
           url: https://raw.githubusercontent.com/k8s-at-home/grafana-dashboards/main/sonarr.json
-          datasource: Prometheus
     sidecar:
       dashboards:
         enabled: true
