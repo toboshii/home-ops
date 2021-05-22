@@ -31,10 +31,10 @@ spec:
         externalIPs: 
         - "${LB_QBITTORRENT_IP}"
         port:
-          port: 50413
+          port: 58585
           name: bittorrent
           protocol: TCP
-          targetPort: 50413
+          targetPort: 58585
         externalTrafficPolicy: Local
     ingress:
       enabled: true
