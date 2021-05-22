@@ -79,7 +79,7 @@ spec:
         configFile: |-
           [Interface]
           PrivateKey = ${SECRET_QBITTORRENT_WG_PKEY}
-          Address = ${SECRET_QBITTORENT_WG_ADDRESS}
+          Address = ${SECRET_QBITTORRENT_WG_ADDRESS}
           DNS = ${SECRET_QBITTORRENT_WG_DNS}
           PostUp = /config/up.sh %i
           PreDown = /config/down.sh %i
