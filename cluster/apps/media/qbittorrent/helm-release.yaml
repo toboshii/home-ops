@@ -23,19 +23,6 @@ spec:
     env:
       TZ: "America/Chicago"
       WAIT_FOR_VPN: "true"
-    service:
-      additionalServices:
-      - enabled: true
-        nameSuffix: bittorrent
-        type: LoadBalancer
-        externalIPs: 
-        - "${LB_QBITTORRENT_IP}"
-        port:
-          port: 58585
-          name: bittorrent
-          protocol: TCP
-          targetPort: 58585
-        externalTrafficPolicy: Local
     ingress:
       enabled: true
       ingressClassName: "traefik"
