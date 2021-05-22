@@ -22,6 +22,7 @@ spec:
       tag: v4.3.5
     env:
       TZ: "America/Chicago"
+      WAIT_FOR_VPN: "true"
     service:
       additionalServices:
       - enabled: true
@@ -54,6 +55,11 @@ spec:
       config:
         enabled: true
         existingClaim: qbittorrent-config-v1
+      shared:
+        enabled: true
+        emptyDir: 
+          enabled: true
+        mountPath: /shared
     podSecurityContext:
       supplementalGroups:
       - 5600
@@ -70,3 +76,29 @@ spec:
         cpu: 500m
       limits:
         memory: 6000Mi
+    addons:
+      vpn:
+        enabled: true
+        type: wireguard
+        env:
+          KILLSWITCH: "true"
+        configFile: |-
+          [Interface]
+          PrivateKey = ${SECRET_QBITTORRENT_WG_PKEY}
+          Address = ${SECRET_QBITTORENT_WG_ADDRESS}
+          DNS = ${SECRET_QBITTORRENT_WG_DNS}
+          PostUp = /config/up.sh %i
+          PreDown = /config/down.sh %i
+
+          [Peer]
+          PublicKey = ${SECRET_QBITTORRENT_WG_PEER_KEY}
+          AllowedIPs = 0.0.0.0/0,::0/0
+          Endpoint = ${SECRET_QBITTORRENT_WG_PEER}
+        scripts:
+          up: |-
+            #!/bin/bash
+            echo "connected" > /shared/vpnstatus
+
+          down: |-
+            #!/bin/bash
+            echo "disconnected" > /shared/vpnstatus
