@@ -66,8 +66,8 @@ spec:
         claimName: nfs-media-franxx-pvc
     resources:
       requests:
-        memory: 250Mi
-        cpu: 500m
+        memory: 650Mi
+        cpu: 1000m
       limits:
         memory: 1500Mi
     prometheus:
