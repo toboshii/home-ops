@@ -90,7 +90,7 @@ spec:
       - name: ENABLE_UNKNOWN_QUEUE_ITEMS
         value: "true"
       - name: ENABLE_ADDITIONAL_METRICS
-        value: "true"
+        value: "false"
       ports:
       - name: exportarr
         containerPort: 32123
