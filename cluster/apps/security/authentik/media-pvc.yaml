@@ -6,8 +6,8 @@ metadata:
   namespace: security
 spec:
   accessModes:
-  - ReadWriteOnce
+  - ReadWriteMany
   resources:
     requests:
       storage: 5Gi
-  storageClassName: rook-ceph-block
+  storageClassName: rook-cephfs
