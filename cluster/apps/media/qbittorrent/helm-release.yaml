@@ -28,16 +28,30 @@ spec:
       ingressClassName: "traefik"
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        # external-dns/is-public: "true"
-        # external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+        traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
       hosts:
-      - host: "qb.${SECRET_DOMAIN}"
+      - host: "qbittorrent.${SECRET_DOMAIN}"
         paths:
         - path: /
           pathType: Prefix
       tls:
       - hosts:
-        - "qb.${SECRET_DOMAIN}"
+        - "qbittorrent.${SECRET_DOMAIN}"
+    additionalIngresses:
+    - enabled: true
+      nameSuffix: "api"
+      ingressClassName: "traefik"
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
+      hosts:
+      - host: "qbittorrent.${SECRET_DOMAIN}"
+        paths:
+        - path: /api
+          pathType: Prefix
+      tls:
+      - hosts:
+        - "qbittorrent.${SECRET_DOMAIN}"
     persistence:
       config:
         enabled: true

@@ -28,6 +28,7 @@ spec:
       ingressClassName: "traefik"
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
       hosts:
       - host: "sabnzbd.${SECRET_DOMAIN}"
         paths:
@@ -42,6 +43,7 @@ spec:
         ingressClassName: "traefik"
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
         hosts:
         - host: "sabnzbd.${SECRET_DOMAIN}"
           paths:
