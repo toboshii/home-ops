@@ -7,6 +7,5 @@ metadata:
 spec:
   chain:
     middlewares:
-    - name: rfc1918-ips
     - name: cloudflare-ips
     - name: security-ak-outpost-traefik@kubernetescrd
