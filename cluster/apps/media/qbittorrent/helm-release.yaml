@@ -44,7 +44,7 @@ spec:
         existingClaim: qbittorrent-config-v1
       shared:
         enabled: true
-        emptyDir: 
+        emptyDir:
           enabled: true
         mountPath: /shared
     podSecurityContext:
@@ -76,18 +76,7 @@ spec:
           IPTABLES_BACKEND: legacy
           KILLSWITCH: "true"
           KILLSWITCH_EXCLUDEDNETWORKS_IPV4: ${NETWORK_K8S_CLUSTER_CIDR};${NETWORK_K8S_SERVICE_CIDR};${NETWORK_MANAGEMENT_CIDR}
-        configFile: |-
-          [Interface]
-          PrivateKey = ${SECRET_QBITTORRENT_WG_PKEY}
-          Address = ${SECRET_QBITTORRENT_WG_ADDRESS}
-          DNS = ${SECRET_QBITTORRENT_WG_DNS}
-          PostUp = /config/up.sh %i
-          PreDown = /config/down.sh %i
-
-          [Peer]
-          PublicKey = ${SECRET_QBITTORRENT_WG_PEER_KEY}
-          AllowedIPs = 0.0.0.0/0,::0/0
-          Endpoint = ${SECRET_QBITTORRENT_WG_PEER}
+        configFileSecret: qbittorrent-vpnconfig
         scripts:
           up: |-
             #!/bin/bash
