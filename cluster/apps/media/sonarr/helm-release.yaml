@@ -29,13 +29,13 @@ spec:
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
       hosts:
-      - host: "radarr.${SECRET_DOMAIN}"
+      - host: "sonarr.${SECRET_DOMAIN}"
         paths:
         - path: /
           pathType: Prefix
       tls:
       - hosts:
-        - "radarr.${SECRET_DOMAIN}"
+        - "sonarr.${SECRET_DOMAIN}"
       additionalIngresses:
       - enabled: true
         nameSuffix: "api"
@@ -44,13 +44,13 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
         hosts:
-        - host: "radarr.${SECRET_DOMAIN}"
+        - host: "sonarr.${SECRET_DOMAIN}"
           paths:
           - path: /api
             pathType: Prefix
         tls:
         - hosts:
-          - "radarr.${SECRET_DOMAIN}"
+          - "sonarr.${SECRET_DOMAIN}"
     persistence:
       config:
         enabled: true
