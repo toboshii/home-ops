@@ -57,16 +57,17 @@ spec:
       ingressClassName: "traefik"
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        traefik.ingress.kubernetes.io/router.middlewares: "networking-cloudflare-ips@kubernetescrd,networking-rfc1918-ips@kubernetescrd"
         external-dns/is-public: "true"
         external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
       hosts:
-        - host: "id.${SECRET_DOMAIN}"
-          paths:
-            - path: "/"
-              pathType: Prefix
+      - host: "id.${SECRET_DOMAIN}"
+        paths:
+        - path: "/"
+          pathType: Prefix
       tls:
-        - hosts: 
-            - "id.${SECRET_DOMAIN}"
+      - hosts:
+        - "id.${SECRET_DOMAIN}"
     postgresql:
       enabled: true
       postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
