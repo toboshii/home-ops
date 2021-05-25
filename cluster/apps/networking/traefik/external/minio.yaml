@@ -1,0 +1,40 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: minio
+  namespace: networking
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - match: Host(`s.${SECRET_DOMAIN}`)
+    kind: Rule
+    services:
+    - name: minio
+      port: 443
+    middlewares:
+    - name: cloudflare
+  tls:
+    secretName: "${SECRET_DOMAIN/./-}-tls"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: minio
+  namespace: networking
+spec:
+  type: ExternalName
+  externalName: s3.${SECRET_DOMAIN}
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: minio
+  namespace: networking
+spec:
+  endpoints:
+  - dnsName: "s.${SECRET_DOMAIN}"
+    recordType: CNAME
+    targets:
+    - "ipv4.${SECRET_DOMAIN}"
