@@ -19,7 +19,7 @@ spec:
   values:
     image:
       repository: jboss/keycloak
-      tag: 13.0.0
+      tag: 13.0.1
     extraEnv: |
       - name: PROXY_ADDRESS_FORWARDING
         value: "true"
