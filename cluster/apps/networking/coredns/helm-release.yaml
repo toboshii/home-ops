@@ -50,6 +50,7 @@ spec:
       # Static hosts
       - name: hosts
         configBlock: |-
+          10.75.30.15 s3.${SECRET_DOMAIN}
           10.75.30.15 minio.${SECRET_DOMAIN}
           10.75.30.15 nexus.${SECRET_DOMAIN}
           10.75.30.15 registry.${SECRET_DOMAIN}
