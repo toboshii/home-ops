@@ -13,9 +13,9 @@ spec:
       - manager
       env:
       - name: vip_arp
-        value: "true"
+        value: "false"
       - name: vip_interface
-        value: {{ kube_vip.listen_interface }}
+        value: lo
       - name: port
         value: "6443"
       - name: vip_cidr
@@ -24,16 +24,20 @@ spec:
         value: "true"
       - name: cp_namespace
         value: kube-system
-      - name: svc_enable
+      - name: vip_startleader
         value: "false"
-      - name: vip_leaderelection
-        value: "true"
-      - name: vip_leaseduration
+      - name: vip_loglevel
         value: "5"
-      - name: vip_renewdeadline
-        value: "3"
-      - name: vip_retryperiod
-        value: "1"
+      - name: bgp_enable
+        value: "true"
+      - name: bgp_routerinterface
+        value: "{{ kube_vip.router_interface }}"
+      - name: bgp_as
+        value: "{{ kube_vip.bgp_as }}"
+      - name: bgp_peeraddress
+        value: "{{ kube_vip.bgp_peer_address }}"
+      - name: bgp_peeras
+        value: "{{ kube_vip.bgp_peer_as }}"
       - name: vip_address
         value: "{{ k3s_registration_address }}"
       securityContext:
