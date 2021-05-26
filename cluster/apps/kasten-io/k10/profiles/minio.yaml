@@ -11,7 +11,7 @@ spec:
       endpoint: "https://minio.${SECRET_DOMAIN}"
       name: k10
       objectStoreType: S3
-      path: k10/56d1eff5-8470-489b-8209-1a6c5656f047/migration
+      path: k10/0d8049cd-c639-4083-baa2-eee25896d7e5/migration
       pathType: Directory
     credential:
       secretType: AwsAccessKey
