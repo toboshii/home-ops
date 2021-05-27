@@ -1,29 +1,27 @@
-kind: Policy
+---
 apiVersion: config.kio.kasten.io/v1alpha1
+kind: Policy
 metadata:
-  name: security
+  name: security-backup
   namespace: kasten-io
 spec:
+  comment: ""
   frequency: "@daily"
-  retention:
-    daily: 7
-    weekly: 2
-    monthly: 2
-  selector:
-    matchExpressions:
-    - key: k10.kasten.io/appNamespace
-      operator: In
-      values:
-      - security
   actions:
   - action: backup
     backupParameters:
       filters:
         includeResources:
         - resource: persistentvolumeclaims
+        excludeResources:
+        - matchExpressions:
+          - key: app.kubernetes.io/name
+            operator: In
+            values:
+            - redis
       profile:
-        name: minio
         namespace: kasten-io
+        name: minio
   - action: export
     exportParameters:
       frequency: "@daily"
@@ -32,4 +30,14 @@ spec:
         namespace: kasten-io
       exportData:
         enabled: true
-    retention: {}
+  retention:
+    daily: 7
+    weekly: 2
+    monthly: 2
+    yearly: 0
+  selector:
+    matchExpressions:
+    - key: k10.kasten.io/appNamespace
+      operator: In
+      values:
+      - security
