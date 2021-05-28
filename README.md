@@ -1,66 +1,50 @@
-# Template for deploying k3s backed by Flux
+<img src="https://camo.githubusercontent.com/5b298bf6b0596795602bd771c5bddbb963e83e0f/68747470733a2f2f692e696d6775722e636f6d2f7031527a586a512e706e67" align="left" width="144px" height="144px"/>
 
-Template for deploying a single [k3s](https://k3s.io/) cluster with [k3sup](https://github.com/alexellis/k3sup) backed by [Flux](https://toolkit.fluxcd.io/) and [SOPS](https://toolkit.fluxcd.io/guides/mozilla-sops/).
+# My home Kubernetes cluster :sailboat:
+_... managed by Flux and serviced with RenovateBot_ :robot:
 
-The purpose here is to showcase how you can deploy an entire Kubernetes cluster and show it off to the world using the [GitOps](https://www.weave.works/blog/what-is-gitops-really) tool [Flux](https://toolkit.fluxcd.io/). When completed, your Git repository will be driving the state of your Kubernetes cluster. In addition with the help of the [Flux SOPS integration](https://toolkit.fluxcd.io/guides/mozilla-sops/) you'll be able to commit GPG encrypted secrets to your public repo.
+<br/>
+<br/>
+<br/>
 
-## Overview
+<div align="center">
+[![Discord](https://img.shields.io/discord/673534664354430999?color=7289da&label=DISCORD&style=for-the-badge)](https://discord.gg/sTMX7Vh)
+[![k3s](https://img.shields.io/badge/k3s-v1.20.6-orange?style=for-the-badge)](https://k3s.io/)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white&style=for-the-badge)](https://github.com/pre-commit/pre-commit)
+[![renovate](https://img.shields.io/badge/renovate-enabled-green?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjUgNSAzNzAgMzcwIj48Y2lyY2xlIGN4PSIxODkiIGN5PSIxOTAiIHI9IjE4NCIgZmlsbD0iI2ZlMiIvPjxwYXRoIGZpbGw9IiM4YmIiIGQ9Ik0yNTEgMjU2bC0zOC0zOGExNyAxNyAwIDAxMC0yNGw1Ni01NmMyLTIgMi02IDAtN2wtMjAtMjFhNSA1IDAgMDAtNyAwbC0xMyAxMi05LTggMTMtMTNhMTcgMTcgMCAwMTI0IDBsMjEgMjFjNyA3IDcgMTcgMCAyNGwtNTYgNTdhNSA1IDAgMDAwIDdsMzggMzh6Ii8+PHBhdGggZmlsbD0iI2Q1MSIgZD0iTTMwMCAyODhsLTggOGMtNCA0LTExIDQtMTYgMGwtNDYtNDZjLTUtNS01LTEyIDAtMTZsOC04YzQtNCAxMS00IDE1IDBsNDcgNDdjNCA0IDQgMTEgMCAxNXoiLz48cGF0aCBmaWxsPSIjYjMwIiBkPSJNMjg1IDI1OGw3IDdjNCA0IDQgMTEgMCAxNWwtOCA4Yy00IDQtMTEgNC0xNiAwbC02LTdjNCA1IDExIDUgMTUgMGw4LTdjNC01IDQtMTIgMC0xNnoiLz48cGF0aCBmaWxsPSIjYTMwIiBkPSJNMjkxIDI2NGw4IDhjNCA0IDQgMTEgMCAxNmwtOCA3Yy00IDUtMTEgNS0xNSAwbC05LThjNSA1IDEyIDUgMTYgMGw4LThjNC00IDQtMTEgMC0xNXoiLz48cGF0aCBmaWxsPSIjZTYyIiBkPSJNMjYwIDIzM2wtNC00Yy02LTYtMTctNi0yMyAwLTcgNy03IDE3IDAgMjRsNCA0Yy00LTUtNC0xMSAwLTE2bDgtOGM0LTQgMTEtNCAxNSAweiIvPjxwYXRoIGZpbGw9IiNiNDAiIGQ9Ik0yODQgMzA0Yy00IDAtOC0xLTExLTRsLTQ3LTQ3Yy02LTYtNi0xNiAwLTIybDgtOGM2LTYgMTYtNiAyMiAwbDQ3IDQ2YzYgNyA2IDE3IDAgMjNsLTggOGMtMyAzLTcgNC0xMSA0em0tMzktNzZjLTEgMC0zIDAtNCAybC04IDdjLTIgMy0yIDcgMCA5bDQ3IDQ3YTYgNiAwIDAwOSAwbDctOGMzLTIgMy02IDAtOWwtNDYtNDZjLTItMi0zLTItNS0yeiIvPjxwYXRoIGZpbGw9IiMxY2MiIGQ9Ik0xNTIgMTEzbDE4LTE4IDE4IDE4LTE4IDE4em0xLTM1bDE4LTE4IDE4IDE4LTE4IDE4em0tOTAgODlsMTgtMTggMTggMTgtMTggMTh6bTM1LTM2bDE4LTE4IDE4IDE4LTE4IDE4eiIvPjxwYXRoIGZpbGw9IiMxZGQiIGQ9Ik0xMzQgMTMxbDE4LTE4IDE4IDE4LTE4IDE4em0tMzUgMzZsMTgtMTggMTggMTgtMTggMTh6Ii8+PHBhdGggZmlsbD0iIzJiYiIgZD0iTTExNiAxNDlsMTgtMTggMTggMTgtMTggMTh6bTU0LTU0bDE4LTE4IDE4IDE4LTE4IDE4em0tODkgOTBsMTgtMTggMTggMTgtMTggMTh6bTEzOS04NWwyMyAyM2M0IDQgNCAxMSAwIDE2TDE0MiAyNDBjLTQgNC0xMSA0LTE1IDBsLTI0LTI0Yy00LTQtNC0xMSAwLTE1bDEwMS0xMDFjNS01IDEyLTUgMTYgMHoiLz48cGF0aCBmaWxsPSIjM2VlIiBkPSJNMTM0IDk1bDE4LTE4IDE4IDE4LTE4IDE4em0tNTQgMThsMTgtMTcgMTggMTctMTggMTh6bTU1LTUzbDE4LTE4IDE4IDE4LTE4IDE4em05MyA0OGwtOC04Yy00LTUtMTEtNS0xNiAwTDEwMyAyMDFjLTQgNC00IDExIDAgMTVsOCA4Yy00LTQtNC0xMSAwLTE1bDEwMS0xMDFjNS00IDEyLTQgMTYgMHoiLz48cGF0aCBmaWxsPSIjOWVlIiBkPSJNMjcgMTMxbDE4LTE4IDE4IDE4LTE4IDE4em01NC01M2wxOC0xOCAxOCAxOC0xOCAxOHoiLz48cGF0aCBmaWxsPSIjMGFhIiBkPSJNMjMwIDExMGwxMyAxM2M0IDQgNCAxMSAwIDE2TDE0MiAyNDBjLTQgNC0xMSA0LTE1IDBsLTEzLTEzYzQgNCAxMSA0IDE1IDBsMTAxLTEwMWM1LTUgNS0xMSAwLTE2eiIvPjxwYXRoIGZpbGw9IiMxYWIiIGQ9Ik0xMzQgMjQ4Yy00IDAtOC0yLTExLTVsLTIzLTIzYTE2IDE2IDAgMDEwLTIzTDIwMSA5NmExNiAxNiAwIDAxMjIgMGwyNCAyNGM2IDYgNiAxNiAwIDIyTDE0NiAyNDNjLTMgMy03IDUtMTIgNXptNzgtMTQ3bC00IDItMTAxIDEwMWE2IDYgMCAwMDAgOWwyMyAyM2E2IDYgMCAwMDkgMGwxMDEtMTAxYTYgNiAwIDAwMC05bC0yNC0yMy00LTJ6Ii8+PC9zdmc+)](https://github.com/renovatebot/renovate)
 
-- [Introduction](https://github.com/k8s-at-home/template-cluster-k3s#wave-introduction)
-- [Prerequisites](https://github.com/k8s-at-home/template-cluster-k3s#memo-prerequisites)
-- [Repository structure](https://github.com/k8s-at-home/template-cluster-k3s#open_file_folder-repository-structure)
-- [Lets go!](https://github.com/k8s-at-home/template-cluster-k3s#rocket-lets-go)
-- [Post installation](https://github.com/k8s-at-home/template-cluster-k3s#mega-post-installation)
-- [Thanks](https://github.com/k8s-at-home/template-cluster-k3s#handshake-thanks)
+</div>
 
-## :wave:&nbsp; Introduction
+---
 
-The following components will be installed in your [k3s](https://k3s.io/) cluster by default. They are only included to get a minimum viable cluster up and running. You are free to add / remove components to your liking but anything outside the scope of the below components are not supported by this template.
+## :book:&nbsp; Overview
 
-Feel free to read up on any of these technologies before you get started to be more familiar with them.
+This repository _is_ my home Kubernetes cluster in a declarative state. [Flux](https://github.com/fluxcd/flux2) watches my [cluster](./cluster/) folder and makes the changes to my cluster based on the YAML manifests.
 
-- [flannel](https://github.com/flannel-io/flannel)
-- [local-path-provisioner](https://github.com/rancher/local-path-provisioner)
-- [flux](https://toolkit.fluxcd.io/)
-- [metallb](https://metallb.universe.tf/)
-- [cert-manager](https://cert-manager.io/) with Cloudflare DNS challenge
-- [ingress-nginx](https://kubernetes.github.io/ingress-nginx/)
-- [homer](https://github.com/bastienwirtz/homer)
-- [system-upgrade-controller](https://github.com/rancher/system-upgrade-controller)
+Feel free to open a [Github issue](https://github.com/toboshii/home-cluster/issues/new/choose) or join the [k8s@home Discord](https://discord.gg/sTMX7Vh) if you have any questions.
 
-## :memo:&nbsp; Prerequisites
+This repository is built off the [k8s-at-home/template-cluster-k3s](https://github.com/k8s-at-home/template-cluster-k3s) repository.
 
-### :computer:&nbsp; Nodes
+---
 
-Already provisioned Bare metal or VMs with any modern operating system like Ubuntu, Debian or CentOS.
+## :sparkles:&nbsp; Cluster setup
 
-### :wrench:&nbsp; Tools
+This cluster consists of VMs provisioned on [PVE](https://www.proxmox.com/en/proxmox-ve) via the [Terraform Proxmox provider](https://github.com/Telmate/terraform-provider-proxmox). These run [k3s](https://k3s.io/) provisioned overtop Ubuntu 20.10 using the [Ansible](https://www.ansible.com/) galaxy role [ansible-role-k3s](https://github.com/PyratLabs/ansible-role-k3s). This cluster is not hyper-converged as block storage is provided by the underlying PVE Ceph cluster using rook-ceph-external.
 
-:round_pushpin: You need to install the required CLI tools listed below on your workstation.
+See my [server/ansible](./server/ansible/) directory for my playbooks and roles, and [server/terraform](./server/terraform) for infrastructure provisioning.
 
-| Tool                                                               | Purpose                                                             | Minimum version | Required |
-|--------------------------------------------------------------------|---------------------------------------------------------------------|:---------------:|:--------:|
-| [k3sup](https://github.com/alexellis/k3sup)                        | Tool to install k3s on your nodes                                   |    `0.10.2`     |    ✅     |
-| [kubectl](https://kubernetes.io/docs/tasks/tools/)                 | Allows you to run commands against Kubernetes clusters              |    `1.21.0`     |    ✅     |
-| [flux](https://toolkit.fluxcd.io/)                                 | Operator that manages your k8s cluster based on your Git repository |    `0.12.3`     |    ✅     |
-| [SOPS](https://github.com/mozilla/sops)                            | Encrypts k8s secrets with GnuPG                                     |     `3.7.1`     |    ✅     |
-| [GnuPG](https://gnupg.org/)                                        | Encrypts and signs your data                                        |    `2.2.27`     |    ✅     |
-| [pinentry](https://gnupg.org/related_software/pinentry/index.html) | Allows GnuPG to read passphrases and PIN numbers                    |     `1.1.1`     |    ✅     |
-| [direnv](https://github.com/direnv/direnv)                         | Exports env vars based on present working directory                 |    `2.28.0`     |    ❌     |
-| [pre-commit](https://github.com/pre-commit/pre-commit)             | Runs checks during `git commit`                                     |    `2.12.0`     |    ❌     |
-| [kustomize](https://kustomize.io/)                                 | Template-free way to customize application configuration            |     `4.1.0`     |    ❌     |
-| [helm](https://helm.sh/)                                           | Manage Kubernetes applications                                      |     `3.5.4`     |    ❌     |
+## :art:&nbsp; Cluster components
 
-### :warning:&nbsp; pre-commit
+- [kube-vip](https://kube-vip.io/): Uses BGP to load balance the control-plane API, making it highly availible without requiring external HA proxy solutions.
+- [calico](https://docs.projectcalico.org/about/about-calico): For internal cluster networking using BGP.
+- [traefik](https://traefik.io/): Provides ingress cluster services.
+- [rook-ceph](https://rook.io/): Provides persistent volumes, allowing any application to consume RBD block storage from the underlying PVE cluster.
+- [SOPS](https://toolkit.fluxcd.io/guides/mozilla-sops/): Encrypts secrets which is safe to store - even to a public repository.
+- [external-dns](https://github.com/kubernetes-sigs/external-dns): Creates DNS entries in a separate [coredns](https://github.com/coredns/coredns) deployment which is backed by my clusters [etcd](https://github.com/etcd-io/etcd) deployment.
+- [cert-manager](https://cert-manager.io/docs/): Configured to create TLS certs for all ingress services automatically using LetsEncrypt.
+- [kasten-k10](https://www.kasten.io): Provides disaster recovery via snapshots and out-of-band backups.
 
-It is advisable to install [pre-commit](https://pre-commit.com/) and the pre-commit hooks that come with this repository.
-[sops-pre-commit](https://github.com/k8s-at-home/sops-pre-commit) will check to make sure you are not by accident commiting your secrets un-encrypted.
-
-After pre-commit is installed on your machine run:
-
-```sh
-pre-commit install-hooks
-```
+---
 
 ## :open_file_folder:&nbsp; Repository structure
 
@@ -72,360 +56,74 @@ The Git repository contains the following directories under `cluster` and are or
 - **apps** directory (depends on **core**) is where your common applications (grouped by namespace) could be placed, Flux will prune resources here if they are not tracked by Git anymore
 
 ```
-cluster
-├── apps
-│   ├── default
-│   ├── networking
-│   └── system-upgrade
-├── base
-│   └── flux-system
-├── core
-│   ├── cert-manager
-│   ├── metallb-system
-│   ├── namespaces
-│   └── system-upgrade
-└── crds
-    └── cert-manager
+./cluster
+├── ./apps
+├── ./base
+├── ./core
+└── ./crds
 ```
 
-## :rocket:&nbsp; Lets go!
+---
 
-Very first step will be to create a new repository by clicking the **Use this template** button on this page.
+## :robot:&nbsp; Automate all the things!
 
-:round_pushpin: In these instructions you will be exporting several environment variables to your current shell env. Make sure you stay with in your current shell to not lose any exported variables.
+- [Github Actions](https://docs.github.com/en/actions) for checking code formatting
+- Rancher [System Upgrade Controller](https://github.com/rancher/system-upgrade-controller) to apply updates to k3s
+- [Renovate](https://github.com/renovatebot/renovate) with the help of the [k8s-at-home/renovate-helm-releases](https://github.com/k8s-at-home/renovate-helm-releases) Github action keeps my application charts and container images up-to-date
 
-:round_pushpin: **All of the below commands** are run on your **local** workstation, **not** on any of your cluster nodes. 
+---
 
-### :closed_lock_with_key:&nbsp; Setting up GnuPG keys
+## :spider_web:&nbsp; Networking
 
-:round_pushpin: Here we will create a personal and a Flux GPG key. Using SOPS with GnuPG allows us to encrypt and decrypt secrets.
+In my network Calico is configured with BGP on my Brocade ICX 6610. With BGP enabled, I advertise a load balancer using `externalIPs` on my Kubernetes services. This makes it so I do not need `Metallb`. Another benefit to this is that I can directly hit any pods IP directly from any device on my local network. All physical hardware (including local clients) are interconnected with 10gig networking, with a seperate dedicated 10gig network for Ceph traffic.
 
-1. Create a Personal GPG Key, password protected, and export the fingerprint. It's **strongly encouraged** to back up this key somewhere safe so you don't lose it.
+| Name                        | CIDR            |
+| --------------------------- | --------------- |
+| Management                  | `10.75.10.0/24` |
+| Physical Servers            | `10.75.30.0/24` |
+| CoroSync0                   | `10.75.31.0/24` |
+| CoroSync1                   | `10.75.32.0/24` |
+| Ceph Cluster                | `10.75.33.0/24` |
+| Virtual Servers             | `10.75.40.0/24` |
+| K8s external services (BGP) | `10.75.45.0/24` |
+| K8s pods                    | `172.22.0.0/16` |
+| K8s services                | `172.24.0.0/16` |
 
-```sh
-export GPG_TTY=$(tty)
-export PERSONAL_KEY_NAME="First name Last name (location) <email>"
-
-gpg --batch --full-generate-key <<EOF
-Key-Type: 1
-Key-Length: 4096
-Subkey-Type: 1
-Subkey-Length: 4096
-Expire-Date: 0
-Name-Real: ${PERSONAL_KEY_NAME}
-EOF
+## :man_shrugging:&nbsp; DNS
 
-gpg --list-secret-keys "${PERSONAL_KEY_NAME}"
-# pub   rsa4096 2021-03-11 [SC]
-#       772154FFF783DE317KLCA0EC77149AC618D75581
-# uid           [ultimate] k8s@home (Macbook) <k8s-at-home@gmail.com>
-# sub   rsa4096 2021-03-11 [E]
+_(this section blindly copied from [Devin Buhl](https://github.com/onedr0p/home-cluster) as I could never attempt to explain this in a better way)_
 
-export PERSONAL_KEY_FP=772154FFF783DE317KLCA0EC77149AC618D75581
-```
+To prefix this, I should mention that I only use one domain name for internal and externally facing applications. Also this is the most complicated thing to explain but I will try to sum it up.
 
-2. Create a Flux GPG Key and export the fingerprint
+On [pfSense](https://arstechnica.com/gadgets/2021/03/buffer-overruns-license-violations-and-bad-code-freebsd-13s-close-call/) under `Services: DNS Resolver: Domain Overrides` I have a `Domain Override` set to my domain with the address pointing to my _in-cluster-non-cluster service_ CoreDNS load balancer IP. This allows me to use [Split-horizon DNS](https://en.wikipedia.org/wiki/Split-horizon_DNS). [external-dns](https://github.com/kubernetes-sigs/external-dns) reads my clusters `Ingress`'s and inserts DNS records containing the sub-domain and load balancer IP (of traefik) into the _in-cluster-non-cluster service_ CoreDNS service and into Cloudflare depending on if an annotation is present on the ingress. See the diagram below for a visual representation.
 
-```sh
-export GPG_TTY=$(tty)
-export FLUX_KEY_NAME="Cluster name (Flux) <email>"
+<div align="center">
+<img src="https://user-images.githubusercontent.com/213795/116820353-91f6e480-ab42-11eb-9109-95e485df9249.png" align="center" />
+</div>
 
-gpg --batch --full-generate-key <<EOF
-%no-protection
-Key-Type: 1
-Key-Length: 4096
-Subkey-Type: 1
-Subkey-Length: 4096
-Expire-Date: 0
-Name-Real: ${FLUX_KEY_NAME}
-EOF
+---
 
-gpg --list-secret-keys "${FLUX_KEY_NAME}"
-# pub   rsa4096 2021-03-11 [SC]
-#       AB675CE4CC64251G3S9AE1DAA88ARRTY2C009E2D
-# uid           [ultimate] Home cluster (Flux) <k8s-at-home@gmail.com>
-# sub   rsa4096 2021-03-11 [E]
-
-export FLUX_KEY_FP=AB675CE4CC64251G3S9AE1DAA88ARRTY2C009E2D
-```
+## :gear:&nbsp; Hardware
 
-### :sailboat:&nbsp; Installing k3s with k3sup
+| Device           | Count | OS Disk Size | Data Disk Size                     | Ram   | Purpose                                  |
+| ---------------- | ----- | ------------ | ---------------------------------- | ----- | ---------------------------------------- |
+| Intel R1208GL4DS | 4     | 120GB SSD    | 2x480GB SSD<br/>4x900GB 10.6k SAS  | 64GB  | Proxmox hypervisors<br/>and Ceph cluster |
+| Intel R1208GL4DS | 1     | 120GB SSD    | 2x900GB 10.6k SAS                  | 32GB  | Backup cold spare                        |
+| NAS (franxx)     | 1     | 120GB SSD    | 16x8TB RAIDZ2<br/>6x4TB ZFS Mirror | 192GB | Media and shared file storage            |
 
-:round_pushpin: Here we will be install [k3s](https://k3s.io/) with [k3sup](https://github.com/alexellis/k3sup). After completion, k3sup will drop a `kubeconfig` in your present working directory for use with interacting with your cluster with `kubectl`.
+---
 
-1. Ensure you are able to SSH into you nodes with using your private ssh key. This is how k3sup is able to connect to your remote node.
-
-2. Install the master node
-
-```sh
-k3sup install \
-    --host=169.254.1.1 \
-    --user=k8s-at-home \
-    --k3s-version=v1.20.5+k3s1 \
-    --k3s-extra-args="--disable servicelb --disable traefik"
-```
+## :wrench:&nbsp; Tools
 
-3. Join worker nodes (optional)
-
-```sh
-k3sup join \
-    --host=169.254.1.2 \
-    --server-host=169.254.1.1 \
-    --k3s-version=v1.20.5+k3s1 \
-    --user=k8s-at-home
-```
+| Tool                                                   | Purpose                                                                   |
+| ------------------------------------------------------ | ------------------------------------------------------------------------- |
+| [direnv](https://github.com/direnv/direnv)             | Sets `KUBECONFIG` environment variable based on present working directory |
+| [go-task](https://github.com/go-task/task)             | Alternative to makefiles, who honestly likes that?                        |
+| [pre-commit](https://github.com/pre-commit/pre-commit) | Enforce code consistency and verifies no secrets are pushed               |
+| [stern](https://github.com/stern/stern)                | Tail logs in Kubernetes                                                   |
 
-4. Verify the nodes are online
-   
-```sh
-kubectl --kubeconfig=./kubeconfig get nodes
-# NAME           STATUS   ROLES                       AGE     VERSION
-# k8s-master-a   Ready    control-plane,master      4d20h   v1.20.5+k3s1
-# k8s-worker-a   Ready    worker                    4d20h   v1.20.5+k3s1
-```
-
-### :cloud:&nbsp; Cloudflare API Token
-
-:round_pushpin: You may skip this step, **however** make sure to `export` dummy data **on item 8** in the below list.
-
-...Be aware you **will not** have a valid SSL cert until cert-manager is configured correctly
-
-In order to use cert-manager with the Cloudflare DNS challenge you will need to create a API token.
-
-1. Head over to Cloudflare and create a API token by going [here](https://dash.cloudflare.com/profile/api-tokens).
-2. Click the blue `Create Token` button
-3. Scroll down and create a Custom Token by choosing `Get started`
-4. Give your token a name like `cert-manager`
-5. Under `Permissions` give read access to `Zone` : `Zone` and `Zone` : `DNS`
-6. Under `Zone Resources` set it to `Include` : `All Zones`
-7. Click `Continue to summary` and then `Create Token`
-8. Export this token and your Cloudflare email address to an environment variable on your system to be used in the following steps
-
-```sh
-export BOOTSTRAP_CLOUDFLARE_EMAIL="k8s-at-home@gmail.com"
-export BOOTSTRAP_CLOUDFLARE_TOKEN="kpG6iyg3FS_du_8KRShdFuwfbwu3zMltbvmJV6cD"
-```
-
-### :small_blue_diamond:&nbsp; GitOps with Flux
-
-:round_pushpin: Here we will be installing [flux](https://toolkit.fluxcd.io/) after some quick bootstrap steps.
-
-1. Verify Flux can be installed
-
-```sh
-flux --kubeconfig=./kubeconfig check --pre
-# ► checking prerequisites
-# ✔ kubectl 1.21.0 >=1.18.0-0
-# ✔ Kubernetes 1.20.5+k3s1 >=1.16.0-0
-# ✔ prerequisites checks passed
-```
-
-2. Pre-create the `flux-system` namespace
-
-```sh
-kubectl --kubeconfig=./kubeconfig create namespace flux-system --dry-run=client -o yaml | kubectl --kubeconfig=./kubeconfig apply -f -
-```
-
-3. Add the Flux GPG key in-order for Flux to decrypt SOPS secrets
-
-```sh
-gpg --export-secret-keys --armor "${FLUX_KEY_FP}" |
-kubectl --kubeconfig=./kubeconfig create secret generic sops-gpg \
-    --namespace=flux-system \
-    --from-file=sops.asc=/dev/stdin
-```
-
-4. Export more environment variables for application configuration
-
-```sh
-# The repo you created from this template
-export BOOTSTRAP_GITHUB_REPOSITORY="https://github.com/k8s-at-home/home-cluster"
-# Choose one of your domains or use a made up one
-export BOOTSTRAP_DOMAIN="k8s-at-home.com"
-# Pick a range of unused IPs that are on the same network as your nodes
-export BOOTSTRAP_METALLB_LB_RANGE="169.254.1.10-169.254.1.20"
-# The load balancer IP for ingress-nginx, choose from one of the available IPs above
-export BOOTSTRAP_INGRESS_NGINX_LB="169.254.1.10"
-```
-
-5. Create required files based on ALL exported environment variables.
-
-```sh
-envsubst < ./tmpl/.sops.yaml > ./.sops.yaml
-envsubst < ./tmpl/cluster-secrets.yaml > ./cluster/base/cluster-secrets.yaml
-envsubst < ./tmpl/cluster-settings.yaml > ./cluster/base/cluster-settings.yaml
-envsubst < ./tmpl/gotk-sync.yaml > ./cluster/base/flux-system/gotk-sync.yaml
-envsubst < ./tmpl/secret.enc.yaml > ./cluster/core/cert-manager/secret.enc.yaml
-```
-
-6. **Verify** all the above files have the correct information present
-
-7. Encrypt `cluster/cluster-secrets.yaml` and `cert-manager/secret.enc.yaml` with SOPS
-
-```sh
-export GPG_TTY=$(tty)
-sops --encrypt --in-place ./cluster/base/cluster-secrets.yaml
-sops --encrypt --in-place ./cluster/core/cert-manager/secret.enc.yaml
-```
-
-:round_pushpin: Variables defined in `cluster-secrets.yaml` and `cluster-settings.yaml` will be usable anywhere in your YAML manifests under `./cluster`
-
-8. **Verify** all the above files are **encrypted** with SOPS
-
-9. Push you changes to git
-
-```sh
-git add -A
-git commit -m "initial commit"
-git push
-```
-
-10. Install Flux
-
-:round_pushpin: Due to race conditions with the Flux CRDs you will have to run the below command twice. There should be no errors on this second run.
-
-```sh
-kubectl --kubeconfig=./kubeconfig apply --kustomize=./cluster/base/flux-system
-# namespace/flux-system configured
-# customresourcedefinition.apiextensions.k8s.io/alerts.notification.toolkit.fluxcd.io created
-# customresourcedefinition.apiextensions.k8s.io/buckets.source.toolkit.fluxcd.io created
-# customresourcedefinition.apiextensions.k8s.io/gitrepositories.source.toolkit.fluxcd.io created
-# customresourcedefinition.apiextensions.k8s.io/helmcharts.source.toolkit.fluxcd.io created
-# customresourcedefinition.apiextensions.k8s.io/helmreleases.helm.toolkit.fluxcd.io created
-# customresourcedefinition.apiextensions.k8s.io/helmrepositories.source.toolkit.fluxcd.io created
-# customresourcedefinition.apiextensions.k8s.io/kustomizations.kustomize.toolkit.fluxcd.io created
-# customresourcedefinition.apiextensions.k8s.io/providers.notification.toolkit.fluxcd.io created
-# customresourcedefinition.apiextensions.k8s.io/receivers.notification.toolkit.fluxcd.io created
-# serviceaccount/helm-controller created
-# serviceaccount/kustomize-controller created
-# serviceaccount/notification-controller created
-# serviceaccount/source-controller created
-# clusterrole.rbac.authorization.k8s.io/crd-controller-flux-system created
-# clusterrolebinding.rbac.authorization.k8s.io/cluster-reconciler-flux-system created
-# clusterrolebinding.rbac.authorization.k8s.io/crd-controller-flux-system created
-# service/notification-controller created
-# service/source-controller created
-# service/webhook-receiver created
-# deployment.apps/helm-controller created
-# deployment.apps/kustomize-controller created
-# deployment.apps/notification-controller created
-# deployment.apps/source-controller created
-# unable to recognize "./cluster/base/flux-system": no matches for kind "Kustomization" in version "kustomize.toolkit.fluxcd.io/v1beta1"
-# unable to recognize "./cluster/base/flux-system": no matches for kind "GitRepository" in version "source.toolkit.fluxcd.io/v1beta1"
-# unable to recognize "./cluster/base/flux-system": no matches for kind "HelmRepository" in version "source.toolkit.fluxcd.io/v1beta1"
-# unable to recognize "./cluster/base/flux-system": no matches for kind "HelmRepository" in version "source.toolkit.fluxcd.io/v1beta1"
-# unable to recognize "./cluster/base/flux-system": no matches for kind "HelmRepository" in version "source.toolkit.fluxcd.io/v1beta1"
-# unable to recognize "./cluster/base/flux-system": no matches for kind "HelmRepository" in version "source.toolkit.fluxcd.io/v1beta1"
-```
-
-:tada: **Congratulations** you have a Kubernetes cluster managed by Flux, your Git repository is driving the state of your cluster.
-
-## :mega:&nbsp; Post installation
-
-### Verify Flux
-
-```sh
-kubectl --kubeconfig=./kubeconfig get pods -n flux-system
-# NAME                                       READY   STATUS    RESTARTS   AGE
-# helm-controller-5bbd94c75-89sb4            1/1     Running   0          1h
-# kustomize-controller-7b67b6b77d-nqc67      1/1     Running   0          1h
-# notification-controller-7c46575844-k4bvr   1/1     Running   0          1h
-# source-controller-7d6875bcb4-zqw9f         1/1     Running   0          1h
-```
-
-### Verify ingress
-
-If your cluster is not accessible to outside world you can update your hosts file to verify the ingress controller is working.
-
-```sh
-echo "${BOOTSTRAP_INGRESS_NGINX_LB} ${BOOTSTRAP_DOMAIN} homer.${BOOTSTRAP_DOMAIN}" | sudo tee -a /etc/hosts
-```
-
-Head over to your browser and you _should_ be able to access `https://homer.${BOOTSTRAP_DOMAIN}`
-
-### direnv
-
-This is a great tool to export environment variables depending on what your present working directory is, head over to their [installation guide](https://direnv.net/docs/installation.html) and don't forget to hook it into your shell!
-
-When this is done you no longer have to use `--kubeconfig=./kubeconfig` in your `kubectl`, `flux` or `helm` commands.
-
-### VSCode SOPS extension
-
-[VSCode SOPS](https://marketplace.visualstudio.com/items?itemName=signageos.signageos-vscode-sops) is a neat little plugin for those using VSCode.
-It will automatically decrypt you SOPS secrets when you click on the file in the editor and encrypt them when you save  and exit the file.
-
-### :point_right:&nbsp; Debugging
-
-Manually sync Flux with your Git repository
-
-```sh
-flux --kubeconfig=./kubeconfig reconcile source git flux-system
-# ► annotating GitRepository flux-system in flux-system namespace
-# ✔ GitRepository annotated
-# ◎ waiting for GitRepository reconciliation
-# ✔ GitRepository reconciliation completed
-# ✔ fetched revision main/943e4126e74b273ff603aedab89beb7e36be4998
-```
-
-Show the health of you kustomizations
-
-```sh
-kubectl --kubeconfig=./kubeconfig get kustomization -A
-# NAMESPACE     NAME          READY   STATUS                                                             AGE
-# flux-system   apps          True    Applied revision: main/943e4126e74b273ff603aedab89beb7e36be4998    3d19h
-# flux-system   core          True    Applied revision: main/943e4126e74b273ff603aedab89beb7e36be4998    4d6h
-# flux-system   crds          True    Applied revision: main/943e4126e74b273ff603aedab89beb7e36be4998    4d6h
-# flux-system   flux-system   True    Applied revision: main/943e4126e74b273ff603aedab89beb7e36be4998    4d6h
-```
-
-Show the health of your main Flux `GitRepository`
-
-```sh
-flux --kubeconfig=./kubeconfig get sources git
-# NAME           READY	MESSAGE                                                            REVISION                                         SUSPENDED
-# flux-system    True 	Fetched revision: main/943e4126e74b273ff603aedab89beb7e36be4998    main/943e4126e74b273ff603aedab89beb7e36be4998    False
-```
-
-Show the health of your `HelmRelease`s
-
-```sh
-flux --kubeconfig=./kubeconfig get helmrelease -A
-# NAMESPACE   	    NAME                  	READY	MESSAGE                         	REVISION	SUSPENDED
-# cert-manager	    cert-manager          	True 	Release reconciliation succeeded	v1.3.0  	False
-# default        	homer                 	True 	Release reconciliation succeeded	4.2.0   	False
-# networking  	    ingress-nginx       	True 	Release reconciliation succeeded	3.29.0  	False
-```
-
-Show the health of your `HelmRepository`s
-
-```sh
-flux --kubeconfig=./kubeconfig get sources helm -A
-# NAMESPACE  	NAME                 READY	MESSAGE                                                   	REVISION                                	SUSPENDED
-# flux-system	bitnami-charts       True 	Fetched revision: 0ec3a3335ff991c45735866feb1c0830c4ed85cf	0ec3a3335ff991c45735866feb1c0830c4ed85cf	False
-# flux-system	ingress-nginx-charts True 	Fetched revision: 45669a3117fc93acc09a00e9fb9b4445e8990722	45669a3117fc93acc09a00e9fb9b4445e8990722	False
-# flux-system	jetstack-charts      True 	Fetched revision: 7bad937cc82a012c9ee7d7a472d7bd66b48dc471	7bad937cc82a012c9ee7d7a472d7bd66b48dc471	False
-# flux-system	k8s-at-home-charts   True 	Fetched revision: 1b24af9c5a1e3da91618d597f58f46a57c70dc13	1b24af9c5a1e3da91618d597f58f46a57c70dc13	False
-```
-
-Flux has a wide range of CLI options available be sure to run `flux --help` to view more!
-
-### :robot:&nbsp; Automation
-
-- [Renovate](https://www.whitesourcesoftware.com/free-developer-tools/renovate) is a very useful tool that when configured will start to create PRs in your Github repository when Docker images, Helm charts or anything else that can be tracked has a newer version. The configuration for renovate is located [here](./.github/renovate.json5).
-
-- [system-upgrade-controller](https://github.com/rancher/system-upgrade-controller) will watch for new k3s releases and upgrade your nodes when new releases are found.
-
-There's also a couple Github workflows included in this repository that will help automate some processes.
-
-- [Flux upgrade schedule](./.github/workflows/flux-schedule.yaml) - workflow to upgrade Flux.
-- [Renovate schedule](./.github/workflows/renovate-schedule.yaml) - workflow to annotate `HelmRelease`'s which allows [Renovate](https://www.whitesourcesoftware.com/free-developer-tools/renovate) to track Helm chart versions.
-
-## :grey_question:&nbsp; What's next
-
-The world is your cluster, try installing another application or if you have a NAS and want storage back by that check out the helm charts for [democratic-csi](https://github.com/democratic-csi/democratic-csi), [csi-driver-nfs](https://github.com/kubernetes-csi/csi-driver-nfs) or [nfs-subdir-external-provisioner](https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner).
-
-If you plan on exposing your ingress to the world from your home. Checkout [our rough guide](https://docs.k8s-at-home.com/guides/dyndns/) to run a k8s `CronJob` to update DDNS.
+---
 
 ## :handshake:&nbsp; Thanks
 
-Big shout out to all the authors and contributors to the projects that we are using in this repository.
+A lot of inspiration for my cluster came from the people that have shared their clusters over at [awesome-home-kubernetes](https://github.com/k8s-at-home/awesome-home-kubernetes)
