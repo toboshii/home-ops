@@ -56,11 +56,6 @@ spec:
       config:
         enabled: true
         existingClaim: qbittorrent-config-v1
-      shared:
-        enabled: true
-        emptyDir:
-          enabled: true
-        mountPath: /shared
     podSecurityContext:
       supplementalGroups:
       - 5600
