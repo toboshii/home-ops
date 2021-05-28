@@ -55,6 +55,10 @@ spec:
       config:
         enabled: true
         existingClaim: jackett-config-v1
+      shared:
+        enabled: true
+        emptyDir:
+          enabled: true
     resources:
       requests:
         memory: 100Mi

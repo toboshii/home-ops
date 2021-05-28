@@ -56,6 +56,10 @@ spec:
       config:
         enabled: true
         existingClaim: qbittorrent-config-v1
+      shared:
+        enabled: true
+        emptyDir:
+          enabled: true
     podSecurityContext:
       supplementalGroups:
       - 5600
@@ -80,6 +84,9 @@ spec:
           image:
             repository: ghcr.io/k8s-at-home/wireguard
             tag: v1.0.20210424
+        securityContext:
+          runAsUser: 568
+          runAsGroup: 568
         env:
           TZ: "America/Chicago"
           IPTABLES_BACKEND: legacy
