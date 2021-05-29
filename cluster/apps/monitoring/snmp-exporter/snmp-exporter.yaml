@@ -49,7 +49,7 @@ spec:
     port: monitoring
     params:
       module:
-      - brocade
+      - if_mib
       target:
       - 10.75.40.1
     path: "/snmp"
@@ -85,18 +85,3 @@ spec:
         ports:
         - name: monitoring
           containerPort: 9116
-        volumeMounts:
-        - name: snmp-etc
-          mountPath: /etc/snmp_exporter/snmp.yml
-          subPath: snmp.yml
-          readOnly: true
-      volumes:
-      - name: snmp-etc
-        projected:
-          defaultMode: 0444
-          sources:
-          - configMap:
-              name: snmp-exporter
-              items:
-              - key: snmp.yml
-                path: snmp.yml
