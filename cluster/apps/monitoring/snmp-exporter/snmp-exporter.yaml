@@ -44,8 +44,8 @@ spec:
     relabelings:
     - sourceLabels: [__param_target]
       targetLabel: instance
-  - interval: 60s
-    scrapeTimeout: 15s
+  - interval: 15s
+    scrapeTimeout: 5s
     port: monitoring
     params:
       module:
