@@ -44,6 +44,19 @@ spec:
     relabelings:
     - sourceLabels: [__param_target]
       targetLabel: instance
+  - interval: 60s
+    scrapeTimeout: 15s
+    port: monitoring
+    params:
+      module:
+      - brocade
+      target:
+      - 10.75.40.1
+    path: "/snmp"
+    targetPort: 9116
+    relabelings:
+    - sourceLabels: [__param_target]
+      targetLabel: instance
 ---
 kind: Deployment
 apiVersion: apps/v1
