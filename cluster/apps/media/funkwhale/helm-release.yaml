@@ -23,6 +23,7 @@ spec:
       pullPolicy: IfNotPresent
     database:
       host: funkwhale-postgresql
+      user: postgres
       password: "${SECRET_FUNKWHALE_POSTGRES_PASSWORD}"
     # persistence:
     #   enabled: true
