@@ -26,7 +26,7 @@ spec:
       runAsGroup: 5600
     env:
       TZ: "America/Chicago"
-      JAVA_OPTS: "-Xmx1024m -Dserver.forward-headers-strategy=native"
+      JAVA_OPTS: "-Xmx2048m -Dserver.forward-headers-strategy=native"
     enableServiceLinks: false
     persistence:
       config:
@@ -56,6 +56,6 @@ spec:
         - "listen.${SECRET_DOMAIN}"
     resources:
       requests:
-        memory: "512M"
-      limits:
         memory: "1024M"
+      limits:
+        memory: "2048M"
