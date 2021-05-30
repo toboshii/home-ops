@@ -41,7 +41,7 @@ spec:
       extraVolumeMounts:
       - name: media-franxx
         mountPath: /media-franxx
-        radOnly: true
+        readOnly: true
       extraVolumes:
       - name: media-franxx
         persistentVolumeClaim:
@@ -50,7 +50,7 @@ spec:
       extraVolumeMounts:
       - name: media-franxx
         mountPath: /media-franxx
-        radOnly: true
+        readOnly: true
       extraVolumes:
       - name: media-franxx
         persistentVolumeClaim:
@@ -60,7 +60,7 @@ spec:
         extraVolumeMounts:
         - name: media-franxx
           mountPath: /media-franxx
-          radOnly: true
+          readOnly: true
         extraVolumes:
         - name: media-franxx
           persistentVolumeClaim:
