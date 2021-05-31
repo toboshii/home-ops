@@ -5,7 +5,6 @@ resources:
 - _pvc
 - airsonic
 - flaresolverr
-- funkwhale
 - jellyfin
 - lidarr
 - overseerr
