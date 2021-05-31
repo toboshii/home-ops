@@ -28,6 +28,7 @@ spec:
     djangoSecret: "${SECRET_FUNKWHALE_DJANGO_SECRET}"
     extraEnv:
       FUNKWHALE_PROTOCOL: https
+      ADDITIONAL_MIDDLEWARES_BEFORE: funkwhale_api.common.middleware.ProfilerMiddleware
     persistence:
       enabled: true
       existingClaim: funkwhale-data-v1
