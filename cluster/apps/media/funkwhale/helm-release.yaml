@@ -26,6 +26,8 @@ spec:
       user: postgres
       password: "${SECRET_FUNKWHALE_POSTGRES_PASSWORD}"
     djangoSecret: "${SECRET_FUNKWHALE_DJANGO_SECRET}"
+    extraEnv:
+      FUNKWHALE_PROTOCOL: https
     # persistence:
     #   enabled: true
     #   existingClaim: funkwhale-config-v1
