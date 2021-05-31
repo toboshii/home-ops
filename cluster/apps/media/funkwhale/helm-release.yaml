@@ -25,6 +25,7 @@ spec:
       host: funkwhale-postgresql
       user: postgres
       password: "${SECRET_FUNKWHALE_POSTGRES_PASSWORD}"
+    djangoSecret: "${SECRET_FUNKWHALE_DJANGO_SECRET}"
     # persistence:
     #   enabled: true
     #   existingClaim: funkwhale-config-v1
@@ -41,7 +42,7 @@ spec:
     api:
       extraVolumeMounts:
       - name: media-franxx
-        mountPath: /media-franxx
+        mountPath: /srv/funkwhale/data/music/media-franxx
         readOnly: true
       extraVolumes:
       - name: media-franxx
@@ -50,7 +51,7 @@ spec:
     front:
       extraVolumeMounts:
       - name: media-franxx
-        mountPath: /media-franxx
+        mountPath: /srv/funkwhale/data/music/media-franxx
         readOnly: true
       extraVolumes:
       - name: media-franxx
@@ -60,7 +61,7 @@ spec:
       worker:
         extraVolumeMounts:
         - name: media-franxx
-          mountPath: /media-franxx
+          mountPath: /srv/funkwhale/data/music/media-franxx
           readOnly: true
         extraVolumes:
         - name: media-franxx
