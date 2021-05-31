@@ -28,9 +28,9 @@ spec:
     djangoSecret: "${SECRET_FUNKWHALE_DJANGO_SECRET}"
     extraEnv:
       FUNKWHALE_PROTOCOL: https
-    # persistence:
-    #   enabled: true
-    #   existingClaim: funkwhale-config-v1
+    persistence:
+      enabled: true
+      existingClaim: funkwhale-data-v1
     ingress:
       enabled: true
       annotations:
