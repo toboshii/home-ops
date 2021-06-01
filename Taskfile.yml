@@ -1,0 +1,26 @@
+---
+version: '3'
+
+vars:
+  PROJECT_DIR:
+    sh: "git rev-parse --show-toplevel"
+  CLUSTER_DIR: "{{.PROJECT_DIR}}/cluster"
+  ANSIBLE_DIR: "{{.PROJECT_DIR}}/server/ansible"
+
+env:
+  KUBECONFIG: "{{.PROJECT_DIR}}/kubeconfig"
+
+includes:
+  ansible: .taskfiles/ansible.yml
+  blocky: .taskfiles/blocky.yml
+  flux: .taskfiles/flux.yml
+
+tasks:
+
+  kubeconfig:
+    desc: Remotely fetch kubeconfig from k3s
+    cmds:
+    - rsync --verbose --progress --partial --rsync-path="sudo rsync" ubuntu@10.75.40.10:/etc/rancher/k3s/k3s.yaml ./kubeconfig
+    - sed -i '' 's/127.0.0.1/10.75.45.5/g' ./kubeconfig
+    - chmod go-r kubeconfig
+    silent: true
