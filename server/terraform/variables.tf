@@ -16,10 +16,10 @@ variable "masters" {
       id          = 4010
       cidr        = "10.75.40.10/24"
       ceph_cidr   = "10.75.33.40/24"
-      cores       = 4
+      cores       = 8
       gw          = "10.75.40.1"
       macaddr     = "02:DE:4D:48:28:01"
-      memory      = 6144
+      memory      = 8192
       disk        = "40G"
       target_node = "dfw-srv-pve1"
     },
@@ -27,10 +27,10 @@ variable "masters" {
       id          = 4011
       cidr        = "10.75.40.11/24"
       ceph_cidr   = "10.75.33.41/24"
-      cores       = 4
+      cores       = 8
       gw          = "10.75.40.1"
       macaddr     = "02:DE:4D:48:28:02"
-      memory      = 6144
+      memory      = 8192
       disk        = "40G"
       target_node = "dfw-srv-pve2"
     },
@@ -38,10 +38,10 @@ variable "masters" {
       id          = 4012
       cidr        = "10.75.40.12/24"
       ceph_cidr   = "10.75.33.42/24"
-      cores       = 4
+      cores       = 8
       gw          = "10.75.40.1"
       macaddr     = "02:DE:4D:48:28:03"
-      memory      = 6144
+      memory      = 8192
       disk        = "40G"
       target_node = "dfw-srv-pve3"
     }
@@ -55,10 +55,10 @@ variable "workers" {
       id          = 4020
       cidr        = "10.75.40.20/24"
       ceph_cidr   = "10.75.33.50/24"
-      cores       = 2
+      cores       = 8
       gw          = "10.75.40.1"
       macaddr     = "02:DE:4D:48:28:0A"
-      memory      = 6144
+      memory      = 8192
       disk        = "40G"
       target_node = "dfw-srv-pve1"
     },
@@ -66,10 +66,10 @@ variable "workers" {
       id          = 4021
       cidr        = "10.75.40.21/24"
       ceph_cidr   = "10.75.33.51/24"
-      cores       = 2
+      cores       = 8
       gw          = "10.75.40.1"
       macaddr     = "02:DE:4D:48:28:0B"
-      memory      = 6144
+      memory      = 8192
       disk        = "40G"
       target_node = "dfw-srv-pve2"
     },
@@ -77,10 +77,10 @@ variable "workers" {
       id          = 4022
       cidr        = "10.75.40.22/24"
       ceph_cidr   = "10.75.33.52/24"
-      cores       = 2
+      cores       = 8
       gw          = "10.75.40.1"
       macaddr     = "02:DE:4D:48:28:0C"
-      memory      = 6144
+      memory      = 8192
       disk        = "40G"
       target_node = "dfw-srv-pve3"
     },
@@ -88,10 +88,10 @@ variable "workers" {
       id          = 4023
       cidr        = "10.75.40.23/24"
       ceph_cidr   = "10.75.33.53/24"
-      cores       = 2
+      cores       = 8
       gw          = "10.75.40.1"
       macaddr     = "02:DE:4D:48:28:0D"
-      memory      = 6144
+      memory      = 8192
       disk        = "40G"
       target_node = "dfw-srv-pve4"
     },
