@@ -51,6 +51,11 @@ spec:
           IPTABLES_BACKEND: legacy
           KILLSWITCH: "false"
           KILLSWITCH_EXCLUDEDNETWORKS_IPV4: ${NETWORK_K8S_CLUSTER_CIDR};${NETWORK_K8S_SERVICE_CIDR};${NETWORK_MANAGEMENT_CIDR}
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN
+              - SYS_MODULE
         configFileSecret: mailu-vpnconfig
         scripts:
           up: |-
