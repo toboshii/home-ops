@@ -18,7 +18,7 @@ spec:
       interval: 5m
   values:
     certmanager:
-      issuerName: letsencrypt-prod
+      issuerName: letsencrypt-production
     domain: "${SECRET_DOMAIN}"
     hostnames:
       - "mail.${SECRET_DOMAIN}"
