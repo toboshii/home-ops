@@ -21,10 +21,10 @@ spec:
       issuerName: letsencrypt-production
     domain: "${SECRET_DOMAIN}"
     hostnames:
+      - "dfw2-gtw-ipv4.${SECRET_DOMAIN}"
       - "smtp.${SECRET_DOMAIN}"
       - "imap.${SECRET_DOMAIN}"
       - "mail.${SECRET_DOMAIN}"
-      - "las-ext-mail1.${SECRET_DOMAIN}"
     initialAccount:
       domain: "${SECRET_DOMAIN}"
       username: postmaster
