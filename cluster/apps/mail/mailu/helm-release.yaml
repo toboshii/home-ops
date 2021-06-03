@@ -41,8 +41,8 @@ spec:
       hosts:
         - "mail.${SECRET_DOMAIN}"
       tls:
-        - hosts:
-            - "mail.${SECRET_DOMAIN}"
+        hosts:
+          - "mail.${SECRET_DOMAIN}"
     persistence:
       existingClaim: mailu-data-v1
     roundcube:
