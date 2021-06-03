@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://toboshii.github.io/helm-charts
       chart: mailu
-      version: 0.2.0
+      version: 0.2.1
       sourceRef:
         kind: HelmRepository
         name: toboshii-charts
@@ -21,8 +21,10 @@ spec:
       issuerName: letsencrypt-production
     domain: "${SECRET_DOMAIN}"
     hostnames:
+      - "smtp.${SECRET_DOMAIN}"
+      - "imap.${SECRET_DOMAIN}"
       - "mail.${SECRET_DOMAIN}"
-      - "las-ext1.${SECRET_DOMAIN}"
+      - "las-ext-mail1.${SECRET_DOMAIN}"
     initialAccount:
       domain: "${SECRET_DOMAIN}"
       username: postmaster
@@ -30,6 +32,17 @@ spec:
     secretKey: "${SECRET_MAILU_SECRET_KEY}"
     subnet: "${NETWORK_K8S_CLUSTER_CIDR}"
     logLevel: INFO
+    ingress:
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        traefik.ingress.kubernetes.io/router.middlewares: "networking-cloudflare-ips@kubernetescrd"
+        external-dns/is-public: "true"
+        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+      hosts:
+        - "mail.${SECRET_DOMAIN}"
+      tls:
+        - hosts:
+            - "mail.${SECRET_DOMAIN}"
     persistence:
       existingClaim: mailu-data-v1
     roundcube:
