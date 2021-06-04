@@ -64,7 +64,7 @@ spec:
         #   - to:
         #     - ipBlock:
         #         cidr: 172.16.0.0/12
-
+    DNS: 192.168.42.1
     configmap:
       # -- configmap contains clients and gateway PODs setting
       enabled: true
