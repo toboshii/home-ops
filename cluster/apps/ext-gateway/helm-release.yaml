@@ -33,8 +33,7 @@ spec:
         env:
           TZ: "America/Chicago"
           IPTABLES_BACKEND: legacy
-          KILLSWITCH: "true"
-          KILLSWITCH_EXCLUDEDNETWORKS_IPV4: 172.22.0.0/16;172.24.0.0/16;10.0.0.0/8;192.168.42.0/24
+          KILLSWITCH: "false"
         configFileSecret: ext-gateway-vpnconfig
         resources:
           requests:
@@ -52,19 +51,7 @@ spec:
         #  periodSeconds: 60
         #  failureThreshold: 1
         networkPolicy:
-          enabled: true
-
-          egress:
-          - to:
-            - ipBlock:
-                cidr: 0.0.0.0/0
-            ports:
-            # VPN traffic
-            - port: 62441
-              protocol: UDP
-          - to:
-            - ipBlock:
-                cidr: 172.16.0.0/12
+          enabled: false
 
     configmap:
       # -- configmap contains clients and gateway PODs setting
