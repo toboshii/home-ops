@@ -50,20 +50,20 @@ spec:
         #  initialDelaySeconds: 30
         #  periodSeconds: 60
         #  failureThreshold: 1
-        networkPolicy:
-          enabled: true
+        # networkPolicy:
+        #   enabled: true
 
-          egress:
-          - to:
-            - ipBlock:
-                cidr: 0.0.0.0/0
-            ports:
-            # VPN traffic
-            - port: 62441
-              protocol: UDP
-          - to:
-            - ipBlock:
-                cidr: 172.16.0.0/12
+        #   egress:
+        #   - to:
+        #     - ipBlock:
+        #         cidr: 0.0.0.0/0
+        #     ports:
+        #     # VPN traffic
+        #     - port: 62441
+        #       protocol: UDP
+        #   - to:
+        #     - ipBlock:
+        #         cidr: 172.16.0.0/12
 
     configmap:
       # -- configmap contains clients and gateway PODs setting

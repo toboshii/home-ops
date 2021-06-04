@@ -3,6 +3,7 @@ kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
   name: mail-namespace
+  namespace: mail
 spec:
   podSelector: {}
   ingress:
