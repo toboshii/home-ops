@@ -30,6 +30,8 @@ k3s_server:
   kubelet-arg:
   - "feature-gates=GracefulNodeShutdown=true"
   - "feature-gates=MixedProtocolLBService=true"
+  - "feature-gates=EphemeralContainers=true"
   kube-apiserver-arg:
   - "feature-gates=MixedProtocolLBService=true"
+  - "feature-gates=EphemeralContainers=true"
   - "anonymous-auth=true"

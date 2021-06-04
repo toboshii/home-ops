@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
 - helm-release.yaml
 - secret.yaml
+- netshoot.yaml
