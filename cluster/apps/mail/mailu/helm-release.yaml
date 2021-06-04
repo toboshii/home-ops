@@ -53,7 +53,7 @@ spec:
           cpu: 400m
     addons:
       vpn:
-        enabled: true
+        enabled: false
         type: wireguard
         wireguard:
           image:

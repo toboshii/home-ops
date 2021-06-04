@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
 - calico-system.yaml
 - cert-manager.yaml
+- ext-gateway.yaml
 - falco-system.yaml
 - flux-system.yaml
 - home.yaml
@@ -13,5 +14,6 @@ resources:
 - media.yaml
 - monitoring.yaml
 - networking.yaml
-- security.yaml
 - rook-ceph.yaml
+- security.yaml
+- vpn-gateway.yaml
