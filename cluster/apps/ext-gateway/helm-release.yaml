@@ -3,6 +3,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: ext-gateway
+  namespace: ext-gateway
   labels:
     # Avoid variable substitution of shell variables bellow
     kustomize.toolkit.fluxcd.io/substitute: disabled
