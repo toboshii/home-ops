@@ -76,7 +76,6 @@ spec:
       # It must list all namespaces where client PODs get deployed to.
       # The chart namespace is added automatically
       namespaces:
-      - ext-gateway
       - mail
       data:
         # -- settings for gateway - defaults should usually be good
