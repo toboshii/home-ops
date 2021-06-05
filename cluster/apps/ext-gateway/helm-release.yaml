@@ -124,4 +124,4 @@ spec:
           # hostname IP ports(coma separated)
           # Example:
           # transmission 10 tcp:18289,udp:18289
-          mailu-front 2 tcp:25,tcp:465,tcp:587,tcp:143,tcp:993
+          #mailu-front 2 tcp:25,tcp:465,tcp:587,tcp:143,tcp:993
