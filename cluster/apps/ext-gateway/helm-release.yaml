@@ -21,7 +21,7 @@ spec:
   values:
     image:
       repository: ghcr.io/k8s-at-home/pod-gateway
-      tag: v1.2.4
+      tag: v1.2.3
     DNS: 192.168.42.1
     addons:
       vpn:
