@@ -21,7 +21,7 @@ spec:
   values:
     image:
       repository: ghcr.io/k8s-at-home/pod-gateway
-      tag: v1.2.3
+      tag: v1.2.4
     DNS: 192.168.42.1
     addons:
       vpn:
@@ -68,8 +68,6 @@ spec:
     routed_namespaces:
       - mail
     settings:
-      VXLAN_GATEWAY_IP: 192.168.42.1
-      VXLAN_IP_NETWORK: "192.168.42"
       VPN_INTERFACE: wg0
       VPN_BLOCK_OTHER_TRAFFIC: false
       VPN_TRAFFIC_PORT: "${SECRET_EXT_GATEWAY_PORT}"
