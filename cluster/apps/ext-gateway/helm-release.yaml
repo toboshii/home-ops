@@ -105,7 +105,7 @@ spec:
           VPN_BLOCK_OTHER_TRAFFIC=true
           # If VPN_BLOCK_OTHER_TRAFFIC is true, allow VPN traffic over this port
           VPN_TRAFFIC_PORT=62441
-          NOT_ROUTED_TO_GATEWAY_CIDRS="192.168.42.0/24 172.22.0.0/16 172.24.0.0/16"
+          NOT_ROUTED_TO_GATEWAY_CIDRS="172.22.0.0/16 172.24.0.0/16"
           # Traffic to these IPs will be send through the K8S gateway
           VPN_LOCAL_CIDRS="172.22.0.0/16  10.0.0.0/8"
 
