@@ -4,16 +4,13 @@ kind: HelmRelease
 metadata:
   name: ext-gateway
   namespace: ext-gateway
-  labels:
-    # Avoid variable substitution of shell variables bellow
-    kustomize.toolkit.fluxcd.io/substitute: disabled
 spec:
   interval: 5m
   chart:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: pod-gateway
-      version: 1.0.1
+      version: 2.0.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -24,8 +21,7 @@ spec:
   values:
     image:
       repository: ghcr.io/k8s-at-home/pod-gateway
-      pullPolicy: Always
-      tag: dev
+      tag: v1.2.3
     addons:
       vpn:
         enabled: true
@@ -45,29 +41,29 @@ spec:
             memory: 128Mi
           limits:
             memory: 512Mi
-        livenessProbe: {}
-        # exec:
-        #    command:
-        #      - sh
-        #      - -c
-        #      - if [ $(curl -s https://ipinfo.io/country) == 'US' ]; then exit 0; else exit $?; fi
-        #  initialDelaySeconds: 30
-        #  periodSeconds: 60
-        #  failureThreshold: 1
-        # networkPolicy:
-        #   enabled: true
+        livenessProbe:
+          exec:
+            command:
+              - sh
+              - -c
+              - if [ $(curl -s https://ipinfo.io/ip) != '${SECRET_EXT_GATEWAY_IP}' ]; then exit 0; else exit $?; fi
+          initialDelaySeconds: 30
+          periodSeconds: 60
+          failureThreshold: 1
+    # networkPolicy:
+    #   enabled: true
 
-        #   egress:
-        #   - to:
-        #     - ipBlock:
-        #         cidr: 0.0.0.0/0
-        #     ports:
-        #     # VPN traffic
-        #     - port: 62441
-        #       protocol: UDP
-        #   - to:
-        #     - ipBlock:
-        #         cidr: 172.16.0.0/12
+    #   egress:
+    #   - to:
+    #     - ipBlock:
+    #         cidr: 0.0.0.0/0
+    #     ports:
+    #     # VPN traffic
+    #     - port: 62441
+    #       protocol: UDP
+    #   - to:
+    #     - ipBlock:
+    #         cidr: 172.16.0.0/12
     DNS: 192.168.42.1
     configmap:
       # -- configmap contains clients and gateway PODs setting
@@ -75,53 +71,24 @@ spec:
       # -- Namespaces to create the configmap to.
       # It must list all namespaces where client PODs get deployed to.
       # The chart namespace is added automatically
-      namespaces:
-      - mail
-      data:
-        # -- settings for gateway - defaults should usually be good
-        # NOTE: if you change it you will need to manually restart all
-        # containers using it
-        settings.sh: |
-          #!/bin/sh
-          # hostname of the gateway - it must accept vxlan and DHCP traffic
-          # clients get it as env variable
-          GATEWAY_NAME="${gateway}"
-          # K8S DNS IP address
-          # clients get it as env variable
-          K8S_DNS_IPS="${K8S_DNS_ips}"
-
-          # Vxlan ID to use
-          VXLAN_ID="42"
-          # VXLAN need an /24 IP range not conflicting with K8S and local IP ranges
-          VXLAN_IP_NETWORK="192.168.42"
-          # Gateway IP within the VXLAN - client PODs will be routed through it
-          VXLAN_GATEWAY_IP="${VXLAN_IP_NETWORK}.1"
-          # Keep a range of IPs for static assignment in nat.conf
-          VXLAN_GATEWAY_FIRST_DYNAMIC_IP=20
-
-          # If using a VPN, interface name created by it
-          VPN_INTERFACE=wg0
-          # Prevent non VPN traffic to leave the gateway
-          VPN_BLOCK_OTHER_TRAFFIC=true
-          # If VPN_BLOCK_OTHER_TRAFFIC is true, allow VPN traffic over this port
-          VPN_TRAFFIC_PORT=62441
-          NOT_ROUTED_TO_GATEWAY_CIDRS="172.22.0.0/16 172.24.0.0/16"
-          # Traffic to these IPs will be send through the K8S gateway
-          VPN_LOCAL_CIDRS="172.22.0.0/16  10.0.0.0/8"
-
-          # DNS queries to these domains will be resolved by K8S DNS instead of
-          # the default (typcally the VPN client changes it)
-          DNS_LOCAL_CIDRS="local"
-
-        # -- settings to expose ports, usually through a VPN provider
-        # NOTE: if you change it you will need to manually restart all
-        # containers using it
-        nat.conf: |
-          # Configure client PODs with static IP addresses
-          # and ports exposed through NAT
-          # static IPs must be bellow VXLAN_GATEWAY_FIRST_DYNAMIC_IP
-          #
-          # hostname IP ports(coma separated)
-          # Example:
-          # transmission 10 tcp:18289,udp:18289
-          mailu-front 2 tcp:25,tcp:465,tcp:587,tcp:143,tcp:993
+      routed_namespaces:
+        - mail
+      settings:
+        VPN_INTERFACE: wg0
+        VPN_BLOCK_OTHER_TRAFFIC: true
+        VPN_TRAFFIC_PORT: "${SECRET_EXT_GATEWAY_PORT}"
+        VPN_LOCAL_CIDRS: "${NETWORK_K8S_CLUSTER_CIDR} ${NETWORK_K8S_SERVICE_CIDR} ${NETWORK_MANAGEMENT_CIDR}"
+      publicPorts:
+        - hostname: mailu-front
+          IP: 2
+          ports:
+            - type: tcp
+              port: 25
+            - type: tcp
+              port: 465
+            - type: tcp
+              port: 587
+            - type: tcp
+              port: 143
+            - type: tcp
+              port: 993
