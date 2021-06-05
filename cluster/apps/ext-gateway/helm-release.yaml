@@ -25,7 +25,7 @@ spec:
     DNS: 192.168.42.1
     addons:
       vpn:
-        enabled: true
+        enabled: false
         type: wireguard
         wireguard:
           image:
