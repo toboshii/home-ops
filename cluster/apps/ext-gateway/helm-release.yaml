@@ -64,7 +64,6 @@ spec:
     #   - to:
     #     - ipBlock:
     #         cidr: 172.16.0.0/12
-    DNS: 192.168.42.1
     configmap:
       # -- configmap contains clients and gateway PODs setting
       enabled: true
@@ -77,6 +76,7 @@ spec:
         VPN_INTERFACE: wg0
         VPN_BLOCK_OTHER_TRAFFIC: true
         VPN_TRAFFIC_PORT: "${SECRET_EXT_GATEWAY_PORT}"
+        NOT_ROUTED_TO_GATEWAY_CIDRS: "${NETWORK_K8S_CLUSTER_CIDR} ${NETWORK_K8S_SERVICE_CIDR}"
         VPN_LOCAL_CIDRS: "${NETWORK_K8S_CLUSTER_CIDR} ${NETWORK_K8S_SERVICE_CIDR} ${NETWORK_MANAGEMENT_CIDR}"
       publicPorts:
         - hostname: mailu-front
