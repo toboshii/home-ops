@@ -134,6 +134,13 @@ spec:
         tls:
         - hosts:
           - "prometheus.${SECRET_DOMAIN}"
+      resources:
+        requests:
+          cpu: 250m
+          memory: 500Mi
+        limits:
+          cpu: 1000m
+          memory: 2000Mi
       prometheusSpec:
         ruleSelector: {}
         ruleNamespaceSelector: {}
