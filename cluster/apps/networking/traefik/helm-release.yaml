@@ -28,7 +28,7 @@ spec:
         - "${LB_TRAEFIK_IP}"
         externalTrafficPolicy: Local
       annotations:
-        external-dns.alpha.kubernetes.io/hostname: "ipv4.${SECRET_DOMAIN}"
+        external-dns.alpha.kubernetes.io/hostname: "ipv4.${SECRET_DOMAIN},ipv4.${SECRET_DOMAIN_2}"
     logs:
       general:
         format: json
