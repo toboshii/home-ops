@@ -8,6 +8,7 @@ resources:
 - jellyfin
 - lidarr
 - overseerr
+- owncast
 - plex
 - prowlarr
 - qbittorrent
