@@ -32,6 +32,8 @@ spec:
     - zones:
       - zone: ${SECRET_DOMAIN}
         scheme: dns://
+      - zone: ${SECRET_DOMAIN_2}
+        scheme: dns://
       port: 53
       plugins:
       # Enables console logging
