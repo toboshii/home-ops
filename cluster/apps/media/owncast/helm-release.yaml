@@ -24,11 +24,27 @@ spec:
       TZ: "America/Chicago"
       NVIDIA_DRIVER_CAPABILITIES: all
       NVIDIA_VISIBLE_DEVICES: all
+    service:
+      port:
+        port: 8080
+      additionalServices:
+      - enabled: true
+        nameSuffix: rtmp
+        type: LoadBalancer
+        externalIPs:
+        - "${LB_OWNCAST_IP}"
+        port:
+          port: 1935
+          name: rtmp
+          protocol: TCP
+          targetPort: 1935
+        externalTrafficPolicy: Local
     ingress:
       enabled: true
       ingressClassName: "traefik"
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        traefik.ingress.kubernetes.io/router.middlewares: "networking-cloudflare-ips@kubernetescrd"
         external-dns/is-public: "true"
         external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
       hosts:
