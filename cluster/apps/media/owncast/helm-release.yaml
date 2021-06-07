@@ -18,7 +18,7 @@ spec:
       interval: 5m
   values:
     image:
-      repository: gabekangas/owncast
+      repository: ghcr.io/toboshii/owncast-nvenc
       tag: 0.0.7
     env:
       TZ: "America/Chicago"
@@ -57,6 +57,10 @@ spec:
       - secretName: "${SECRET_DOMAIN_2/./-}-tls"
         hosts:
         - "stream.${SECRET_DOMAIN_2}"
+    persistence:
+      config:
+        enabled: true
+        existingClaim: owncast-config-v1
     resources:
       requests:
         memory: 250Mi
