@@ -18,7 +18,7 @@ spec:
       interval: 5m
   values:
     image:
-      repository: ghcr.io/toboshii/owncast-nvenc
+      repository: gabekangas/owncast
       tag: 0.0.7
     env:
       TZ: "America/Chicago"
