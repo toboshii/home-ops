@@ -22,7 +22,7 @@ spec:
       tag: v3.3.0
     env:
       TZ: "America/Chicago"
-      HOST_WHITELIST_ENTRIES: "sabnzbd.${SECRET_DOMAIN}"
+      HOST_WHITELIST_ENTRIES: "sabnzbd.${SECRET_DOMAIN}, sabnzbd"
     ingress:
       enabled: true
       ingressClassName: "traefik"
