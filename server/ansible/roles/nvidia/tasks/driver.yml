@@ -24,14 +24,14 @@
 
 - name: driver | download nvidia driver
   ansible.builtin.get_url:
-    url: https://international.download.nvidia.com/XFree86/Linux-x86_64/465.27/NVIDIA-Linux-x86_64-{{ nvidia_driver.version }}.run
+    url: https://international.download.nvidia.com/XFree86/Linux-x86_64/{{ nvidia_driver.version }}/NVIDIA-Linux-x86_64-{{ nvidia_driver.version }}.run
     dest: /tmp/NVIDIA-Linux-x86_64-{{ nvidia_driver.version }}.run
     checksum: "{{ nvidia_driver.checksum }}"
     mode: '0755'
 
 - name: driver | install nvidia driver
   ansible.builtin.command:
-    cmd: "/tmp/NVIDIA-Linux-x86_64-{{ nvidia_driver.version }}.run -s --no-opengl-files"
+    cmd: "/tmp/NVIDIA-Linux-x86_64-{{ nvidia_driver.version }}.run -s --no-opengl-files --dkms"
     creates: "/proc/driver/nvidia/version"
 
 - name: driver | load nvidia driver
