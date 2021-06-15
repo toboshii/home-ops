@@ -177,9 +177,9 @@ spec:
           - targets:
             # franxx nas
             - 10.75.30.15:9123
-        - job_name: 'minio'
+        - job_name: 'minio-job'
           honor_timestamps: true
-          metrics_path: /minio/prometheus/metrics
+          metrics_path: /minio/v2/metrics/cluster
           static_configs:
           - targets:
             - 10.75.30.15:9000
