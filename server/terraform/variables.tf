@@ -5,7 +5,7 @@ variable "common" {
     os_type       = "ubuntu"
     clone         = "ubuntu-20.04-cloudimg"
     search_domain = "56k.jp"
-    nameserver    = "10.75.1.1"
+    nameserver    = "10.75.0.1"
   }
 }
 
