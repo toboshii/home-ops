@@ -29,9 +29,3 @@ k3s_server:
   service-cidr: "172.24.0.0/16"
   kubelet-arg:
   - "feature-gates=GracefulNodeShutdown=true"
-  - "feature-gates=MixedProtocolLBService=true"
-  - "feature-gates=EphemeralContainers=true"
-  kube-apiserver-arg:
-  - "feature-gates=MixedProtocolLBService=true"
-  - "feature-gates=EphemeralContainers=true"
-  - "anonymous-auth=true"
