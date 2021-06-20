@@ -1,22 +1,26 @@
 ---
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
   name: minio
   namespace: networking
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    traefik.ingress.kubernetes.io/router.middlewares: "cloudflare@kubernetescrd"
 spec:
-  entryPoints:
-  - websecure
-  routes:
-  - match: Host(`s.${SECRET_DOMAIN}`)
-    kind: Rule
-    services:
-    - name: minio
-      port: 443
-    middlewares:
-    - name: cloudflare
   tls:
-    secretName: "${SECRET_DOMAIN/./-}-tls"
+    - secretName: "${SECRET_DOMAIN/./-}-tls"
+  rules:
+    - host: s.${SECRET_DOMAIN}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: minio
+                port:
+                  number: 443
 ---
 kind: Service
 apiVersion: v1
@@ -34,7 +38,7 @@ metadata:
   namespace: networking
 spec:
   endpoints:
-  - dnsName: "s.${SECRET_DOMAIN}"
-    recordType: CNAME
-    targets:
-    - "ipv4.${SECRET_DOMAIN}"
+    - dnsName: "s.${SECRET_DOMAIN}"
+      recordType: CNAME
+      targets:
+        - "ipv4.${SECRET_DOMAIN}"
