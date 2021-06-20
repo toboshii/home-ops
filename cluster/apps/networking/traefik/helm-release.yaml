@@ -58,6 +58,8 @@ spec:
     # - "--experimental.plugins.subfilter.modulename=github.com/DirtyCajunRice/subfilter"
     # - "--experimental.plugins.subfilter.version=v0.5.0"
     ports:
+      traefik:
+        expose: true
       web:
         redirectTo: websecure
       websecure:
