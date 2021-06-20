@@ -1,0 +1,23 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dashboard
+  namespace: networking
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
+spec:
+  tls:
+    - secretName: "${SECRET_DOMAIN/./-}-tls"
+  rules:
+    - host: traefik.${SECRET_DOMAIN}
+      http:
+        paths:
+          - path: /
+            backend:
+              service:
+                name: traefik
+                port:
+                  number: 9000
