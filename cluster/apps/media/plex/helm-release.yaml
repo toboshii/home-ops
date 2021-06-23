@@ -31,15 +31,13 @@ spec:
       supplementalGroups:
       - 5600
     service:
-      enabled: true
-      type: LoadBalancer
-      externalIPs:
-      - "${LB_PLEX_IP}"
-      externalTrafficPolicy: Local
-      port:
-        port: 32400
-      annotations:
-        traefik.ingress.kubernetes.io/service.serversscheme: https
+      main:
+        type: LoadBalancer
+        externalIPs:
+        - "${LB_PLEX_IP}"
+        externalTrafficPolicy: Local
+        annotations:
+          traefik.ingress.kubernetes.io/service.serversscheme: https
     ingress:
       main:
         enabled: true

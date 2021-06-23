@@ -28,13 +28,11 @@ spec:
       supplementalGroups:
       - 5600
     service:
-      enabled: true
-      type: LoadBalancer
-      externalIPs:
-      - "${LB_JELLYFIN_IP}"
-      externalTrafficPolicy: Local
-      port:
-        port: 8096
+      main:
+        type: LoadBalancer
+        externalIPs:
+        - "${LB_JELLYFIN_IP}"
+        externalTrafficPolicy: Local
     ingress:
       main:
         enabled: true
