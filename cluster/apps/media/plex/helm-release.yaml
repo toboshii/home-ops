@@ -41,6 +41,7 @@ spec:
     ingress:
       main:
         enabled: true
+        ingressClassName: "traefik"
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           external-dns/is-public: "true"
