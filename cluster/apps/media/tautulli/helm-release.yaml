@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: tautulli
-      version: 9.1.0
+      version: 10.0.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -23,20 +23,15 @@ spec:
     env:
       TZ: "America/Chicago"
     ingress:
-      enabled: true
-      ingressClassName: "traefik"
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        # external-dns/is-public: "true"
-        # external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-      hosts:
-      - host: "tautulli.${SECRET_DOMAIN}"
-        paths:
-        - path: /
-          pathType: Prefix
-      tls:
-      - hosts:
-        - "tautulli.${SECRET_DOMAIN}"
+      main:
+        enabled: true
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        hosts:
+        - host: "tautulli.${SECRET_DOMAIN}"
+        tls:
+        - hosts:
+          - "tautulli.${SECRET_DOMAIN}"
     persistence:
       config:
         enabled: true

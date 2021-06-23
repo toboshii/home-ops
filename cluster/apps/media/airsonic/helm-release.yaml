@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: airsonic
-      version: 2.4.0
+      version: 3.2.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -33,27 +33,22 @@ spec:
         enabled: true
         existingClaim: airsonic-config-v1
         mountPath: /var/airsonic
-    additionalVolumeMounts:
-    - name: media-franxx
-      mountPath: /media-franxx
-    additionalVolumes:
-    - name: media-franxx
-      persistentVolumeClaim:
-        claimName: nfs-media-franxx-pvc
+      media-franxx:
+        enabled: true
+        existingClaim: nfs-media-franxx-pvc
+        readOnly: true
     ingress:
-      enabled: true
-      ingressClassName: "traefik"
-      annotations:
-        external-dns/is-public: "true"
-        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-      hosts:
-      - host: "listen.${SECRET_DOMAIN}"
-        paths:
-        - path: /
-      tls:
-      - hosts:
-        - "listen.${SECRET_DOMAIN}"
+      main:
+        enabled: true
+        annotations:
+          external-dns/is-public: "true"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        hosts:
+        - host: "listen.${SECRET_DOMAIN}"
+        tls:
+        - hosts:
+          - "listen.${SECRET_DOMAIN}"
     resources:
       requests:
         memory: "1024M"

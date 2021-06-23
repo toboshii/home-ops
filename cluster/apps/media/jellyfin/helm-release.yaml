@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: jellyfin
-      version: 7.4.0
+      version: 8.2.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -30,24 +30,21 @@ spec:
     service:
       enabled: true
       type: LoadBalancer
-      externalIPs: 
+      externalIPs:
       - "${LB_JELLYFIN_IP}"
       externalTrafficPolicy: Local
       port:
         port: 8096
     ingress:
-      enabled: true
-      ingressClassName: "traefik"
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-      hosts:
-      - host: "jellyfin.${SECRET_DOMAIN}"
-        paths:
-        - path: /
-          pathType: Prefix
-      tls:
-      - hosts:
-        - "jellyfin.${SECRET_DOMAIN}"
+      main:
+        enabled: true
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        hosts:
+        - host: "jellyfin.${SECRET_DOMAIN}"
+        tls:
+        - hosts:
+          - "jellyfin.${SECRET_DOMAIN}"
     persistence:
       config:
         enabled: true
@@ -57,14 +54,10 @@ spec:
         emptyDir:
           enabled: true
           medium: "Memory"
-    additionalVolumeMounts:
-    - name: media-franxx
-      mountPath: "/media-franxx"
-      readOnly: true
-    additionalVolumes:
-    - name: media-franxx
-      persistentVolumeClaim:
-        claimName: nfs-media-franxx-pvc
+      media-franxx:
+        enabled: true
+        existingClaim: nfs-media-franxx-pvc
+        readOnly: true
     resources:
       limits:
         memory: 8000Mi

@@ -11,7 +11,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: vaultwarden
-      version: 1.0.1
+      version: 2.2.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -40,22 +40,22 @@ spec:
       SMTP_PASSWORD: "${SECRET_SENDGRID_API_KEY}"
       DATABASE_URL: "postgresql://vaultwarden:${SECRET_VAULTWARDEN_DB_PASSWORD}@vaultwarden-postgresql/vaultwarden"
     ingress:
-      enabled: true
-      ingressClassName: "traefik"
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        external-dns/is-public: "true"
-        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-      hosts:
-      - host: "warden.${SECRET_DOMAIN}"
-        paths:
-        - path: /
-          pathType: Prefix
-        - path: /notifications/hub/negotiate
-          pathType: Prefix
-        - path: /notifications/hub
-          pathType: Prefix
-          servicePort: 3012
+      main:
+        enabled: true
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          external-dns/is-public: "true"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+        hosts:
+        - host: "warden.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
+          - path: /notifications/hub/negotiate
+            pathType: Prefix
+          - path: /notifications/hub
+            pathType: Prefix
+            servicePort: 3012
       tls:
       - hosts:
         - "warden.${SECRET_DOMAIN}"
@@ -74,6 +74,5 @@ spec:
         enabled: true
         storageClass: rook-ceph-block
         accessModes:
-          - ReadWriteOnce
+        - ReadWriteOnce
         size: 10Gi
-    

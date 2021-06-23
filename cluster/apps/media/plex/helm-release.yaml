@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: plex
-      version: 4.4.0
+      version: 5.2.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -33,7 +33,7 @@ spec:
     service:
       enabled: true
       type: LoadBalancer
-      externalIPs: 
+      externalIPs:
       - "${LB_PLEX_IP}"
       externalTrafficPolicy: Local
       port:
@@ -41,20 +41,17 @@ spec:
       annotations:
         traefik.ingress.kubernetes.io/service.serversscheme: https
     ingress:
-      enabled: true
-      ingressClassName: "traefik"
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        external-dns/is-public: "true"
-        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-      hosts:
-      - host: "plex.${SECRET_DOMAIN}"
-        paths:
-        - path: /
-          pathType: Prefix
-      tls:
-      - hosts:
-        - "plex.${SECRET_DOMAIN}"
+      main:
+        enabled: true
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          external-dns/is-public: "true"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+        hosts:
+        - host: "plex.${SECRET_DOMAIN}"
+        tls:
+        - hosts:
+          - "plex.${SECRET_DOMAIN}"
     persistence:
       config:
         enabled: true
@@ -64,14 +61,10 @@ spec:
         emptyDir:
           enabled: true
           medium: "Memory"
-    additionalVolumeMounts:
-    - name: media-franxx
-      mountPath: "/media-franxx"
-      readOnly: true
-    additionalVolumes:
-    - name: media-franxx
-      persistentVolumeClaim:
-        claimName: nfs-media-franxx-pvc
+      media-franxx:
+        enabled: true
+        existingClaim: nfs-media-franxx-pvc
+        readOnly: true
     tolerations:
     - key: "nvidia.com/gpu"
       operator: "Exists"

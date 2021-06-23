@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: qbittorrent
-      version: 10.1.0
+      version: 11.2.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -24,34 +24,32 @@ spec:
       TZ: "America/Chicago"
       WAIT_FOR_VPN: "true"
     ingress:
-      enabled: true
-      ingressClassName: "traefik"
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
-      hosts:
-      - host: "qbittorrent.${SECRET_DOMAIN}"
-        paths:
-        - path: /
-          pathType: Prefix
-      tls:
-      - hosts:
-        - "qbittorrent.${SECRET_DOMAIN}"
-    additionalIngresses:
-    - enabled: true
-      nameSuffix: "api"
-      ingressClassName: "traefik"
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
-      hosts:
-      - host: "qbittorrent.${SECRET_DOMAIN}"
-        paths:
-        - path: /api
-          pathType: Prefix
-      tls:
-      - hosts:
-        - "qbittorrent.${SECRET_DOMAIN}"
+      main:
+        enabled: true
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
+        hosts:
+        - host: "qbittorrent.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
+        tls:
+        - hosts:
+          - "qbittorrent.${SECRET_DOMAIN}"
+      api:
+        enabled: true
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
+        hosts:
+        - host: "qbittorrent.${SECRET_DOMAIN}"
+          paths:
+          - path: /api
+            pathType: Prefix
+        tls:
+        - hosts:
+          - "qbittorrent.${SECRET_DOMAIN}"
     persistence:
       config:
         enabled: true
@@ -60,16 +58,12 @@ spec:
         enabled: true
         emptyDir:
           enabled: true
+      media-franxx:
+        enabled: true
+        existingClaim: nfs-media-franxx-pvc
     podSecurityContext:
       supplementalGroups:
       - 5600
-    additionalVolumeMounts:
-    - name: media-franxx
-      mountPath: "/media-franxx"
-    additionalVolumes:
-    - name: media-franxx
-      persistentVolumeClaim:
-        claimName: nfs-media-franxx-pvc
     resources:
       requests:
         memory: 250Mi

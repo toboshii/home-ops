@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: sabnzbd
-      version: 7.1.0
+      version: 8.0.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -24,23 +24,21 @@ spec:
       TZ: "America/Chicago"
       HOST_WHITELIST_ENTRIES: "sabnzbd.${SECRET_DOMAIN}, sabnzbd"
     ingress:
-      enabled: true
-      ingressClassName: "traefik"
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
-      hosts:
-      - host: "sabnzbd.${SECRET_DOMAIN}"
-        paths:
-        - path: /
-          pathType: Prefix
-      tls:
-      - hosts:
-        - "sabnzbd.${SECRET_DOMAIN}"
-      additionalIngresses:
-      - enabled: true
-        nameSuffix: "api"
-        ingressClassName: "traefik"
+      main:
+        enabled: true
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
+        hosts:
+        - host: "sabnzbd.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
+        tls:
+        - hosts:
+          - "sabnzbd.${SECRET_DOMAIN}"
+      api:
+        enabled: true
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
@@ -56,16 +54,12 @@ spec:
       config:
         enabled: true
         existingClaim: sabnzbd-config-v1
+      media-franxx:
+        enabled: true
+        existingClaim: nfs-media-franxx-pvc
     podSecurityContext:
       supplementalGroups:
       - 5600
-    additionalVolumeMounts:
-    - name: media-franxx
-      mountPath: "/media-franxx"
-    additionalVolumes:
-    - name: media-franxx
-      persistentVolumeClaim:
-        claimName: nfs-media-franxx-pvc
     resources:
       requests:
         memory: 250Mi
