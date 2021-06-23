@@ -49,6 +49,9 @@ spec:
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
         hosts:
         - host: "plex.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
         tls:
         - hosts:
           - "plex.${SECRET_DOMAIN}"
@@ -58,9 +61,8 @@ spec:
         existingClaim: plex-config-v1
       tmp:
         enabled: true
-        emptyDir:
-          enabled: true
-          medium: "Memory"
+        type: emptyDir
+        medium: Memory
       media-franxx:
         enabled: true
         existingClaim: nfs-media-franxx-pvc

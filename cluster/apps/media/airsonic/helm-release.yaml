@@ -46,6 +46,9 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
         - host: "listen.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
         tls:
         - hosts:
           - "listen.${SECRET_DOMAIN}"

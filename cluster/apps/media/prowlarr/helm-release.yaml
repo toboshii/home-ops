@@ -30,6 +30,9 @@ spec:
           traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
         hosts:
         - host: "prowlarr.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
         tls:
         - hosts:
           - "prowlarr.${SECRET_DOMAIN}"

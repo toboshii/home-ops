@@ -29,6 +29,9 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
         - host: "tautulli.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
         tls:
         - hosts:
           - "tautulli.${SECRET_DOMAIN}"

@@ -56,9 +56,9 @@ spec:
           - path: /notifications/hub
             pathType: Prefix
             servicePort: 3012
-      tls:
-      - hosts:
-        - "warden.${SECRET_DOMAIN}"
+        tls:
+        - hosts:
+          - "warden.${SECRET_DOMAIN}"
     persistence:
       config:
         enabled: true

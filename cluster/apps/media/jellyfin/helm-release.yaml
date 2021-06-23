@@ -42,6 +42,9 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
         - host: "jellyfin.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
         tls:
         - hosts:
           - "jellyfin.${SECRET_DOMAIN}"
@@ -51,9 +54,8 @@ spec:
         existingClaim: jellyfin-config-v1
       transcode:
         enabled: true
-        emptyDir:
-          enabled: true
-          medium: "Memory"
+        type: emptyDir
+        medium: Memory
       media-franxx:
         enabled: true
         existingClaim: nfs-media-franxx-pvc

@@ -32,6 +32,9 @@ spec:
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
         hosts:
         - host: "requests.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
         tls:
         - hosts:
           - "requests.${SECRET_DOMAIN}"
