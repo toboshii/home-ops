@@ -1,8 +1,0 @@
----
-
-kube_vip:
-  pod_manifests_dir: /var/lib/rancher/k3s/agent/pod-manifests
-  router_interface: eth0
-  bgp_as: 64512
-  bgp_peer_as: 64512
-  bgp_peer_address: 10.75.40.1

@@ -12,4 +12,4 @@
     pause:
       seconds: 5
   roles:
-  - xanmanning.k3s
+  - k3s

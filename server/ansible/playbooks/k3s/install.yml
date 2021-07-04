@@ -12,8 +12,6 @@
     pause:
       seconds: 5
   roles:
-  - kube_vip
-  - xanmanning.k3s
   - k3s
 
 - hosts:

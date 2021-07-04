@@ -1,21 +1,18 @@
 ---
 
+- include: addons.yml
+  tags:
+  - addons
+
+- name: k3s | cluster configuration
+  include_role:
+    name: xanmanning.k3s
+    public: yes
+
+- include: cleanup.yml
+  tags:
+  - cleanup
+
 - include: kubeconfig.yml
   tags:
   - kubeconfig
-
-- include: registry.yml
-  when: mirror_registry is defined
-        or (private_registries is defined
-          and private_registries|length > 0)
-  tags:
-  - registry
-
-- include: calico.yml
-  when:
-  - k3s_control_node is defined
-  - k3s_control_node
-  - calico.enabled is defined
-  - calico.enabled
-  tags:
-  - calico

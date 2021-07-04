@@ -24,7 +24,7 @@ resource "proxmox_vm_qemu" "kube-master" {
   }
   disk {
     type    = "scsi"
-    storage = "ceph-block-fast"
+    storage = "rust-pool"
     size    = each.value.disk
     format  = "raw"
     ssd     = 1

@@ -7,4 +7,4 @@ spec:
   serviceClusterIPs:
   - cidr: "{{ k3s_server['service-cidr'] }}"
   serviceExternalIPs:
-  - cidr: "{{ calico.bgp.externalIPs }}"
+  - cidr: "{{ calico_bgp_external_ips }}"
