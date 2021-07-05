@@ -28,7 +28,7 @@ spec:
         port: 4000
       additionalServices:
       - enabled: true
-        nameSuffix: dns
+        nameSuffix: dns-tcp
         type: LoadBalancer
         externalIPs:
         - "${LB_BLOCKY_IP}"
@@ -37,8 +37,14 @@ spec:
           name: dns-tcp
           protocol: TCP
           targetPort: 53
-        additionalPorts:
-        - port: 53
+        externalTrafficPolicy: Local
+      - enabled: true
+        nameSuffix: dns-udp
+        type: LoadBalancer
+        externalIPs:
+        - "${LB_BLOCKY_IP}"
+        port:
+          port: 53
           name: dns-udp
           protocol: UDP
           targetPort: 53
@@ -50,8 +56,8 @@ spec:
       hosts:
       - host: "blocky.${SECRET_DOMAIN}"
         paths:
-          - path: /
-            pathType: Prefix
+        - path: /
+          pathType: Prefix
       tls:
       - hosts:
         - "blocky.${SECRET_DOMAIN}"
@@ -60,9 +66,6 @@ spec:
         externalResolvers:
         - tcp-tls:1.1.1.1:853
         - tcp-tls:1.0.0.1:853
-      conditional:
-        mapping:
-          ${SECRET_DOMAIN}: udp:${LB_COREDNS_IP}
       blocking:
         blackLists:
           ads:
