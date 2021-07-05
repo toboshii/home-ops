@@ -25,7 +25,7 @@ metadata:
   namespace: networking
 spec:
   type: ExternalName
-  externalName: s3.dfw1.${SECRET_DOMAIN}
+  externalName: minio.${SECRET_DOMAIN}
 ---
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
