@@ -2,5 +2,5 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-# - cloud-sync
-# - k10
+- rbac.yaml
+- daemon-set.yaml

@@ -31,7 +31,7 @@ spec:
         - name: cp_enable
           value: "true"
         - name: cp_namespace
-          value: kube-system
+          value: "kube-system"
         - name: vip_startleader
           value: "false"
         - name: vip_loglevel
@@ -39,15 +39,15 @@ spec:
         - name: bgp_enable
           value: "true"
         - name: bgp_routerinterface
-          value: "{{ kubevip_interface }}"
+          value: "eth0"
         - name: bgp_as
-          value: "{{ kubevip_bgp_as_number }}"
+          value: "64512"
         - name: bgp_peeraddress
-          value: "{{ kubevip_bgp_peer_ip }}"
+          value: "10.75.40.1"
         - name: bgp_peeras
-          value: "{{ kubevip_bgp_peer_as_number }}"
+          value: "64512"
         - name: vip_address
-          value: "{{ kubevip_address }}"
+          value: "10.75.45.5"
         securityContext:
           capabilities:
             add:
