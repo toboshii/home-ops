@@ -38,7 +38,7 @@ spec:
       module:
       - apcups
       target:
-      - 10.75.10.105
+      - 10.75.10.104
     path: "/snmp"
     targetPort: 9116
     relabelings:
