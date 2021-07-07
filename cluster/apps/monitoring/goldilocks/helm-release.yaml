@@ -19,7 +19,7 @@ spec:
   values:
     image:
       repository: quay.io/fairwinds/goldilocks
-      tag: v3.1.4
+      tag: v3.2.0
     dashboard:
       ingress:
         enabled: true
