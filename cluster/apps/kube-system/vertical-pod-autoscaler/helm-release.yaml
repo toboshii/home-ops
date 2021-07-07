@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       # renovate: registryUrl=https://charts.fairwinds.com/stable
-      chart: vertical-pod-autoscaler
+      chart: vpa
       version: 0.3.4
       sourceRef:
         kind: HelmRepository
