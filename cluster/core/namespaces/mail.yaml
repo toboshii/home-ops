@@ -5,3 +5,4 @@ metadata:
   name: mail
   labels:
     routed-gateway: "true"
+    goldilocks.fairwinds.com/enabled: "true"

@@ -3,3 +3,4 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: monitoring
+  goldilocks.fairwinds.com/enabled: "true"

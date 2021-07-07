@@ -9,6 +9,7 @@ resources:
 - coredns-charts.yaml
 - deliveryhero-charts.yaml
 - drone-charts.yaml
+- fairwinds-charts.yaml
 - falco-security-charts.yaml
 #- gitea-charts.yaml
 - grafana-charts.yaml
