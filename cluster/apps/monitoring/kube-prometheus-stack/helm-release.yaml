@@ -54,15 +54,14 @@ spec:
           group_wait: 30s
           group_interval: 5m
           repeat_interval: 6h
-          receiver: 'discord'
+          receiver: 'null'
           routes:
           - receiver: 'null'
             match:
               alertname: Watchdog
           - receiver: 'discord'
             match_re:
-              # severity: critical|warning
-              severity: critical
+              severity: critical|warning|error
             continue: true
           - receiver: 'webhook'
             match:
