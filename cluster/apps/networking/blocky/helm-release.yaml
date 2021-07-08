@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: blocky
-      version: 6.4.0
+      version: 7.0.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -24,43 +24,47 @@ spec:
       TZ: "America/Chicago"
     replicas: 3
     service:
-      port:
-        port: 4000
-      additionalServices:
-      - enabled: true
-        nameSuffix: dns-tcp
+      main:
+        ports:
+          http:
+            port: 4000
+      dns-tcp:
+        enabled: true
         type: LoadBalancer
         externalIPs:
         - "${LB_BLOCKY_IP}"
-        port:
-          port: 53
-          name: dns-tcp
-          protocol: TCP
-          targetPort: 53
         externalTrafficPolicy: Local
-      - enabled: true
-        nameSuffix: dns-udp
+        ports:
+          dns-tcp:
+            enabled: true
+            port: 53
+            protocol: TCP
+            targetPort: 53
+      dns-udp:
+        enabled: true
         type: LoadBalancer
         externalIPs:
         - "${LB_BLOCKY_IP}"
-        port:
-          port: 53
-          name: dns-udp
-          protocol: UDP
-          targetPort: 53
         externalTrafficPolicy: Local
+        ports:
+          dns-tcp:
+            enabled: true
+            port: 53
+            protocol: UDP
+            targetPort: 53
     ingress:
-      enabled: true
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-      hosts:
-      - host: "blocky.${SECRET_DOMAIN}"
-        paths:
-        - path: /
-          pathType: Prefix
-      tls:
-      - hosts:
-        - "blocky.${SECRET_DOMAIN}"
+      main:
+        enabled: true
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        hosts:
+        - host: "blocky.${SECRET_DOMAIN}"
+          paths:
+          - path: /
+            pathType: Prefix
+        tls:
+        - hosts:
+          - "blocky.${SECRET_DOMAIN}"
     config: |
       upstream:
         externalResolvers:
