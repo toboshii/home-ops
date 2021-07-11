@@ -78,6 +78,13 @@ spec:
               operator: Exists
     podAnnotations:
       configmap.reloader.stakater.com/reload: "plex-promtail"
+    resources:
+      requests:
+        cpu: 10m
+        memory: 5300M
+      limits:
+        cpu: 1248m
+        memory: 8600M
     addons:
       promtail:
         enabled: true
@@ -96,3 +103,10 @@ spec:
           readOnly: true
         securityContext:
           runAsUser: 0
+        resources:
+          requests:
+            cpu: 10m
+            memory: 60M
+          limits:
+            cpu: 40m
+            memory: 128M
