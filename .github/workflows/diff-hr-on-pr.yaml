@@ -4,12 +4,12 @@ name: Create diff on updated HelmReleases
 on:
   pull_request:
     branches:
-      - master
+      - main
     paths:
-      - "clusters/**.yaml"
+      - "cluster/**.yaml"
 
 env:
-  conf_live_branch: master
+  conf_live_branch: main
   conf_allow_repeating_same_comment: true
 
 jobs:

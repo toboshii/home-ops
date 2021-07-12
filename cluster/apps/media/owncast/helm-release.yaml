@@ -33,6 +33,8 @@ spec:
       rtmp:
         enabled: true
         type: LoadBalancer
+        externalIPs:
+        - "${LB_OWNCAST_IP}"
         externalTrafficPolicy: Local
         ports:
           rtmp:

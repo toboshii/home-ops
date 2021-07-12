@@ -80,7 +80,7 @@ spec:
       configmap.reloader.stakater.com/reload: "plex-promtail"
     resources:
       requests:
-        cpu: 10m
+        cpu: 1000m
         memory: 5300M
       limits:
         cpu: 1248m
