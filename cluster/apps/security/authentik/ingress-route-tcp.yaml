@@ -3,7 +3,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
   name: ak-outpost-ldap
-
+  namespace: security
 spec:
   entryPoints:
     - ldapsecure
