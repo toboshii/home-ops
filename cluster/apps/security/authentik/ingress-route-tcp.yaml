@@ -15,5 +15,7 @@ spec:
   tls:
     # secretName: "${SECRET_DOMAIN/./-}-tls"
     options:
+      name: ldap-tls-opt
+      namespace: security
       sniStrict: false
     passthrough: false
