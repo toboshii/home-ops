@@ -66,6 +66,14 @@ spec:
         tls:
           enabled: true
           options: "default"
+      ldapsecure:
+        port: 6636
+        expose: true
+        exposedPort: 636
+        protocol: TCP
+        tls:
+          enabled: true
+          options: "default"
       metrics:
         port: 8082
         expose: true

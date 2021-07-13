@@ -1,0 +1,17 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: ak-outpost-ldap
+
+spec:
+  entryPoints:
+    - ldapsecure
+  routes:
+    - match: HostSNI(`*`)
+      services:
+        - name: ak-outpost-ldap
+          port: 389
+  tls:
+    # secretName: "${SECRET_DOMAIN/./-}-tls"
+    passthrough: false
