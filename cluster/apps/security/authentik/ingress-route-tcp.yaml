@@ -14,4 +14,6 @@ spec:
           port: 389
   tls:
     # secretName: "${SECRET_DOMAIN/./-}-tls"
+    options:
+      sniStrict: false
     passthrough: false
