@@ -66,14 +66,6 @@ spec:
         tls:
           enabled: true
           options: "default"
-      ldapsecure:
-        port: 6636
-        expose: true
-        exposedPort: 636
-        protocol: TCP
-        tls:
-          enabled: true
-          options: "ldap"
       metrics:
         port: 8082
         expose: true
@@ -83,10 +75,6 @@ spec:
         minVersion: VersionTLS12
         maxVersion: VersionTLS13
         sniStrict: true
-      ldap:
-        minVersion: VersionTLS12
-        maxVersion: VersionTLS13
-        sniStrict: false
     pilot:
       enabled: true
       token: "${SECRET_TRAEFIK_PILOT_TOKEN}"
