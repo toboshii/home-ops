@@ -83,8 +83,8 @@ spec:
         cpu: 1000m
         memory: 5300M
       limits:
-        cpu: 1248m
-        memory: 8600M
+        cpu: 2248m
+        memory: 12600M
     addons:
       promtail:
         enabled: true
