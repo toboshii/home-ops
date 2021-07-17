@@ -5,8 +5,15 @@ metadata:
   name: security-backup
   namespace: kasten-io
 spec:
-  comment: ""
   frequency: "@daily"
+  retention:
+    daily: 14
+  selector:
+    matchExpressions:
+    - key: k10.kasten.io/appNamespace
+      operator: In
+      values:
+      - security
   actions:
   - action: backup
     backupParameters:
@@ -14,30 +21,16 @@ spec:
         includeResources:
         - resource: persistentvolumeclaims
         excludeResources:
-        - matchExpressions:
-          - key: app.kubernetes.io/name
-            operator: In
-            values:
-            - redis
+        - resource: persistentvolumeclaims
+          name: nfs-media-franxx-pvc
       profile:
         namespace: kasten-io
-        name: minio
+        name: nfs
   - action: export
     exportParameters:
       frequency: "@daily"
       profile:
-        name: minio
+        name: nfs
         namespace: kasten-io
       exportData:
         enabled: true
-  retention:
-    daily: 7
-    weekly: 2
-    monthly: 2
-    yearly: 0
-  selector:
-    matchExpressions:
-    - key: k10.kasten.io/appNamespace
-      operator: In
-      values:
-      - security

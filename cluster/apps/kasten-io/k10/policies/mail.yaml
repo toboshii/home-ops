@@ -2,7 +2,7 @@
 apiVersion: config.kio.kasten.io/v1alpha1
 kind: Policy
 metadata:
-  name: media-backup
+  name: mail-backup
   namespace: kasten-io
 spec:
   frequency: "@daily"
@@ -13,7 +13,7 @@ spec:
     - key: k10.kasten.io/appNamespace
       operator: In
       values:
-      - media
+      - mail
   actions:
   - action: backup
     backupParameters:
