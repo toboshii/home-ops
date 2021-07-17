@@ -29,6 +29,9 @@ spec:
   - action: export
     exportParameters:
       frequency: "@daily"
+      migrationToken:
+        name: mail-backup-migration-token-q8r2j
+        namespace: kasten-io
       profile:
         name: nfs
         namespace: kasten-io

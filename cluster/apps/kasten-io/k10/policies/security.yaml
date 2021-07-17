@@ -29,6 +29,9 @@ spec:
   - action: export
     exportParameters:
       frequency: "@daily"
+      migrationToken:
+        name: security-backup-migration-token-ntt78
+        namespace: kasten-io
       profile:
         name: nfs
         namespace: kasten-io
