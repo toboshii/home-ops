@@ -194,6 +194,11 @@
       "additionalBranchPrefix": "",
     },
     {
+      "matchDatasources": ["docker"],
+      "allowedVersions": "16.2.4",
+      "matchPackageNames": ["ceph/ceph"],
+    },
+    {
       "matchPackageNames": [
         "rancher/system-upgrade-controller"
       ],
