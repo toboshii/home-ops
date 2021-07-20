@@ -30,8 +30,10 @@ spec:
     exportParameters:
       frequency: "@daily"
       migrationToken:
-        name: media-backup-migration-token-2b2jw
+        name: media-backup-migration-token-km8lb
         namespace: kasten-io
+      receiveString: >-
+          bIzAPpoanmEkwCYqtjl+nOhkfHNLIVuVhkip5GEAbs0JBf55j0qYOMCXNuyhnPsSEFfszKuNGU+u7zELhTr9qDsr6Bs6P/K0Y7KzqfGFxM/TiLtL2HkLEiK13JL4K+ExTd0tmWdA/9Uds7OQ7Nzky1/wFP/a2GxZ0m2fM0CfkYOr1akuBxWloX2zq0n3a0xpq5teSoKLljpA00o3MTiL9929XXSzHSjrpihO/IrbWJdep4bOOnTYbsUDs6SuidqyZJbfJa+PK9pzW2/4vBon4DLZ9f/TMqvHjFTNDG5wWWRnX3/J9Gg38H26/d3D9sJ41Aw9ZJhcmGYP1JBovDeSHdNa+aZEKQBPqIEhmoCgsam120yKy9vYvnR+wxf03nAPqI+zM5Zdj6T8DJ7sHPXDo5qYTEU9Jp+Dh/c
       profile:
         name: nfs
         namespace: kasten-io

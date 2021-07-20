@@ -30,8 +30,10 @@ spec:
     exportParameters:
       frequency: "@daily"
       migrationToken:
-        name: mail-backup-migration-token-q8r2j
+        name: mail-backup-migration-token-p9mj7
         namespace: kasten-io
+      receiveString: >-
+          bIzAPpoanmEu1yZgtkpPifxKR1YEFWSn1yqs9255ab18DrEZuUumeMCDauKGo+oZMlS/zKuNGU+u7zELhTr9oiwrohtJDuegTYmW5sW69p6xjahEoX57Zyn6vKT5FaExWYEjvlhR9Pce4LOQ7Nzu3F+6FIzrzXh36UjQB3+twOGuxqZXAGXQqjLTnUjJK0x995V5dZOAtDkT00o3MTiL9929XXSzHSjrpihO/IrbWJdep4bOOnTYbsUDs6SuidqyZJbfJa+PK9pzW2/4vBon4DLZ9f/TMqvHjFTNDG5wWWRnX3/J9Ggz/Xj2st7B/tx9hlNsas5RkXNIzIgMkzKbK/RB5LEDdlFB/JI2m5qmsOWt01KEitfbvn141Ary30g8v46pNZcRl6+wVkO8cvwFen1EL1rBsYNDCw
       profile:
         name: nfs
         namespace: kasten-io
