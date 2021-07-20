@@ -1,22 +1,29 @@
 {
   "enabled": true,
+  "timezone": "America/Chicago",
   "semanticCommits": "enabled",
   "dependencyDashboard": true,
   "dependencyDashboardTitle": "Renovate Dashboard",
   "commitBody": "Signed-off-by: Toboshii Nakama <toboshii@users.noreply.github.com>",
+  // do not notify on closed unmerged PRs
   "suppressNotifications": ["prIgnoreNotification"],
+  // only rebase PRs when there's a conflict
   "rebaseWhen": "conflicted",
-  "kubernetes": {
-    "fileMatch": ["cluster/.+\\.yaml$"],
-    "ignorePaths": [
-      "cluster/base/"
-    ]
-  },
   "helm-values": {
-    "fileMatch": ["cluster/.+helm-release\\.yaml$"]
+    "fileMatch": [
+      "cluster/.+/helm-release\\.yaml$",
+    ],
+  },
+  "kubernetes": {
+    "fileMatch": [
+      "cluster/.+\\.yaml$",
+    ],
+    "ignorePaths": [
+      "cluster/base/",
+    ],
   },
   "regexManagers": [
-    // regexManager to read and process HelmReleases and CRDs
+    // regexManager to read and process HelmRelease files
     {
       "fileMatch": [
         "cluster/.+\\.yaml$"
@@ -24,60 +31,108 @@
       "matchStrings": [
         // helm releases
         "registryUrl=(?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *version: (?<currentValue>.*)\n",
-        // cert-manager crd
+      ],
+      "datasourceTemplate": "helm"
+    },
+    // regexManager to read and process cert-manager CRD's
+    {
+      "fileMatch": [
+        "cluster/crds/cert-manager/.+\\.yaml$"
+      ],
+      "matchStrings": [
         "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n.*\\/(?<currentValue>.*?)\\/",
-        // kube-prometheus-stack crd
+      ],
+      "datasourceTemplate": "helm"
+    },
+    // regexManager to read and process kube-prometheus-stack CRD's
+    {
+      "fileMatch": [
+        "cluster/crds/kube-prometheus-stack/.+\\.yaml$"
+      ],
+      "matchStrings": [
         "registryUrl=(?<registryUrl>.*?)\n *tag: (?<depName>[a-zA-Z-]+)-(?<currentValue>.*)\n",
-        // rook-ceph crd
+      ],
+      "datasourceTemplate": "helm"
+    },
+    // regexManager to read and process Traefik CRD's
+    {
+      "fileMatch": [
+        "cluster/crds/traefik/.+\\.yaml$"
+      ],
+      "matchStrings": [
+        "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n *tag: v(?<currentValue>.*)\n",
+      ],
+      "datasourceTemplate": "helm"
+    },
+    // regexManager to read and process Rook-Ceph CRD's
+    {
+      "fileMatch": [
+        "cluster/crds/rook-ceph/.+\\.yaml$"
+      ],
+      "matchStrings": [
         "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n *tag: (?<currentValue>.*)\n",
       ],
       "datasourceTemplate": "helm"
     },
   ],
   "packageRules": [
-    // setup datasources
+    // Setup datasources
     {
       "matchDatasources": ["helm"],
-      "separateMinorPatch": true
+      "semanticCommitScope": "charts",
+      "commitMessageTopic": "{{depName}}",
+      "commitMessageExtra": "to {{{newValue}}}",
+      "separateMinorPatch": true,
+      "ignoreDeprecated": true,
     },
-    // global docker datasource settings
     {
       "matchDatasources": ["docker"],
       "enabled": true,
-      "commitMessageTopic": "container image {{depName}}",
-      "commitMessageExtra": "to {{#if isSingleVersion}}v{{{newVersion}}}{{else}}{{{newValue}}}{{/if}}",
-      "matchUpdateTypes": ["major", "minor", "patch"]
+      "matchUpdateTypes": ["major", "minor", "patch"],
     },
-    // add labels according to package and update types
+    {
+      "matchDatasources": ["docker"],
+      "semanticCommitScope": "images",
+      "commitMessageTopic": "{{depName}}",
+      "commitMessageExtra": "to {{{newValue}}}",
+      "separateMinorPatch": true,
+    },
+    // Add labels according to package and update types
     {
       "matchDatasources": ["docker"],
       "matchUpdateTypes": ["major"],
-      "labels": ["renovate/image", "dep/major"]
+      "commitMessagePrefix": "feat(images)!: ",
+      "labels": ["renovate/image", "dep/major"],
     },
     {
       "matchDatasources": ["docker"],
       "matchUpdateTypes": ["minor"],
-      "labels": ["renovate/image", "dep/minor"]
+      "semanticCommitType": "feat",
+      "labels": ["renovate/image", "dep/minor"],
     },
     {
       "matchDatasources": ["docker"],
       "matchUpdateTypes": ["patch"],
-      "labels": ["renovate/image", "dep/patch"]
+      "semanticCommitType": "fix",
+      "labels": ["renovate/image", "dep/patch"],
     },
     {
       "matchDatasources": ["helm"],
       "matchUpdateTypes": ["major"],
-      "labels": ["renovate/helm", "dep/major"]
+      "commitMessagePrefix": "feat(charts)!: ",
+      "labels": ["renovate/helm", "dep/major"],
     },
     {
       "matchDatasources": ["helm"],
       "matchUpdateTypes": ["minor"],
-      "labels": ["renovate/helm", "dep/minor"]
+      "semanticCommitType": "feat",
+      "labels": ["renovate/helm", "dep/minor"],
     },
     {
       "matchDatasources": ["helm"],
       "matchUpdateTypes": ["patch"],
-      "labels": ["renovate/helm", "dep/patch"]
+      "semanticCommitType": "fix",
+      "labels": ["renovate/helm", "dep/patch"],
     },
     // custom version schemes
     {
@@ -93,16 +148,58 @@
     // pin package versions
     {
       "matchDatasources": ["docker"],
-      "allowedVersions": "15.2.11",
-      "matchPackageNames": ["ceph/ceph"],
+      "allowedVersions": "<13",
+      "matchPackageNames": [
+        "postgres",
+        "prodrigestivill/postgres-backup-local",
+      ],
     },
+    {
+      "matchDatasources": ["docker"],
+      "allowedVersions": "<2",
+      "matchPackageNames": [
+        "influxdb",
+      ]
+    },
+    // {
+    //    "matchDatasources": ["helm"],
+    //    "allowedVersions": "<15",
+    //    "matchPackageNames": ["kube-prometheus-stack"]
+    // },
     // version strategies
     {
       "matchDatasources": ["docker"],
       "versioning": "loose",
       "matchPackageNames": [
-        "ghcr.io/k8s-at-home/plex"
+        "ghcr.io/k8s-at-home/plex",
+        "ghcr.io/k8s-at-home/qbittorrent",
       ],
     },
-  ]
+    // enable auto-merge
+    {
+      "matchDatasources": ["docker"],
+      "automerge": true,
+      "automergeType": "branch",
+      "requiredStatusChecks": null,
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchPackageNames": [
+        "ghcr.io/k8s-at-home/jackett",
+        "ghcr.io/k8s-at-home/prowlarr",
+     ],
+    },
+    {
+      "matchDatasources": ["helm", "docker"],
+      "matchPackagePatterns": ["^rook.ceph"],
+      "groupName": "rook-ceph-suite",
+      "additionalBranchPrefix": "",
+    },
+    {
+      "matchPackageNames": [
+        "rancher/system-upgrade-controller"
+      ],
+      "groupName": "rancher/system-upgrade-controller",
+      "additionalBranchPrefix": "",
+      "separateMinorPatch": true,
+    },
+  ],
 }
