@@ -9,7 +9,7 @@ spec:
     enable: true
   dataDirHostPath: /var/lib/rook
   cephVersion:
-    image: ceph/ceph:v15.2.11
+    image: ceph/ceph:v15.2.13
   crashCollector:
     disable: true
   healthCheck:
