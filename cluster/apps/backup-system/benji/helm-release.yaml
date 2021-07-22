@@ -9,7 +9,7 @@ spec:
   interval: 5m
   chart:
     spec:
-      chart: benji-k8s
+      chart: ./charts/benji-k8s
       version: 0.2.0
       sourceRef:
         kind: GitRepository
