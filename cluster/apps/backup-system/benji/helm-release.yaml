@@ -56,7 +56,9 @@ spec:
         - name: backup-all
           schedule: "00 03 * * *"
           command:
-            - benji-backup-pvc --namespace security
+            - benji-backup-pvc
+            - --namespace
+            - security
         - name: enforce
           schedule: "00 04 * * *"
           command:
