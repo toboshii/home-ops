@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ceph-etc
+  namespace: backup-system
+data:
+  ceph.conf: |
+    [global]
+    mon_host = 10.75.33.20:6789,10.75.33.21:6789,10.75.33.22:6789
+
+    [client.admin]
+    keyring = /etc/ceph/keyring
