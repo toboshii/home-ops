@@ -53,12 +53,24 @@ spec:
         activeDeadlineSeconds: null
         startingDeadlineSeconds: null
       crontab:
-        - name: backup-all
+        - name: backup-security
           schedule: "00 03 * * *"
           command:
             - benji-backup-pvc
             - --namespace
             - security
+        - name: backup-media
+          schedule: "00 03 * * *"
+          command:
+            - benji-backup-pvc
+            - --namespace
+            - media
+        - name: backup-mail
+          schedule: "00 03 * * *"
+          command:
+            - benji-backup-pvc
+            - --namespace
+            - mail
         - name: enforce
           schedule: "00 04 * * *"
           command:
