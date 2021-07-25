@@ -180,7 +180,7 @@ spec:
               storageClassName: "rook-ceph-block"
               resources:
                 requests:
-                  storage: 50Gi
+                  storage: 80Gi
         additionalScrapeConfigs:
         - job_name: 'node-exporter'
           honor_timestamps: true
