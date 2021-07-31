@@ -64,8 +64,5 @@ spec:
       - 5600
     resources:
       requests:
-        cpu: 500m
-        memory: 3000M
-      limits:
-        cpu: 2000m
-        memory: 4900M
+        cpu: 1500m
+        memory: 2000Mi
