@@ -10,7 +10,7 @@ resources:
 - owncast
 - plex
 - prowlarr
-- qbittorrent
+# - qbittorrent
 - radarr
 - sabnzbd
 - sonarr

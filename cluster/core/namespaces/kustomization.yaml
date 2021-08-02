@@ -5,6 +5,7 @@ resources:
 - backup-system.yaml
 - calico-system.yaml
 - cert-manager.yaml
+- downloads.yaml
 - ext-gateway.yaml
 - falco-system.yaml
 - flux-system.yaml

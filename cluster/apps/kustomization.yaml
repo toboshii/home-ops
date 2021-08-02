@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
 - backup-system
 - calico-system
+- downloads
 - ext-gateway
 - falco-system
 - flux-system
