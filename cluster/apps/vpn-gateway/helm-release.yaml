@@ -90,3 +90,6 @@ spec:
       gatewayDefault: false
       gatewayLabel: setGateway
       gatewayAnnotation: setGateway
+      namespaceSelector:
+        matchLabels:
+          vpn-routed-gateway: "true"
