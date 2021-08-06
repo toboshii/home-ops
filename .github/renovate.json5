@@ -195,7 +195,7 @@
     },
     {
       "matchDatasources": ["docker"],
-      "allowedVersions": "16.2.4",
+      "allowedVersions": "16.2.5",
       "matchPackageNames": ["ceph/ceph"],
     },
     {
