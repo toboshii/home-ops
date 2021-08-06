@@ -10,7 +10,6 @@ resources:
 - falco-system.yaml
 - flux-system.yaml
 - home.yaml
-# - kasten-io.yaml
 - kube-system.yaml
 - mail.yaml
 - media.yaml
