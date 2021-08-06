@@ -2,15 +2,15 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: radarr
-  namespace: media
+  name: lidarr
+  namespace: downloads
 spec:
   interval: 5m
   chart:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: radarr
-      version: 12.3.0
+      chart: lidarr
+      version: 10.3.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -18,8 +18,8 @@ spec:
       interval: 5m
   values:
     image:
-      repository: ghcr.io/k8s-at-home/radarr
-      tag: v3.2.2.5080
+      repository: ghcr.io/k8s-at-home/lidarr
+      tag: v1.0.0.2248
     env:
       TZ: "America/Chicago"
     ingress:
@@ -30,13 +30,13 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
         hosts:
-        - host: "radarr.${SECRET_DOMAIN}"
+        - host: "lidarr.${SECRET_DOMAIN}"
           paths:
           - path: /
             pathType: Prefix
         tls:
         - hosts:
-          - "radarr.${SECRET_DOMAIN}"
+          - "lidarr.${SECRET_DOMAIN}"
       api:
         enabled: true
         ingressClassName: "traefik"
@@ -44,30 +44,29 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
         hosts:
-        - host: "radarr.${SECRET_DOMAIN}"
+        - host: "lidarr.${SECRET_DOMAIN}"
           paths:
           - path: /api
             pathType: Prefix
         tls:
         - hosts:
-          - "radarr.${SECRET_DOMAIN}"
+          - "lidarr.${SECRET_DOMAIN}"
     persistence:
       config:
         enabled: true
-        existingClaim: radarr-config-v1
+        existingClaim: lidarr-config-v1
       media-franxx:
         enabled: true
-        existingClaim: nfs-media-franxx-pvc
+        existingClaim: nfs-downloads-franxx-pvc
     podSecurityContext:
       supplementalGroups:
-      - 5600
+      - 100
     resources:
       requests:
-        cpu: 30m
-        memory: 1040M
+        memory: 650Mi
+        cpu: 1000m
       limits:
-        cpu: 60m
-        memory: 1700M
+        memory: 1500Mi
     prometheus:
       podMonitor:
         enabled: true
@@ -77,7 +76,7 @@ spec:
     - name: exportarr
       image: ghcr.io/onedr0p/exportarr:v0.6.1
       imagePullPolicy: IfNotPresent
-      args: ["exportarr", "radarr"]
+      args: ["exportarr", "lidarr"]
       env:
       - name: PORT
         value: "32123"
@@ -88,7 +87,7 @@ spec:
       - name: ENABLE_UNKNOWN_QUEUE_ITEMS
         value: "true"
       - name: ENABLE_ADDITIONAL_METRICS
-        value: "true"
+        value: "false"
       ports:
       - name: exportarr
         containerPort: 32123
@@ -96,10 +95,3 @@ spec:
       - name: config
         mountPath: /config
         readOnly: true
-      resources:
-        requests:
-          cpu: 10m
-          memory: 60M
-        limits:
-          cpu: 20m
-          memory: 90M
