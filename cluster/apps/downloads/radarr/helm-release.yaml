@@ -63,11 +63,10 @@ spec:
       - 5600
     resources:
       requests:
-        cpu: 30m
-        memory: 1040M
+        cpu: 500m
+        memory: 1800M
       limits:
-        cpu: 60m
-        memory: 1700M
+        memory: 2850M
     prometheus:
       podMonitor:
         enabled: true
@@ -98,8 +97,7 @@ spec:
         readOnly: true
       resources:
         requests:
-          cpu: 10m
+          cpu: 100m
           memory: 60M
         limits:
-          cpu: 20m
-          memory: 90M
+          memory: 100M
