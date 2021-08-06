@@ -65,12 +65,12 @@ spec:
             - benji-backup-pvc
             - --namespace
             - media
-        - name: backup-mail
+        - name: backup-downloads
           schedule: "00 03 * * *"
           command:
             - benji-backup-pvc
             - --namespace
-            - mail
+            - downloads
         - name: enforce
           schedule: "00 04 * * *"
           command:
