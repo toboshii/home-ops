@@ -68,8 +68,7 @@ spec:
     config: |
       upstream:
         externalResolvers:
-        - tcp-tls:1.1.1.1:853
-        - tcp-tls:1.0.0.1:853
+        - udp:${GATEWAY_IP}
       blocking:
         blackLists:
           ads:
