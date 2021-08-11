@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/name: snmp-exporter
     app.kubernetes.io/instance: snmp-exporter
 data:
-  snmp.yml: |
+  snmp.yaml: |
     if_mib:
       walk:
       - 1.3.6.1.2.1.2
