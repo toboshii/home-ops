@@ -20,6 +20,7 @@ spec:
   values:
     prometheusOperator:
       createCustomResource: false
+      configReloaderCpu: 0
     alertmanager:
       config:
         global:
@@ -45,10 +46,6 @@ spec:
                 {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
                 {{ end }}
               {{ end }}
-        - name: 'webhook'
-          webhook_configs:
-          - url: "http://192.168.1.35:9000/hooks/webhook-ups"
-            send_resolved: false
         route:
           group_by: ['alertname', 'job']
           group_wait: 30s
@@ -62,10 +59,6 @@ spec:
           - receiver: 'discord'
             match_re:
               severity: critical|warning|error
-            continue: true
-          - receiver: 'webhook'
-            match:
-              alertname: UPS5MinutesRemaining
             continue: true
         inhibit_rules:
         - source_match:
@@ -156,22 +149,18 @@ spec:
           - "prometheus.${SECRET_DOMAIN}"
       resources:
         requests:
-          cpu: 250m
-          memory: 500Mi
-        limits:
           cpu: 1000m
-          memory: 2000Mi
+          memory: 1000Mi
+      thanosService:
+        enabled: true
       prometheusSpec:
-        ruleSelector: {}
-        ruleNamespaceSelector: {}
+        replicas: 1
+        replicaExternalLabelName: "replica"
         ruleSelectorNilUsesHelmValues: false
-        serviceMonitorSelector: {}
-        serviceMonitorNamespaceSelector: {}
         serviceMonitorSelectorNilUsesHelmValues: false
-        podMonitorSelector: {}
-        podMonitorNamespaceSelector: {}
         podMonitorSelectorNilUsesHelmValues: false
-        retention: 30d
+        probeSelectorNilUsesHelmValues: false
+        retention: 6h
         enableAdminAPI: true
         walCompression: true
         storageSpec:
@@ -180,7 +169,13 @@ spec:
               storageClassName: "rook-ceph-block"
               resources:
                 requests:
-                  storage: 80Gi
+                  storage: 10Gi
+        thanos:
+          image: quay.io/thanos/thanos:v0.22.0
+          version: v0.22.0
+          objectStorageConfig:
+            name: thanos-objstore
+            key: objstore.yml
         additionalScrapeConfigs:
         - job_name: 'node-exporter'
           honor_timestamps: true
@@ -203,3 +198,8 @@ spec:
           static_configs:
           - targets:
             - 10.75.30.15:9000
+        - job_name: "coredns"
+          honor_timestamps: true
+          static_configs:
+          - targets:
+            - "${GATEWAY_IP}:9153"
