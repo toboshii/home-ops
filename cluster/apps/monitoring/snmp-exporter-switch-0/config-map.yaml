@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: snmp-exporter
+  name: snmp-exporter-switch-0
   namespace: monitoring
   labels:
     app.kubernetes.io/name: snmp-exporter
