@@ -38,8 +38,8 @@ spec:
           target:
             - 10.75.10.104
       path: /snmp
-      #interval: 180s
-      scrapeTimeout: 60s
+      # interval: 180s
+      # scrapeTimeout: 60s
       relabelings:
         - sourceLabels: [__param_target]
           targetLabel: instance
