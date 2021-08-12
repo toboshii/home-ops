@@ -8,12 +8,12 @@ spec:
   interval: 5m
   chart:
     spec:
-      # renovate: registryUrl=https://toboshii.github.io/helm-charts
+      # renovate: registryUrl=https://mailu.github.io/helm-charts
       chart: mailu
-      version: 0.2.3
+      version: 0.1.2
       sourceRef:
         kind: HelmRepository
-        name: toboshii-charts
+        name: mailu-charts
         namespace: flux-system
       interval: 5m
   values:
@@ -45,41 +45,23 @@ spec:
           - "mail.${SECRET_DOMAIN}"
     persistence:
       existingClaim: mailu-data-v1
+    rspamd:
+      resources:
+        limits:
+          memory: 500Mi
     roundcube:
       resources:
         requests:
           cpu: 200m
         limits:
           cpu: 400m
-    addons:
-      vpn:
-        enabled: false
-        type: wireguard
-        wireguard:
-          image:
-            repository: ghcr.io/k8s-at-home/wireguard
-            tag: v1.0.20210424
-        env:
-          TZ: "America/Chicago"
-          IPTABLES_BACKEND: legacy
-          KILLSWITCH: "true"
-          KILLSWITCH_EXCLUDEDNETWORKS_IPV4: ${NETWORK_K8S_CLUSTER_CIDR};${NETWORK_K8S_SERVICE_CIDR};${NETWORK_MANAGEMENT_CIDR}
-        securityContext:
-          capabilities:
-            add:
-              - NET_ADMIN
-              - SYS_MODULE
-        configFileSecret: mailu-vpnconfig
-        scripts:
-          up: |-
-            #!/bin/bash
-            echo "connected" > /shared/vpnstatus
-          down: |-
-            #!/bin/bash
-            echo "disconnected" > /shared/vpnstatus
-        resources:
-          requests:
-            cpu: "0.001"
-            memory: 128Mi
-          limits:
-            memory: 512Mi
+postRenderers:
+  - kustomize:
+      patchesJson6902:
+        - target:
+            kind: Deployments
+            name: mailu-front
+          patch:
+            - op: add
+              path: /spec/template/spec/hostname
+              value: mailu-front

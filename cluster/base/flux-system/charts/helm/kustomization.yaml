@@ -18,6 +18,7 @@ resources:
 - k8s-at-home-charts.yaml
 - kubernetes-sigs-descheduler-charts.yaml
 - lwolf-charts.yaml
+- mailu-charts.yaml
 - nfs-subdir-external-provisioner-charts.yaml
 - node-feature-discovery-charts.yaml
 - nvidia-charts.yaml
