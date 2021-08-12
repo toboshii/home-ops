@@ -59,7 +59,7 @@ spec:
     - kustomize:
         patchesJson6902:
           - target:
-              kind: Deployments
+              kind: Deployment
               name: mailu-front
             patch:
               - op: add
