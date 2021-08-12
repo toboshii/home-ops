@@ -17,12 +17,21 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
-    deploymentStrategy:
-      type: Recreate
+    image:
+      repository: ghcr.io/k8s-at-home/grafana
+    replicas: 1
     env:
       GF_EXPLORE_ENABLED: true
       GF_PANELS_DISABLE_SANITIZE_HTML: true
       GF_LOG_FILTERS: rendering:debug
+      GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
+      GF_DATE_FORMATS_FULL_DATE: "MMM Do, YYYY hh:mm:ss a"
+      GF_DATE_FORMATS_INTERVAL_SECOND: "hh:mm:ss a"
+      GF_DATE_FORMATS_INTERVAL_MINUTE: "hh:mm a"
+      GF_DATE_FORMATS_INTERVAL_HOUR: "DD/MM hh:mm a"
+      GF_DATE_FORMATS_INTERVAL_DAY: "DD/MM"
+      GF_DATE_FORMATS_INTERVAL_MONTH: "MM-YYYY"
+      GF_DATE_FORMATS_INTERVAL_YEAR: "YYYY"
       VAR_BLOCKY_URL: "http://blocky.networking.svc.cluster.local:4000"
     adminPassword: "${SECRET_GRAFANA_PASSWORD}"
     grafana.ini:
@@ -67,12 +76,15 @@ spec:
           options:
             path: /var/lib/grafana/dashboards/default
     datasources:
+      deleteDatasources:
+      - name: Loki
+        orgId: 1
       datasources.yaml:
         apiVersion: 1
         datasources:
         - name: Prometheus
           type: prometheus
-          url: http://prometheus-operated:9090
+          url: http://thanos-query:9090
           access: proxy
           isDefault: true
         - name: Loki
@@ -170,11 +182,8 @@ spec:
       tls:
       - hosts:
         - "grafana.${SECRET_DOMAIN}"
+    serviceAccount:
+      create: true
+      autoMount: true
     persistence:
-      enabled: true
-      storageClassName: "rook-ceph-block"
-      size: 10Gi
-      accessModes:
-      - ReadWriteOnce
-    podAnnotations:
-      configmap.reloader.stakater.com/reload: "grafana"
+      enabled: false
