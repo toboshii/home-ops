@@ -45,3 +45,6 @@ spec:
         readOnly: true
     serviceMonitor:
       enabled: true
+    tolerations:
+      - effect: NoSchedule
+        operator: Exists
