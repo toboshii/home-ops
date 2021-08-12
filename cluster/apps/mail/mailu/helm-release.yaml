@@ -55,13 +55,13 @@ spec:
           cpu: 200m
         limits:
           cpu: 400m
-postRenderers:
-  - kustomize:
-      patchesJson6902:
-        - target:
-            kind: Deployments
-            name: mailu-front
-          patch:
-            - op: add
-              path: /spec/template/spec/hostname
-              value: mailu-front
+  postRenderers:
+    - kustomize:
+        patchesJson6902:
+          - target:
+              kind: Deployments
+              name: mailu-front
+            patch:
+              - op: add
+                path: /spec/template/spec/hostname
+                value: mailu-front
