@@ -18,7 +18,6 @@ spec:
       interval: 5m
   timeout: 20m
   values:
-    fullnameOverride: x
     alertmanager:
       config:
         global:
@@ -92,10 +91,6 @@ spec:
           sourceLabels:
           - __meta_kubernetes_pod_node_name
           targetLabel: kubernetes_node
-    kube-state-metrics:
-      fullnameOverride: kube-state-metrics
-    prometheus-node-exporter:
-      fullnameOverride: node-exporter
     grafana:
       enabled: false
       forceDeployDashboards: true
@@ -143,7 +138,6 @@ spec:
         port: 2381
         targetPort: 2381
     prometheus:
-      fullnameOverride: prometheus
       ingress:
         enabled: true
         pathType: Prefix
