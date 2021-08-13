@@ -18,7 +18,7 @@ spec:
       interval: 5m
   timeout: 20m
   values:
-    fullnameOverride: prometheus
+    fullnameOverride: x
     alertmanager:
       config:
         global:
@@ -143,6 +143,7 @@ spec:
         port: 2381
         targetPort: 2381
     prometheus:
+      fullnameOverride: prometheus
       ingress:
         enabled: true
         pathType: Prefix
