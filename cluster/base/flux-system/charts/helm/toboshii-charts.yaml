@@ -6,5 +6,5 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  url: https://toboshii.github.io/helm-charts
+  url: https://toboshii.github.io/charts
   timeout: 3m
