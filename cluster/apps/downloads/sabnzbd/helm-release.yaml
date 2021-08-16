@@ -30,6 +30,8 @@ spec:
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "download-box"
         hosts:
         - host: "sabnzbd.${SECRET_DOMAIN}"
           paths:
