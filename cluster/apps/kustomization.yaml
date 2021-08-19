@@ -8,6 +8,7 @@ resources:
 - ext-gateway
 - falco-system
 - flux-system
+- home
 - kube-system
 - mail
 - media
