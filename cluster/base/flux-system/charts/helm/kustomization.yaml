@@ -25,7 +25,7 @@ resources:
 - prometheus-community-charts.yaml
 - rook-ceph-charts.yaml
 - stakater-charts.yaml
-- toboshii-charts.yaml
+- hajimari-charts.yaml
 - traefik-charts.yaml
 - uptimerobot-operator-charts.yaml
 - vernemq-charts.yaml

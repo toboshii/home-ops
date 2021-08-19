@@ -2,9 +2,9 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
-  name: toboshii-charts
+  name: hajimari-charts
   namespace: flux-system
 spec:
   interval: 10m
-  url: https://toboshii.github.io/charts
+  url: https://toboshii.github.io/hajimari
   timeout: 3m
