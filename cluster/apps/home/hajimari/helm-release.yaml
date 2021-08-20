@@ -8,7 +8,7 @@ spec:
   interval: 5m
   chart:
     spec:
-      # renovate: registryUrl=https://toboshii.github.io/hajimari
+      # renovate: registryUrl=https://hajamari.io
       chart: hajimari
       version: 1.1.1
       sourceRef:
@@ -19,7 +19,7 @@ spec:
   values:
     image:
       repository: ghcr.io/toboshii/hajimari
-      tag: main-36e5d04
+      tag: v0.1.0
     env:
       TZ: "America/Chicago"
     hajimari:
