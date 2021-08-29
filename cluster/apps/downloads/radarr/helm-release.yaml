@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: radarr
-      version: 12.3.0
+      version: 13.0.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -75,7 +75,7 @@ spec:
         interval: 3m
         scrapeTimeout: 1m30s
     additionalContainers:
-    - name: exportarr
+      name: exportarr
       image: ghcr.io/onedr0p/exportarr:v0.6.1
       imagePullPolicy: IfNotPresent
       args: ["exportarr", "radarr"]
