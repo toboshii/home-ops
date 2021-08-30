@@ -22,6 +22,7 @@ spec:
       tag: 2.5-edge
     env:
       TZ: America/Chicago
+      BACKEND_HOST: localhost
       BASE_URL: "https://booru.${SECRET_DOMAIN}"
     szurubooru:
       name: Taboobooru
