@@ -57,13 +57,20 @@ spec:
         image: szurubooru/server:2.5-edge
         imagePullPolicy: IfNotPresent
         env:
-          TZ: America/Chicago
-          POSTGRES_HOST: "{{ .Release.Name }}-postgresql"
-          POSTGRES_PORT: 5432
-          POSTGRES_USER: szurubooru
-          POSTGRES_PASSWORD: "${SECRET_BOORU_POSTGRES_PASSWORD}"
-          POSTGRES_DB: szurubooru
-          LOG_SQL: 0
+        - name: TZ
+          value: America/Chicago
+        - name: POSTGRES_HOST
+          value: "{{ .Release.Name }}-postgresql"
+        - name: POSTGRES_PORT
+          value: 5432
+        - name: POSTGRES_USER
+          value: szurubooru
+        - name: POSTGRES_PASSWORD
+          value: "${SECRET_BOORU_POSTGRES_PASSWORD}"
+        - name: POSTGRES_DB
+          value: szurubooru
+        - name: LOG_SQL
+          value: 0
         volumeMounts:
         - name: nfs-media-franxx-pvc
           mountPath: /data
