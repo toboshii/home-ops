@@ -75,31 +75,32 @@ spec:
         interval: 3m
         scrapeTimeout: 1m30s
     additionalContainers:
-      name: exportarr
-      image: ghcr.io/onedr0p/exportarr:v0.6.1
-      imagePullPolicy: IfNotPresent
-      args: ["exportarr", "radarr"]
-      env:
-      - name: PORT
-        value: "32123"
-      - name: URL
-        value: "http://localhost"
-      - name: CONFIG
-        value: "/config/config.xml"
-      - name: ENABLE_UNKNOWN_QUEUE_ITEMS
-        value: "true"
-      - name: ENABLE_ADDITIONAL_METRICS
-        value: "true"
-      ports:
-      - name: exportarr
-        containerPort: 32123
-      volumeMounts:
-      - name: config
-        mountPath: /config
-        readOnly: true
-      resources:
-        requests:
-          cpu: 100m
-          memory: 60M
-        limits:
-          memory: 100M
+      exportarr:
+        name: exportarr
+        image: ghcr.io/onedr0p/exportarr:v0.6.1
+        imagePullPolicy: IfNotPresent
+        args: ["exportarr", "radarr"]
+        env:
+        - name: PORT
+          value: "32123"
+        - name: URL
+          value: "http://localhost"
+        - name: CONFIG
+          value: "/config/config.xml"
+        - name: ENABLE_UNKNOWN_QUEUE_ITEMS
+          value: "true"
+        - name: ENABLE_ADDITIONAL_METRICS
+          value: "true"
+        ports:
+        - name: exportarr
+          containerPort: 32123
+        volumeMounts:
+        - name: config
+          mountPath: /config
+          readOnly: true
+        resources:
+          requests:
+            cpu: 100m
+            memory: 60M
+          limits:
+            memory: 100M
