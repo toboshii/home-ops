@@ -23,7 +23,7 @@ spec:
     env:
       TZ: America/Chicago
       BACKEND_HOST: localhost
-      BASE_URL: "https://booru.${SECRET_DOMAIN}"
+      BASE_URL: /
     szurubooru:
       name: Taboobooru
       domain: "https://booru.${SECRET_DOMAIN}"
