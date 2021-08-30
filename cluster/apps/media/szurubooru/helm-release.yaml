@@ -72,7 +72,7 @@ spec:
         - name: LOG_SQL
           value: "0"
         volumeMounts:
-        - name: nfs-media-franxx-pvc
+        - name: media-franxx
           mountPath: /data
         - name: szurubooru-settings
           mountPath: /opt/app/config.yaml
@@ -82,7 +82,7 @@ spec:
         enabled: true
         existingClaim: nfs-media-franxx-pvc
         mountPath: /data
-        subPath: /Images/Booru
+        subPath: Images/Booru
     podSecurityContext:
       supplementalGroups:
       - 5600
