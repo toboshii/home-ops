@@ -62,7 +62,7 @@ spec:
         - name: POSTGRES_HOST
           value: "{{ .Release.Name }}-postgresql"
         - name: POSTGRES_PORT
-          value: 5432
+          value: "5432"
         - name: POSTGRES_USER
           value: szurubooru
         - name: POSTGRES_PASSWORD
@@ -70,7 +70,7 @@ spec:
         - name: POSTGRES_DB
           value: szurubooru
         - name: LOG_SQL
-          value: 0
+          value: "0"
         volumeMounts:
         - name: nfs-media-franxx-pvc
           mountPath: /data
