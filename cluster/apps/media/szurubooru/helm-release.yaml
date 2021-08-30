@@ -32,6 +32,7 @@ spec:
       data_url: data/
       data_dir: /data/
       database: "postgres://szurubooru:${SECRET_BOORU_POSTGRES_PASSWORD}@szurubooru-postgresql:5432/szurubooru"
+      show_sql: False
     service:
       main:
         ports:
