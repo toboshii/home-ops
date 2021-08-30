@@ -18,8 +18,8 @@ spec:
       interval: 5m
   values:
     image:
-    repository: szurubooru/client
-    tag: 2.5-edge
+      repository: szurubooru/client
+      tag: 2.5-edge
     env:
       TZ: America/Chicago
       BASE_URL: "https://booru.${SECRET_DOMAIN}"
