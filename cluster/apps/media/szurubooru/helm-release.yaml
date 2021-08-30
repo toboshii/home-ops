@@ -28,6 +28,10 @@ spec:
       name: Taboobooru
       domain: "https://booru.${SECRET_DOMAIN}"
       secret: "${SECRET_BOORU_SECRET}"
+      debug: True
+      data_url: data/
+      data_dir: /data/
+      database: "postgres://szurubooru:${SECRET_BOORU_POSTGRES_PASSWORD}@{{ .Release.Name }}-postgresql:5432/szurubooru"
     service:
       main:
         ports:
