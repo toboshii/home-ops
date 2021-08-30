@@ -72,6 +72,7 @@ spec:
         volumeMounts:
         - name: media-franxx
           mountPath: /data
+          subPath: Images/Booru
         - name: szurubooru-settings
           mountPath: /opt/app/config.yaml
           subPath: config.yaml
