@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://toboshii.github.io/charts/
       chart: szurubooru
-      version: 1.0.0
+      version: 1.0.1
       sourceRef:
         kind: HelmRepository
         name: toboshii-charts
