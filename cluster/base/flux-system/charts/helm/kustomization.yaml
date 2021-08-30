@@ -26,6 +26,7 @@ resources:
 - rook-ceph-charts.yaml
 - stakater-charts.yaml
 - hajimari-charts.yaml
+- toboshii-charts.yaml
 - traefik-charts.yaml
 - uptimerobot-operator-charts.yaml
 - vernemq-charts.yaml
