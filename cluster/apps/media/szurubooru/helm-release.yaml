@@ -65,18 +65,10 @@ spec:
         env:
         - name: TZ
           value: America/Chicago
-        - name: POSTGRES_HOST
-          value: "{{ .Release.Name }}-postgresql"
-        - name: POSTGRES_PORT
-          value: "5432"
-        - name: POSTGRES_USER
-          value: szurubooru
-        - name: POSTGRES_PASSWORD
-          value: "${SECRET_BOORU_POSTGRES_PASSWORD}"
-        - name: POSTGRES_DB
-          value: szurubooru
-        - name: LOG_SQL
-          value: "0"
+        ports:
+        - name: server-http
+          containerPort: 6666
+          protocol: TCP
         volumeMounts:
         - name: media-franxx
           mountPath: /data
