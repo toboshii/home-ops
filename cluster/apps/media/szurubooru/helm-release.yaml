@@ -20,7 +20,7 @@ spec:
     image:
       repository: ghcr.io/toboshii/szurubooru
       tag: 2.5-edge
-      imagePullPolicy: Always
+      pullPolicy: Always
     env:
       TZ: America/Chicago
       BACKEND_HOST: localhost
