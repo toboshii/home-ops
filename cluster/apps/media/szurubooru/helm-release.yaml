@@ -18,8 +18,9 @@ spec:
       interval: 5m
   values:
     image:
-      repository: szurubooru/client
+      repository: ghcr.io/toboshii/szurubooru
       tag: 2.5-edge
+      imagePullPolicy: Always
     env:
       TZ: America/Chicago
       BACKEND_HOST: localhost
