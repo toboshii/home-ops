@@ -27,7 +27,7 @@ spec:
       BASE_URL: /
     szurubooru:
       name: Taboobooru
-      domain: "https://booru.${SECRET_DOMAIN}"
+      domain: "https://${SECRET_DOMAIN_3}"
       secret: "${SECRET_BOORU_SECRET}"
       debug: True
       data_url: data/
@@ -45,19 +45,19 @@ spec:
         ingressClassName: "traefik"
         annotations:
           external-dns/is-public: "true"
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN_3}"
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           hajimari.io/enable: "true"
           hajimari.io/icon: "file-image"
           hajimari.io/name: "Booru"
         hosts:
-        - host: "booru.${SECRET_DOMAIN}"
+        - host: "${SECRET_DOMAIN_3}"
           paths:
           - path: /
             pathType: Prefix
         tls:
         - hosts:
-          - "booru.${SECRET_DOMAIN}"
+          - "${SECRET_DOMAIN_3}"
     additionalContainers:
       server:
         name: server

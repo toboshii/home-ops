@@ -32,6 +32,7 @@ spec:
     domainFilters:
     - "${SECRET_DOMAIN}"
     - "${SECRET_DOMAIN_2}"
+    - "${SECRET_DOMAIN_3}"
     crd:
       create: false
       apiversion: externaldns.k8s.io/v1alpha1
