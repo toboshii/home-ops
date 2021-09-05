@@ -61,8 +61,8 @@ spec:
     additionalContainers:
       server:
         name: server
-        image: szurubooru/server:2.5-edge
-        imagePullPolicy: IfNotPresent
+        image: ghcr.io/toboshii/szurubooru-server:2.5-edge
+        imagePullPolicy: Always
         env:
         - name: TZ
           value: America/Chicago
