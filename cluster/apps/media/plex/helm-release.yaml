@@ -84,9 +84,6 @@ spec:
       requests:
         cpu: 1000m
         memory: 5300M
-      limits:
-        cpu: 2248m
-        memory: 12600M
     addons:
       promtail:
         enabled: true
