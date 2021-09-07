@@ -8,7 +8,7 @@ spec:
   interval: 5m
   chart:
     spec:
-      # renovate: registryUrl=https://toboshii.github.io/charts/
+      # renovate: registryUrl=https://toboshii.github.io/charts
       chart: szurubooru
       version: 1.0.1
       sourceRef:
