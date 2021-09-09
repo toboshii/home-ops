@@ -60,7 +60,7 @@ spec:
         existingClaim: nfs-media-franxx-pvc
         readOnly: true
     resources:
-      limits:
+      requests:
         memory: 8000Mi
     tolerations:
     - key: "nvidia.com/gpu"
