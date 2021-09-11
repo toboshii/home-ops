@@ -24,7 +24,8 @@ spec:
       TZ: "America/Chicago"
       PUID: 5600
       PGID: 5600
-      DOCKER_MODS: "linuxserver/calibre-web:calibre"
+      DOCKER_MODS: "linuxserver/calibre-web:calibre|ghcr.io/gilbn/theme.park:calibre-web"
+      TP_THEME: "dracula"
     persistence:
       config:
         enabled: true
