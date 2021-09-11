@@ -22,6 +22,7 @@ spec:
       tag: version-0.6.12
     env:
       TZ: "America/Chicago"
+      PUID: 5600
       PGID: 5600
       DOCKER_MODS: "linuxserver/calibre-web:calibre"
     persistence:
