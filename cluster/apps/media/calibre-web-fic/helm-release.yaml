@@ -56,9 +56,5 @@ spec:
         memory: 256Mi
     probes:
       startup:
-        custom: true
         spec:
-          initialDelaySeconds: 0
-          timeoutSeconds: 1
           periodSeconds: 15
-          failureThreshold: 30
