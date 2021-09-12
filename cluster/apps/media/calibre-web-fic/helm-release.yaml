@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: calibre-web
+  name: calibre-web-fic
   namespace: media
 spec:
   interval: 5m
@@ -29,7 +29,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: calibre-web-config-v1
+        existingClaim: calibre-web-fic-config-v1
       media:
         enabled: true
         existingClaim: nfs-media-franxx-pvc
@@ -43,14 +43,14 @@ spec:
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           hajimari.io/enable: "true"
-          hajimari.io/icon: "bookshelf"
+          hajimari.io/icon: "book-multiple"
         hosts:
-        - host: "books.${SECRET_DOMAIN}"
+        - host: "fic.${SECRET_DOMAIN}"
           paths:
           - path: /
         tls:
         - hosts:
-          - "books.${SECRET_DOMAIN}"
+          - "fic.${SECRET_DOMAIN}"
     resources:
       requests:
         memory: 256Mi

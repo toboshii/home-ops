@@ -5,6 +5,7 @@ resources:
 - _pvc
 - airsonic
 - calibre-web
+- calibre-web-fic
 - jellyfin
 - owncast
 - plex
