@@ -19,8 +19,8 @@ spec:
   values:
     fullnameOverride: authentik
     image:
-      repository: beryju.org/authentik/server
-      tag: gh-next
+      repository: ghcr.io/goauthentik/server
+      tag: 2021.8.5
       pullPolicy: Always
     authentik:
       outposts:
