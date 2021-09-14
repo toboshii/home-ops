@@ -76,3 +76,6 @@ spec:
       postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
     redis:
       enabled: true
+    prometheus:
+      serviceMonitor:
+        create: false
