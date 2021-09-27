@@ -22,7 +22,11 @@ spec:
       tag: v0.16
     env:
       TZ: "America/Chicago"
-    replicas: 3
+    controller:
+      enabled: true
+      type: deployment
+      strategy: RollingUpdate
+      replicas: 3
     service:
       main:
         ports:
