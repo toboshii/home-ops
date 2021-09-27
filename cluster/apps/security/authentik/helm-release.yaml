@@ -19,12 +19,11 @@ spec:
   values:
     fullnameOverride: authentik
     image:
-      repository: beryju.org/authentik/server
-      tag: gh-next
-      pullPolicy: Always
+      repository: ghcr.io/goauthentik/server
+      tag: 2021.9.2
     authentik:
       outposts:
-        docker_image_base: beryju.org/authentik/outpost-%(type)s:gh-%(build_hash)s
+        docker_image_base: ghcr.io/goauthentik/%(type)s:%(version)s
       secret_key: "${SECRET_AUTHENTIK_SECRET_KEY}"
       postgresql:
         host: "authentik-postgresql"
