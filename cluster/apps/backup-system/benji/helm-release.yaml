@@ -53,6 +53,12 @@ spec:
         activeDeadlineSeconds: null
         startingDeadlineSeconds: null
       crontab:
+        - name: backup-home
+          schedule: "00 03 * * *"
+          command:
+            - benji-backup-pvc
+            - --namespace
+            - home
         - name: backup-security
           schedule: "00 03 * * *"
           command:
