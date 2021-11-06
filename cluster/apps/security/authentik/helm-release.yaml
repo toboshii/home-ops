@@ -43,7 +43,7 @@ spec:
     #   media:
     #     enabled: true
     #     mountPath: /media
-    #     storageClass: rook-ceph-block
+    #     storageClass: ceph-block
     #     accessMode: ReadWriteOnce
     #     size: 5Gi
     volumeMounts:

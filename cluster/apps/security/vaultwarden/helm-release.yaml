@@ -63,7 +63,7 @@ spec:
     persistence:
       config:
         enabled: true
-        storageClass: rook-ceph-block
+        storageClass: ceph-block
         accessMode: ReadWriteOnce
         size: 10Gi
     postgresql:
@@ -73,7 +73,7 @@ spec:
       postgresqlDatabase: "vaultwarden"
       persistence:
         enabled: true
-        storageClass: rook-ceph-block
+        storageClass: ceph-block
         accessModes:
         - ReadWriteOnce
         size: 10Gi

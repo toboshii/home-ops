@@ -93,7 +93,7 @@ spec:
       postgresqlDatabase: szurubooru
       persistence:
         enabled: true
-        storageClass: rook-ceph-block
+        storageClass: ceph-block
         accessModes:
         - ReadWriteOnce
         size: 5Gi
