@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
 # - cronjob-pgbackup.yaml
 - helm-release.yaml
-- servicemonitor.yaml
+- service-monitor.yaml
 configMapGenerator:
 - name: ceph-config
   files:
