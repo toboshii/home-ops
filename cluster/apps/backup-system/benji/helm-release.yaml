@@ -135,6 +135,10 @@ spec:
                 value:
                   - name: benji-config
                     mountPath: /benji/etc
+                  - name: backup-franxx
+                    mountPath: /backup-franxx
+                  - name: ceph-data
+                    mountPath: /etc/ceph
               - op: add
                 path: /spec/template/metadata/annotations
                 value:
