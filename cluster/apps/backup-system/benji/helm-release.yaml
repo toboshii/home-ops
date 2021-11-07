@@ -130,6 +130,11 @@ spec:
               kind: Deployment
               name: benji-maint
             patch:
+              - op: replace
+                path: /spec/template/spec/containers/0/volumeMounts
+                value:
+                  - name: benji-config
+                    mountPath: /benji/etc
               - op: add
                 path: /spec/template/metadata/annotations
                 value:
