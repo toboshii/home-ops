@@ -36,7 +36,7 @@ spec:
               path: /backup-franxx
         ios:
           - module: rbdaio
-            name: k8s-fast-pool
+            name: ceph-blockpool
             configuration:
               simultaneousReads: 3
               simultaneousWrites: 3
@@ -52,66 +52,63 @@ spec:
       cronJob:
         activeDeadlineSeconds: null
         startingDeadlineSeconds: null
-      crontab:
-        - name: backup-home
-          schedule: "00 03 * * *"
-          command:
-            - benji-backup-pvc
-            - --namespace
-            - home
-        - name: backup-security
-          schedule: "00 03 * * *"
-          command:
-            - benji-backup-pvc
-            - --namespace
-            - security
-        - name: backup-media
-          schedule: "00 03 * * *"
-          command:
-            - benji-backup-pvc
-            - --namespace
-            - media
-        - name: backup-downloads
-          schedule: "00 03 * * *"
-          command:
-            - benji-backup-pvc
-            - --namespace
-            - downloads
-        - name: enforce
-          schedule: "00 04 * * *"
-          command:
-            - benji-command
-            - enforce
-            - days14
-            - 'labels["benji-backup.me/instance"] == "benji-k8s"'
-        - name: cleanup
-          schedule: "00 05 * * *"
-          command:
-            - benji-command
-            - cleanup
+      crontab: {}
+      # - name: backup-home
+      #   schedule: "00 03 * * *"
+      #   command:
+      #     - benji-backup-pvc
+      #     - --namespace
+      #     - home
+      # - name: backup-security
+      #   schedule: "00 03 * * *"
+      #   command:
+      #     - benji-backup-pvc
+      #     - --namespace
+      #     - security
+      # - name: backup-media
+      #   schedule: "00 03 * * *"
+      #   command:
+      #     - benji-backup-pvc
+      #     - --namespace
+      #     - media
+      # - name: backup-downloads
+      #   schedule: "00 03 * * *"
+      #   command:
+      #     - benji-backup-pvc
+      #     - --namespace
+      #     - downloads
+      # - name: enforce
+      #   schedule: "00 04 * * *"
+      #   command:
+      #     - benji-command
+      #     - enforce
+      #     - days14
+      #     - 'labels["benji-backup.me/instance"] == "benji-k8s"'
+      # - name: cleanup
+      #   schedule: "00 05 * * *"
+      #   command:
+      #     - benji-command
+      #     - cleanup
       volumes:
-        - name: ceph-etc
-          configMap:
-            name: ceph-etc
-            defaultMode: 0444
-        - name: ceph-keyring
-          secret:
-            secretName: ceph-keyring
-            defaultMode: 0444
         - name: backup-franxx
           persistentVolumeClaim:
             claimName: nfs-backup-franxx-pvc
+        - name: mon-endpoint-volume
+          configMap:
+            name: rook-ceph-mon-endpoints
+            items:
+              - key: data
+                path: mon-endpoints
+        - name: ceph-data
+          emptyDir: {}
+        - name: ceph-config
+          configMap:
+            name: ceph-config
       volumeMounts:
-        - name: ceph-etc
-          mountPath: /etc/ceph/ceph.conf
-          subPath: ceph.conf
-          readOnly: true
-        - name: ceph-keyring
-          mountPath: /etc/ceph/keyring
-          subPath: keyring
-          readOnly: true
         - name: backup-franxx
           mountPath: /backup-franxx
+        - name: ceph-data
+          mountPath: /etc/ceph
     fsfreeze:
       enabled: true
     postgresql:
@@ -126,3 +123,49 @@ spec:
         tag: v1.4.2
         pullPolicy: IfNotPresent
       nameOverride: pushgateway
+  postRenderers:
+    - kustomize:
+        patchesJson6902:
+          - target:
+              kind: Deployment
+              name: benji-maint
+            patch:
+              - op: add
+                path: /spec/template/metadata/annotations
+                value:
+                  configmap.reloader.stakater.com/reload: "ceph-config"
+              - op: add
+                path: /spec/template/metadata/annotations
+                value:
+                  secret.reloader.stakater.com/reload: "rook-ceph-mon"
+              - op: add
+                path: /spec/template/spec/initContainers
+                value:
+                  - name: generate-ceph-files
+                    image: rook/ceph:v1.7.6
+                    imagePullPolicy: Always
+                    command: ["/usr/bin/bash"]
+                    args:
+                      [
+                        "-c",
+                        "bash /script/generate-ceph.sh",
+                      ]
+                    volumeMounts:
+                      - name: mon-endpoint-volume
+                        mountPath: /etc/rook
+                      - name: ceph-data
+                        mountPath: /etc/ceph
+                      - name: ceph-config
+                        mountPath: /script/generate-ceph.sh
+                        subPath: generate-ceph.sh
+                    env:
+                      - name: ROOK_CEPH_USERNAME
+                        valueFrom:
+                          secretKeyRef:
+                            name: rook-ceph-mon
+                            key: ceph-username
+                      - name: ROOK_CEPH_SECRET
+                        valueFrom:
+                          secretKeyRef:
+                            name: rook-ceph-mon
+                            key: ceph-secret
