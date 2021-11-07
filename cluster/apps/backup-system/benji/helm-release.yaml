@@ -179,7 +179,7 @@ spec:
                             name: rook-ceph-mon
                             key: ceph-secret
           - target:
-              kind: Deployment
+              kind: DaemonSet
               name: benji-fsfreeze
             patch:
               - op: replace
