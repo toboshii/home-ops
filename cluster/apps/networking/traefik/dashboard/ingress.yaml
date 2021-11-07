@@ -9,7 +9,9 @@ metadata:
     traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
 spec:
   tls:
-    - secretName: "${SECRET_DOMAIN/./-}-tls"
+    - hosts:
+        - "traefik.${SECRET_DOMAIN}"
+      secretName: "${SECRET_DOMAIN/./-}-tls"
   rules:
     - host: traefik.${SECRET_DOMAIN}
       http:
