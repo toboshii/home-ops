@@ -35,8 +35,7 @@ spec:
       dns-tcp:
         enabled: true
         type: LoadBalancer
-        externalIPs:
-        - "${LB_BLOCKY_IP}"
+        loadBalancerIP: ${LB_BLOCKY_IP}"
         externalTrafficPolicy: Local
         ports:
           dns-tcp:
@@ -47,8 +46,7 @@ spec:
       dns-udp:
         enabled: true
         type: LoadBalancer
-        externalIPs:
-        - "${LB_BLOCKY_IP}"
+        loadBalancerIP: "${LB_BLOCKY_IP}"
         externalTrafficPolicy: Local
         ports:
           dns-tcp:
