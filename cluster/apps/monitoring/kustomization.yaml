@@ -7,8 +7,8 @@ resources:
 - kube-prometheus-stack
 - loki
 - promtail
-- snmp-exporter-switch-0
-- snmp-exporter-ups-0
+# - snmp-exporter-switch-0
+# - snmp-exporter-ups-0
 - speedtest-exporter
 - thanos
 #- unifi-poller
