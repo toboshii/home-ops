@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://helm.traefik.io/traefik
       chart: traefik
-      version: 10.6.0
+      version: 10.6.1
       sourceRef:
         kind: HelmRepository
         name: traefik-charts
@@ -54,6 +54,7 @@ spec:
     additionalArguments:
     # - "--providers.kubernetesingress.ingressendpoint.hostname=${SECRET_DOMAIN}"
     - "--providers.kubernetesingress.ingressendpoint.ip=${LB_TRAEFIK_IP}"
+    - "--providers.kubernetesingress.allowexternalnameservices=true"
     - "--providers.kubernetescrd.allowexternalnameservices=true"
     # - "--experimental.plugins.subfilter.modulename=github.com/DirtyCajunRice/subfilter"
     # - "--experimental.plugins.subfilter.version=v0.5.0"
@@ -76,7 +77,7 @@ spec:
         maxVersion: VersionTLS13
         sniStrict: true
     pilot:
-      enabled: true
+      enabled: false
       token: "${SECRET_TRAEFIK_PILOT_TOKEN}"
     experimental:
       plugins:

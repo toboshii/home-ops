@@ -24,6 +24,7 @@ spec:
       dashboard:
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
         host:
           name: "rook.${SECRET_DOMAIN}"
           path: "/"

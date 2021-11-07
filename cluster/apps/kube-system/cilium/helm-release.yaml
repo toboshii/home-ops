@@ -60,7 +60,8 @@ spec:
         ingress:
           enabled: true
           annotations:
-            traefik.ingress.kubernetes.io/router.entrypoints: websecure
+            traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+            traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
           hosts:
             - "hubble.${SECRET_DOMAIN}"
           tls:
