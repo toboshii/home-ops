@@ -178,3 +178,12 @@ spec:
                           secretKeyRef:
                             name: rook-ceph-mon
                             key: ceph-secret
+          - target:
+              kind: Deployment
+              name: benji-fsfreeze
+            patch:
+              - op: replace
+                path: /spec/template/spec/containers/0/volumeMounts
+                value:
+                  - name: rbd-mounts
+                    mountPath: /var/lib/kubelet/plugins/kubernetes.io/rbd/mounts/
