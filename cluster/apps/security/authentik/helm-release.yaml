@@ -39,21 +39,6 @@ spec:
         username: "apikey"
         password: "${SECRET_SENDGRID_API_KEY}"
         from: "no-reply@${SECRET_DOMAIN}"
-    # persistence:
-    #   media:
-    #     enabled: true
-    #     mountPath: /media
-    #     storageClass: ceph-block
-    #     accessMode: ReadWriteOnce
-    #     size: 5Gi
-    volumeMounts:
-    - name: media
-      mountPath: /media
-    volumes:
-    - name: media
-      persistentVolumeClaim:
-        claimName: authentik-media-v1
-
     ingress:
       enabled: true
       ingressClassName: "traefik"
