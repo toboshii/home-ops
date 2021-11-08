@@ -22,8 +22,6 @@ spec:
     env:
       TZ: "America/Chicago"
       JELLYFIN_CACHE_DIR: "/config/cache"
-      NVIDIA_DRIVER_CAPABILITIES: all
-      NVIDIA_VISIBLE_DEVICES: all
     podSecurityContext:
       supplementalGroups:
       - 5600
@@ -58,16 +56,20 @@ spec:
         enabled: true
         existingClaim: nfs-media-franxx-pvc
         readOnly: true
-    resources:
-      requests:
-        memory: 8000Mi
-    tolerations:
-    - key: "nvidia.com/gpu"
-      operator: "Exists"
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
           - matchExpressions:
-            - key: feature.node.kubernetes.io/pci-0300_10de.present
-              operator: Exists
+            - key: feature.node.kubernetes.io/custom-intel-gpu
+              operator: In
+              values:
+              - "true"
+    resources:
+      requests:
+        gpu.intel.com/i915: 1
+        cpu: 500m
+        memory: 500Mi
+      limits:
+        gpu.intel.com/i915: 1
+        memory: 4000Mi

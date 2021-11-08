@@ -22,8 +22,6 @@ spec:
       tag: 0.0.7
     env:
       TZ: "America/Chicago"
-      NVIDIA_DRIVER_CAPABILITIES: all
-      NVIDIA_VISIBLE_DEVICES: all
     service:
       main:
         enabled: true
@@ -68,15 +66,16 @@ spec:
       requests:
         memory: 250Mi
         cpu: 500m
+        gpu.intel.com/i915: 1
       limits:
         memory: 2Gi
-    tolerations:
-    - key: "nvidia.com/gpu"
-      operator: "Exists"
+        gpu.intel.com/i915: 1
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
           - matchExpressions:
-            - key: feature.node.kubernetes.io/pci-0300_10de.present
-              operator: Exists
+            - key: feature.node.kubernetes.io/custom-intel-gpu
+              operator: In
+              values:
+              - "true"
