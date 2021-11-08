@@ -27,6 +27,7 @@ spec:
       PLEX_CLAIM: "${SECRET_PLEX_CLAIM_TOKEN}"
     podSecurityContext:
       supplementalGroups:
+      - 44
       - 5600
     service:
       main:

@@ -24,6 +24,7 @@ spec:
       JELLYFIN_CACHE_DIR: "/config/cache"
     podSecurityContext:
       supplementalGroups:
+      - 44
       - 5600
     service:
       main:

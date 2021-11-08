@@ -22,6 +22,10 @@ spec:
       tag: 0.0.7
     env:
       TZ: "America/Chicago"
+    podSecurityContext:
+      supplementalGroups:
+      - 44
+      - 5600
     service:
       main:
         enabled: true
