@@ -55,19 +55,19 @@ spec:
           periodSeconds: 60
           failureThreshold: 1
         networkPolicy:
-          enabled: true
-          egress:
-            - to:
-                - ipBlock:
-                    cidr: 0.0.0.0/0
-              ports:
-                # VPN traffic
-                - port: 62441
-                  protocol: UDP
-            - to:
-                - namespaceSelector:
-                    matchLabels:
-                      routed-gateway: "true"
+          enabled: false
+          # egress:
+          #   - to:
+          #       - ipBlock:
+          #           cidr: 0.0.0.0/0
+          #     ports:
+          #       # VPN traffic
+          #       - port: 62441
+          #         protocol: UDP
+          #   - to:
+          #       - namespaceSelector:
+          #           matchLabels:
+          #             routed-gateway: "true"
     routed_namespaces:
       - mail
     settings:

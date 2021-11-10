@@ -55,19 +55,19 @@ spec:
           periodSeconds: 60
           failureThreshold: 1
         networkPolicy:
-          enabled: true
-          egress:
-            - to:
-                - ipBlock:
-                    cidr: 0.0.0.0/0
-              ports:
-                # VPN traffic
-                - port: ${SECRET_VPN_GATEWAY_PORT}
-                  protocol: UDP
-            - to:
-                - namespaceSelector:
-                    matchLabels:
-                      vpn-routed-gateway: "true"
+          enabled: false
+          # egress:
+          #   - to:
+          #       - ipBlock:
+          #           cidr: 0.0.0.0/0
+          #     ports:
+          #       # VPN traffic
+          #       - port: ${SECRET_VPN_GATEWAY_PORT}
+          #         protocol: UDP
+          #   - to:
+          #       - namespaceSelector:
+          #           matchLabels:
+          #             vpn-routed-gateway: "true"
     DNS: 172.16.1.1
     routed_namespaces:
       - downloads
