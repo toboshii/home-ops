@@ -67,7 +67,7 @@ spec:
             - to:
                 - namespaceSelector:
                     matchLabels:
-                      vpn-routed-gateway: true
+                      vpn-routed-gateway: "true"
     DNS: 172.16.1.1
     routed_namespaces:
       - downloads

@@ -67,7 +67,7 @@ spec:
             - to:
                 - namespaceSelector:
                     matchLabels:
-                      routed-gateway: true
+                      routed-gateway: "true"
     routed_namespaces:
       - mail
     settings:
