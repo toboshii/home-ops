@@ -65,8 +65,9 @@ spec:
                 - port: 62441
                   protocol: UDP
             - to:
-                - ipBlock:
-                    cidr: ${NETWORK_K8S_CLUSTER_CIDR}
+                - namespaceSelector:
+                    matchLabels:
+                      routed-gateway: true
     routed_namespaces:
       - mail
     settings:

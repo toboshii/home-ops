@@ -65,10 +65,9 @@ spec:
                 - port: ${SECRET_VPN_GATEWAY_PORT}
                   protocol: UDP
             - to:
-                - ipBlock:
-                    cidr: ${NETWORK_K8S_CLUSTER_CIDR}
-                - ipBlock:
-                    cidr: ${NETWORK_K8S_SERVICE_CIDR}
+                - namespaceSelector:
+                    matchLabels:
+                      vpn-routed-gateway: true
     DNS: 172.16.1.1
     routed_namespaces:
       - downloads
