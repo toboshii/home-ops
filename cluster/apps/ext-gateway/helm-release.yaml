@@ -31,12 +31,14 @@ spec:
             repository: ghcr.io/k8s-at-home/wireguard
             tag: v1.0.20210914
         securityContext:
-          privileged: true
           runAsUser: 568
           runAsGroup: 568
+          capabilities:
+            drop:
+              - "SYS_MODULE"
         env:
           TZ: "America/Chicago"
-          IPTABLES_BACKEND: legacy
+          IPTABLES_BACKEND: nft
           KILLSWITCH: "false"
         configFileSecret: ext-gateway-vpnconfig
         resources:
@@ -56,18 +58,16 @@ spec:
           failureThreshold: 1
         networkPolicy:
           enabled: false
-          # egress:
-          #   - to:
-          #       - ipBlock:
-          #           cidr: 0.0.0.0/0
-          #     ports:
-          #       # VPN traffic
-          #       - port: 62441
-          #         protocol: UDP
-          #   - to:
-          #       - namespaceSelector:
-          #           matchLabels:
-          #             routed-gateway: "true"
+          egress:
+            - to:
+                - ipBlock:
+                    cidr: 0.0.0.0/0
+              ports:
+                # VPN traffic
+                - port: 62441
+                  protocol: UDP
+            - to:
+                - namespaceSelector: {}
     routed_namespaces:
       - mail
     settings:
