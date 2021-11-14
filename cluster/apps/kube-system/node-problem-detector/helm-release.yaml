@@ -23,3 +23,19 @@ spec:
     metrics:
       serviceMonitor:
         enabled: true
+  postRenderers:
+    - kustomize:
+        patchesJson6902:
+          - target:
+              kind: DaemonSet
+              name: node-problem-detector
+            patch:
+              - op: replace
+                path: /spec/template/spec/containers/0/volumeMounts
+                value:
+                  - name: log
+                    readOnly: true
+                    mountPath: /var/log/
+                  - name: custom-config
+                    readOnly: true
+                    mountPath: /custom-config
