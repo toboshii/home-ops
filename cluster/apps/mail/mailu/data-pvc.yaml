@@ -10,4 +10,4 @@ spec:
   resources:
     requests:
       storage: 50Gi
-  storageClassName: rook-cephfs
+  storageClassName: ceph-filesystem
