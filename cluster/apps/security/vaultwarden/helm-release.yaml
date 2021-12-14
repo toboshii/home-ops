@@ -22,7 +22,7 @@ spec:
     fullnameOverride: vaultwarden
     image:
       repository: vaultwarden/server
-      tag: 1.23.0-alpine
+      tag: 1.23.1-alpine
     env:
       DATA_FOLDER: "config"
       SIGNUPS_ALLOWED: false
