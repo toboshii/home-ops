@@ -20,7 +20,7 @@ spec:
     fullnameOverride: authentik
     image:
       repository: ghcr.io/goauthentik/server
-      tag: 2021.10.4
+      tag: 2021.12.5
     authentik:
       outposts:
         docker_image_base: ghcr.io/goauthentik/%(type)s:%(version)s
