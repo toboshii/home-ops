@@ -20,7 +20,7 @@ jobs:
       files: "${{ steps.extract.outputs.files }}"
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Get changes
         uses: dorny/paths-filter@v2
         id: filter
@@ -54,12 +54,12 @@ jobs:
             helmv3
             yq
       - name: Checkout live branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ env.conf_live_branch }}
           path: live
       - name: Checkout PR branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: pr
       - name: Create diff
