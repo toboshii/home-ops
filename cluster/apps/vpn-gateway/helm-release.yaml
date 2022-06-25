@@ -52,7 +52,7 @@ spec:
             command:
               - sh
               - -c
-              - if [ $(curl -s https://am.i.mullvad.net/country) = '${SECRET_VPN_COUNTRY}' ]; then exit 0; else exit $?; fi
+              - grep -q "are connected" <<< $(curl -s https://am.i.mullvad.net/connected)
           initialDelaySeconds: 30
           periodSeconds: 60
           failureThreshold: 1
