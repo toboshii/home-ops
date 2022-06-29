@@ -45,6 +45,10 @@ spec:
           name: libmodules
         - name: mon-endpoint-volume
           mountPath: /etc/rook
+        - name: backups
+          mountPath: /mnt/backups
+        - name: direct-mount-backup-script
+          mountPath: /scripts
       # if hostNetwork: false, the "rbd map" command hangs, see https://github.com/rook/rook/issues/2021
       hostNetwork: true
       volumes:
@@ -63,3 +67,13 @@ spec:
           items:
           - key: data
             path: mon-endpoints
+      - name: backups
+        nfs:
+          server: 10.75.30.15
+          path: /tank/data/ceph/backups
+      - name: direct-mount-backup-script
+        projected:
+          defaultMode: 0775
+          sources:
+            - configMap:
+                name: direct-mount-backup-script
