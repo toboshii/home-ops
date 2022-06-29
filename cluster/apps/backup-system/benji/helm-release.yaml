@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: ./charts/benji-k8s
-      version: 0.2.0
+      version: 1.0.0
       sourceRef:
         kind: GitRepository
         name: benji-charts
@@ -22,7 +22,7 @@ spec:
       image:
         registry: ghcr.io
         repository: elemental-lf/benji-k8s
-        tag: 0.15.0
+        tag: 0.16.1
         pullPolicy: IfNotPresent
       configuration:
         configurationVersion: '1'
