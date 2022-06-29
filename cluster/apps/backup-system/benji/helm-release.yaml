@@ -52,43 +52,43 @@ spec:
       cronJob:
         activeDeadlineSeconds: null
         startingDeadlineSeconds: null
-      crontab: {}
-      # - name: backup-home
-      #   schedule: "00 03 * * *"
-      #   command:
-      #     - benji-backup-pvc
-      #     - --namespace
-      #     - home
-      # - name: backup-security
-      #   schedule: "00 03 * * *"
-      #   command:
-      #     - benji-backup-pvc
-      #     - --namespace
-      #     - security
-      # - name: backup-media
-      #   schedule: "00 03 * * *"
-      #   command:
-      #     - benji-backup-pvc
-      #     - --namespace
-      #     - media
-      # - name: backup-downloads
-      #   schedule: "00 03 * * *"
-      #   command:
-      #     - benji-backup-pvc
-      #     - --namespace
-      #     - downloads
-      # - name: enforce
-      #   schedule: "00 04 * * *"
-      #   command:
-      #     - benji-command
-      #     - enforce
-      #     - days14
-      #     - 'labels["benji-backup.me/instance"] == "benji-k8s"'
-      # - name: cleanup
-      #   schedule: "00 05 * * *"
-      #   command:
-      #     - benji-command
-      #     - cleanup
+      crontab:
+        - name: backup-home
+          schedule: "00 03 * * *"
+          command:
+            - benji-backup-pvc
+            - --namespace
+            - home
+        - name: backup-security
+          schedule: "00 03 * * *"
+          command:
+            - benji-backup-pvc
+            - --namespace
+            - security
+        - name: backup-media
+          schedule: "00 03 * * *"
+          command:
+            - benji-backup-pvc
+            - --namespace
+            - media
+        - name: backup-downloads
+          schedule: "00 03 * * *"
+          command:
+            - benji-backup-pvc
+            - --namespace
+            - downloads
+        - name: enforce
+          schedule: "00 04 * * *"
+          command:
+            - benji-command
+            - enforce
+            - days14
+            - 'labels["benji-backup.me/instance"] == "benji-k8s"'
+        - name: cleanup
+          schedule: "00 05 * * *"
+          command:
+            - benji-command
+            - cleanup
       volumes:
         - name: backup-franxx
           persistentVolumeClaim:
