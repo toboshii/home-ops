@@ -22,7 +22,7 @@ spec:
       image:
         registry: ghcr.io
         repository: elemental-lf/benji-k8s
-        tag: 0.15.0
+        tag: 0.16.1
         pullPolicy: IfNotPresent
       configuration:
         configurationVersion: '1'
