@@ -187,3 +187,127 @@ spec:
                 value:
                   - name: rbd-mounts
                     mountPath: /var/lib/kubelet/plugins/kubernetes.io/rbd/mounts/
+          - target:
+              kind: CronJob
+              name: benji-backup-home
+            patch:
+              - op: add
+                path: /spec/jobTemplate/spec/template/spec/initContainers
+                value:
+                  - name: generate-ceph-files
+                    image: rook/ceph:v1.9.6
+                    imagePullPolicy: Always
+                    command: ["/usr/bin/bash"]
+                    args: ["-c", "bash /script/generate-ceph.sh"]
+                    volumeMounts:
+                      - name: mon-endpoint-volume
+                        mountPath: /etc/rook
+                      - name: ceph-data
+                        mountPath: /etc/ceph
+                      - name: ceph-config
+                        mountPath: /script/generate-ceph.sh
+                        subPath: generate-ceph.sh
+                    env:
+                      - name: ROOK_CEPH_USERNAME
+                        valueFrom:
+                          secretKeyRef:
+                            name: rook-ceph-mon
+                            key: ceph-username
+                      - name: ROOK_CEPH_SECRET
+                        valueFrom:
+                          secretKeyRef:
+                            name: rook-ceph-mon
+                            key: ceph-secret
+          - target:
+              kind: CronJob
+              name: benji-backup-security
+            patch:
+              - op: add
+                path: /spec/jobTemplate/spec/template/spec/initContainers
+                value:
+                  - name: generate-ceph-files
+                    image: rook/ceph:v1.9.6
+                    imagePullPolicy: Always
+                    command: ["/usr/bin/bash"]
+                    args: ["-c", "bash /script/generate-ceph.sh"]
+                    volumeMounts:
+                      - name: mon-endpoint-volume
+                        mountPath: /etc/rook
+                      - name: ceph-data
+                        mountPath: /etc/ceph
+                      - name: ceph-config
+                        mountPath: /script/generate-ceph.sh
+                        subPath: generate-ceph.sh
+                    env:
+                      - name: ROOK_CEPH_USERNAME
+                        valueFrom:
+                          secretKeyRef:
+                            name: rook-ceph-mon
+                            key: ceph-username
+                      - name: ROOK_CEPH_SECRET
+                        valueFrom:
+                          secretKeyRef:
+                            name: rook-ceph-mon
+                            key: ceph-secret
+          - target:
+              kind: CronJob
+              name: benji-backup-media
+            patch:
+              - op: add
+                path: /spec/jobTemplate/spec/template/spec/initContainers
+                value:
+                  - name: generate-ceph-files
+                    image: rook/ceph:v1.9.6
+                    imagePullPolicy: Always
+                    command: ["/usr/bin/bash"]
+                    args: ["-c", "bash /script/generate-ceph.sh"]
+                    volumeMounts:
+                      - name: mon-endpoint-volume
+                        mountPath: /etc/rook
+                      - name: ceph-data
+                        mountPath: /etc/ceph
+                      - name: ceph-config
+                        mountPath: /script/generate-ceph.sh
+                        subPath: generate-ceph.sh
+                    env:
+                      - name: ROOK_CEPH_USERNAME
+                        valueFrom:
+                          secretKeyRef:
+                            name: rook-ceph-mon
+                            key: ceph-username
+                      - name: ROOK_CEPH_SECRET
+                        valueFrom:
+                          secretKeyRef:
+                            name: rook-ceph-mon
+                            key: ceph-secret
+          - target:
+              kind: CronJob
+              name: benji-backup-downloads
+            patch:
+              - op: add
+                path: /spec/jobTemplate/spec/template/spec/initContainers
+                value:
+                  - name: generate-ceph-files
+                    image: rook/ceph:v1.9.6
+                    imagePullPolicy: Always
+                    command: ["/usr/bin/bash"]
+                    args: ["-c", "bash /script/generate-ceph.sh"]
+                    volumeMounts:
+                      - name: mon-endpoint-volume
+                        mountPath: /etc/rook
+                      - name: ceph-data
+                        mountPath: /etc/ceph
+                      - name: ceph-config
+                        mountPath: /script/generate-ceph.sh
+                        subPath: generate-ceph.sh
+                    env:
+                      - name: ROOK_CEPH_USERNAME
+                        valueFrom:
+                          secretKeyRef:
+                            name: rook-ceph-mon
+                            key: ceph-username
+                      - name: ROOK_CEPH_SECRET
+                        valueFrom:
+                          secretKeyRef:
+                            name: rook-ceph-mon
+                            key: ceph-secret
