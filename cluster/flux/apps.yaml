@@ -12,7 +12,7 @@ spec:
   - name: core
   sourceRef:
     kind: GitRepository
-    name: flux-system
+    name: flux-cluster
   decryption:
     provider: sops
     secretRef:
