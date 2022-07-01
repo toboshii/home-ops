@@ -1,0 +1,7 @@
+cluster01-k8s-control01.dfw.56k.sh.yaml
+cluster01-k8s-control02.dfw.56k.sh.yaml
+cluster01-k8s-control03.dfw.56k.sh.yaml
+cluster01-k8s-worker01.dfw.56k.sh.yaml
+cluster01-k8s-worker02.dfw.56k.sh.yaml
+cluster01-k8s-worker03.dfw.56k.sh.yaml
+talosconfig

@@ -1,0 +1,204 @@
+clusterName: cluster01
+talosVersion: v1.1.0
+kubernetesVersion: v1.24.2
+endpoint: https://cluster01.${domainName}:6443
+clusterPodNets:
+  - 172.22.0.0/16
+clusterSvcNets:
+  - 172.24.0.0/16
+cniConfig:
+  name: custom
+  urls:
+    - https://gist.githubusercontent.com/toboshii/72d5570d8a7a6a9f4daf8a2162d07ee9/raw/6225cb24b8905a145e39438babadce771eb9e4ed/install.yaml
+nodes:
+  - hostname: k8s-control01.${domainName}
+    ipAddress: 10.75.40.20
+    controlPlane: true
+    installDisk: /dev/sda
+    networkInterfaces:
+      - interface: eth0
+        dhcp: true
+        vip:
+          ip: 10.75.40.10
+  - hostname: k8s-control02.${domainName}
+    ipAddress: 10.75.40.21
+    controlPlane: true
+    installDisk: /dev/sda
+    networkInterfaces:
+      - interface: eth0
+        dhcp: true
+        vip:
+          ip: 10.75.40.10
+  - hostname: k8s-control03.${domainName}
+    ipAddress: 10.75.40.22
+    controlPlane: true
+    installDisk: /dev/sda
+    networkInterfaces:
+      - interface: eth0
+        dhcp: true
+        vip:
+          ip: 10.75.40.10
+  - hostname: k8s-worker01.${domainName}
+    ipAddress: 10.75.40.30
+    controlPlane: false
+    installDisk: /dev/sda
+    networkInterfaces:
+      - interface: eth0
+        vlans:
+          - addresses:
+              - 10.75.42.30/24
+            dhcp: false
+            vlanId: 42
+        dhcp: true
+  - hostname: k8s-worker02.${domainName}
+    ipAddress: 10.75.40.31
+    controlPlane: false
+    installDisk: /dev/sda
+    networkInterfaces:
+      - interface: eth0
+        vlans:
+          - addresses:
+              - 10.75.42.31/24
+            dhcp: false
+            vlanId: 42
+        dhcp: true
+  - hostname: k8s-worker03.${domainName}
+    ipAddress: 10.75.40.32
+    controlPlane: false
+    installDisk: /dev/sda
+    networkInterfaces:
+      - interface: eth0
+        vlans:
+          - addresses:
+              - 10.75.42.32/24
+            dhcp: false
+            vlanId: 42
+        dhcp: true
+controlPlane:
+  inlinePatch:
+    cluster:
+      aescbcEncryptionSecret: ${aescbcEncryptionKey}
+      aggregatorCA:
+        crt: ${k8sAggregatorCert}
+        key: ${k8sAggregatorCertKey}
+      apiServer:
+        certSANs:
+          - ${clusterEndpointIP}
+          - cluster01.${domainName}
+        extraArgs:
+          feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
+      ca:
+        crt: ${clusterCert}
+        key: ${clusterCertKey}
+      controllerManager:
+        extraArgs:
+          feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
+      discovery:
+        registries:
+          service:
+            disabled: true
+      etcd:
+        ca:
+          crt: ${etcdCert}
+          key: ${etcdCertKey}
+      extraManifests:
+        - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/v0.5.1/deploy/ha-install.yaml
+      proxy:
+        disabled: true
+        extraArgs:
+          feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
+      scheduler:
+        extraArgs:
+          feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
+      secret: ${clusterSecret}
+      serviceAccount:
+        key: ${k8sServiceAccountKey}
+      token: ${clusterToken}
+    machine:
+      ca:
+        crt: ${machineCert}
+        key: ${machineCertKey}
+      certSANs:
+        - ${clusterEndpointIP}
+        - cluster01.${domainName}
+      install:
+        extraKernelArgs:
+          - talos.logging.kernel=udp://10.75.45.102:6050/
+      kubelet:
+        extraArgs:
+          feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
+          rotate-server-certificates: "true"
+        nodeIP:
+          validSubnets:
+            - 10.75.40.0/24
+      logging:
+        destinations:
+          - endpoint: udp://10.75.45.102:6051/
+            format: json_lines
+      network:
+        extraHostEntries:
+          - aliases:
+              - cluster-0.${domainName}
+            ip: ${clusterEndpointIP}
+      registries:
+        mirrors:
+            docker.io:
+              endpoints:
+                - http://nas01.dfw.56k.sh:5000
+      time:
+        disabled: false
+        servers:
+          - 10.75.0.1
+      token: ${machineToken}
+worker:
+  inlinePatch:
+    cluster:
+      aescbcEncryptionSecret: ${aescbcEncryptionKey}
+      ca:
+        crt: ${clusterCert}
+        key: ${clusterCertKey}
+      discovery:
+        registries:
+          service:
+            disabled: true
+      secret: ${clusterSecret}
+      token: ${clusterToken}
+    machine:
+      ca:
+        crt: ${machineCert}
+        key: ${machineCertKey}
+      certSANs:
+        - ${clusterEndpointIP}
+        - cluster01.${domainName}
+      install:
+        extraKernelArgs:
+          - talos.logging.kernel=udp://10.75.45.102:6050/
+      kubelet:
+        extraArgs:
+          feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
+          rotate-server-certificates: "true"
+        nodeIP:
+          validSubnets:
+            - 10.75.40.0/24
+      logging:
+        destinations:
+          - endpoint: udp://10.75.45.102:6051/
+            format: json_lines
+      network:
+        extraHostEntries:
+          - aliases:
+              - cluster01.${domainName}
+            ip: ${clusterEndpointIP}
+      sysctls:
+        fs.inotify.max_user_instances: "8192"
+        fs.inotify.max_user_watches: "1048576"
+      registries:
+        mirrors:
+            docker.io:
+              endpoints:
+                - http://nas01.dfw.56k.sh:5000
+      time:
+        disabled: false
+        servers:
+          - 10.75.0.1
+      token: ${machineToken}
