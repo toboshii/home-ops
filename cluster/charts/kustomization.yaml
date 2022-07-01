@@ -10,6 +10,7 @@ resources:
   - coredns-charts.yaml
   - deliveryhero-charts.yaml
   - drone-charts.yaml
+  - external-dns-charts.yaml
   - fairwinds-charts.yaml
   - falco-security-charts.yaml
   - grafana-charts.yaml
