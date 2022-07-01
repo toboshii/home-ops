@@ -15,3 +15,4 @@ data:
         protocol: bgp
         addresses:
           - 10.75.45.0/24
+        avoid-buggy-ips: true
