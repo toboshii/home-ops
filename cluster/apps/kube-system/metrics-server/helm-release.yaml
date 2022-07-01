@@ -5,19 +5,30 @@ metadata:
   name: metrics-server
   namespace: kube-system
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://charts.bitnami.com/bitnami
       chart: metrics-server
-      version: 5.10.11
+      version: 3.8.2
       sourceRef:
         kind: HelmRepository
-        name: bitnami-charts
+        name: metrics-server-charts
         namespace: flux-system
+      interval: 15m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
-    apiService:
-      create: true
-    extraArgs:
-      kubelet-insecure-tls: true
-      kubelet-preferred-address-types: InternalIP,ExternalIP,Hostname
+    args:
+      - --kubelet-insecure-tls
+      - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+      - --kubelet-use-node-status-port
+      - --metric-resolution=15s
+    metrics:
+      enabled: true
+    serviceMonitor:
+      enabled: true

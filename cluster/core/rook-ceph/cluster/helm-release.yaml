@@ -5,36 +5,55 @@ metadata:
   name: rook-ceph-cluster
   namespace: rook-ceph
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://charts.rook.io/release
       chart: rook-ceph-cluster
-      version: v1.7.9
+      version: v1.9.6
       sourceRef:
         kind: HelmRepository
         name: rook-ceph-charts
         namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   dependsOn:
-    - name: rook-ceph
+    - name: rook-ceph-operator
+      namespace: rook-ceph
   values:
     monitoring:
       enabled: true
+      createPrometheusRules: true
     ingress:
       dashboard:
-        annotations:
-          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
+        ingressClassName: "nginx"
         host:
-          name: "rook.${SECRET_DOMAIN}"
+          name: &host "rook.${SECRET_DOMAIN}"
           path: "/"
         tls:
           - hosts:
-              - "rook.${SECRET_DOMAIN}"
+              - *host
+    configOverride: |
+      [global]
+      bdev_enable_discard = true
+      bdev_async_discard = true
+      public network =  10.75.42.0/24
+      cluster network = 10.75.42.0/24
+      public addr = ""
+      cluster addr = ""
     cephClusterSpec:
+      network:
+        provider: host
+      crashCollector:
+        disable: false
       dashboard:
         enabled: true
         urlPrefix: /
+        ssl: false
       storage:
         useAllNodes: false
         useAllDevices: false
@@ -50,4 +69,8 @@ spec:
           - name: "k8s-worker03"
             devices:
               - name: "nvme0n1"
-    cephObjectStores: []
+    cephBlockPoolsVolumeSnapshotClass:
+      enabled: true
+      name: csi-rbdplugin-snapclass
+      annotations:
+        k10.kasten.io/is-snapshot-class: "true"
