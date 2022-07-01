@@ -3,4 +3,5 @@ kind: Kustomization
 resources:
 - cert-manager
 - kube-prometheus-stack
+- kyverno
 - rook-ceph
