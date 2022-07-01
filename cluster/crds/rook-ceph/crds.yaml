@@ -1,29 +1,30 @@
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta1
+apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: GitRepository
 metadata:
   name: rook-ceph-source
   namespace: flux-system
 spec:
-  interval: 30m
+  interval: 12h
   url: https://github.com/rook/rook.git
   ref:
     # renovate: registryUrl=https://charts.rook.io/release chart=rook-ceph
-    tag: v1.7.9
+    tag: v1.9.6
   ignore: |
     # exclude all
     /*
-    # path to crds
-    !/cluster/examples/kubernetes/ceph/crds.yaml
+    # include crd directory
+    !/deploy/examples/crds.yaml
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: rook-ceph-crds
+  name: crds-rook-ceph
   namespace: flux-system
 spec:
-  interval: 15m
+  interval: 30m
   prune: false
+  wait: true
   sourceRef:
     kind: GitRepository
     name: rook-ceph-source
