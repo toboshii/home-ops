@@ -5,35 +5,52 @@ metadata:
   name: external-dns
   namespace: networking
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://charts.bitnami.com/bitnami
       chart: external-dns
       version: 1.9.0
       sourceRef:
         kind: HelmRepository
         name: external-dns-charts
         namespace: flux-system
-      interval: 5m
+      interval: 15m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
-    nameOverride: external-dns
-    # interval: "5m"
+    interval: 15m
     logLevel: debug
-    sources:
-    - ingress
     provider: cloudflare
-    cloudflare:
-      secretName: cloudflare-api-key
-      email: "${SECRET_CLOUDFLARE_EMAIL}"
-      proxied: true
+    env:
+      - name: CF_API_EMAIL
+        valueFrom:
+          secretKeyRef:
+            name: cloudflare-creds
+            key: email
+      - name: CF_API_KEY
+        valueFrom:
+          secretKeyRef:
+            name: cloudflare-creds
+            key: api-key
+    extraArgs:
+      - --cloudflare-proxied
+      - --annotation-filter=external-dns/is-public in (true)
     policy: sync
+    sources:
+      - ingress
     txtPrefix: "k8s."
+    txtOwnerId: "default"
     domainFilters:
-    - "${SECRET_DOMAIN}"
-    - "${SECRET_DOMAIN_2}"
-    - "${SECRET_DOMAIN_3}"
-    annotationFilter: "external-dns/is-public in (true)"
+      - "${SECRET_DOMAIN}"
+      - "${SECRET_DOMAIN_2}"
+      - "${SECRET_DOMAIN_3}"
+    serviceMonitor:
+      enabled: true
     resources:
       requests:
         memory: 100Mi
