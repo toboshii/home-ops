@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   type: github
-  address: https://github.com/toboshii/home-cluster
+  address: https://github.com/toboshii/home-ops
   secretRef:
     name: github-token
 ---
