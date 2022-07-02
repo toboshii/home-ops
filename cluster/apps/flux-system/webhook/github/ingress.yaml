@@ -5,22 +5,21 @@ metadata:
   name: webhook-receiver
   namespace: flux-system
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
     external-dns/is-public: "true"
     external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
 spec:
-  ingressClassName: "traefik"
+  ingressClassName: "nginx"
   rules:
-  - host: "flux-receiver.${SECRET_DOMAIN}"
+  - host: "flux-webhook.${SECRET_DOMAIN}"
     http:
       paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: webhook-receiver
-            port:
-              number: 80
+        - path: /hook/
+          pathType: Prefix
+          backend:
+            service:
+              name: webhook-receiver
+              port:
+                number: 80
   tls:
   - hosts:
-    - "flux-receiver.${SECRET_DOMAIN}"
+    - "flux-webhook.${SECRET_DOMAIN}"
