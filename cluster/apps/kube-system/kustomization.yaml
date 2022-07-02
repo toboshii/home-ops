@@ -8,6 +8,7 @@ resources:
   - descheduler
   - intel-gpu-plugin
   - kube-cleanup-operator
+  - kyverno
   - metrics-server
   - node-feature-discovery
   - reloader
