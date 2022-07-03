@@ -29,9 +29,6 @@ spec:
           - resources:
               kinds:
                 - Ingress
-      exclude:
-        any:
-          - resources:
               annotations:
                 56k/forward-auth: "true"
       mutate:
