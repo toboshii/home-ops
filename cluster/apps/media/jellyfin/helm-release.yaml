@@ -31,7 +31,7 @@ spec:
       nameOverride: *app
     image:
       repository: docker.io/jellyfin/jellyfin
-      tag: 10.8.0
+      tag: 10.8.1
     env:
       TZ: "${TIMEZONE}"
       JELLYFIN_CACHE_DIR: "/config/cache"
