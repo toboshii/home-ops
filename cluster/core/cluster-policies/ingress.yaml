@@ -23,3 +23,26 @@ spec:
           metadata:
             annotations:
               +(nginx.ingress.kubernetes.io/whitelist-source-range): "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+    - name: add-forward-auth-annotations
+      match:
+        any:
+          - resources:
+              kinds:
+                - Ingress
+      exclude:
+        any:
+          - resources:
+              annotations:
+                56k/forward-auth: "true"
+      mutate:
+        patchStrategicMerge:
+          metadata:
+            annotations:
+              +(nginx.ingress.kubernetes.io/auth-url): |-
+                http://ak-outpost-authentik-embedded-outpost.security.svc.cluster.local:9000/outpost.goauthentik.io/auth/nginx
+              +(nginx.ingress.kubernetes.io/auth-signin): |-
+                https://{{request.object.spec.rules[0].host}}/outpost.goauthentik.io/start?rd=$escaped_request_uri
+              +(nginx.ingress.kubernetes.io/auth-response-headers): |-
+                Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
+              +(nginx.ingress.kubernetes.io/auth-snippet): |
+                proxy_set_header X-Forwarded-Host $http_host;
