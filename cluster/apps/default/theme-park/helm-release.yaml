@@ -2,8 +2,8 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app tautulli
-  namespace: media
+  name: &app theme-park
+  namespace: default
 spec:
   interval: 15m
   chart:
@@ -25,16 +25,17 @@ spec:
   values:
     global:
       nameOverride: *app
+    controller:
+      replicas: 3
+      strategy: RollingUpdate
     image:
-      repository: ghcr.io/k8s-at-home/tautulli
-      tag: v2.10.1
-    env:
-      TZ: "${TIMEZONE}"
+      repository: ghcr.io/k8s-at-home/theme-park
+      tag: v1.9.6
     service:
       main:
         ports:
           http:
-            port: 8181
+            port: 8080
     ingress:
       main:
         enabled: true
@@ -42,10 +43,6 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN}"
           external-dns/is-public: "true"
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_PUBLIC_DOMAIN}/css/base/tautulli/dracula.css"></head>';
-            sub_filter_once on;
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
             paths:
@@ -54,20 +51,16 @@ spec:
         tls:
           - hosts:
               - *host
-    persistence:
-      config:
-        enabled: true
-        existingClaim: tautulli-config-v1
-      backup:
-        enabled: true
-        type: nfs
-        server: "nas01.${SECRET_PRIVATE_DOMAIN}"
-        path: /tank/data/backups/tautulli
-        mountPath: /config/backups
-        readOnly: false
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: *app
     resources:
       requests:
-        cpu: 100m
-        memory: 250Mi
+        cpu: 10m
+        memory: 50Mi
       limits:
-        memory: 500Mi
+        memory: 150Mi

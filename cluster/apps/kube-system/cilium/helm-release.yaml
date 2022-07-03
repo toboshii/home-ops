@@ -10,7 +10,7 @@ metadata:
   labels:
     app.kubernetes.io/managed-by: Helm
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
       # renovate: registryUrl=https://helm.cilium.io
@@ -20,7 +20,7 @@ spec:
         kind: HelmRepository
         name: cilium-charts
         namespace: flux-system
-      interval: 5m
+      interval: 15m
   install:
     createNamespace: true
     remediation:

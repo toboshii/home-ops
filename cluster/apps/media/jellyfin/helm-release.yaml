@@ -2,75 +2,91 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: jellyfin
+  name: &app jellyfin
   namespace: media
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: jellyfin
-      version: 9.2.0
+      chart: kah-common-chart
+      version: 1.1.2
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
         namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  dependsOn:
+    - name: intel-gpu-plugin
+      namespace: kube-system
+    - name: node-feature-discovery
+      namespace: kube-system
   values:
+    global:
+      nameOverride: *app
     image:
-      repository: jellyfin/jellyfin
-      tag: 10.7.7
+      repository: docker.io/jellyfin/jellyfin
+      tag: 10.8.0
     env:
-      TZ: "America/Chicago"
+      TZ: "${TIMEZONE}"
       JELLYFIN_CACHE_DIR: "/config/cache"
-    podSecurityContext:
-      supplementalGroups:
-      - 44
-      - 5600
     service:
       main:
         type: LoadBalancer
-        loadBalancerIP: "${LB_JELLYFIN_IP}"
+        loadBalancerIP: "${SVC_JELLYFIN_ADDR}"
         externalTrafficPolicy: Local
+        ports:
+          http:
+            port: 8096
     ingress:
       main:
         enabled: true
-        ingressClassName: "traefik"
-        annotations:
-          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        ingressClassName: "nginx"
         hosts:
-        - host: "jellyfin.${SECRET_DOMAIN}"
-          paths:
-          - path: /
-            pathType: Prefix
+          - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
         tls:
-        - hosts:
-          - "jellyfin.${SECRET_DOMAIN}"
+          - hosts:
+              - *host
+    podSecurityContext:
+      supplementalGroups:
+        - 44
+        - 5600
     persistence:
       config:
         enabled: true
         existingClaim: jellyfin-config-v1
+      media:
+        enabled: true
+        type: nfs
+        server: "nas01.${SECRET_PRIVATE_DOMAIN}"
+        path: /tank/share
+        mountPath: /media
+        readOnly: true
       transcode:
         enabled: true
         type: emptyDir
-        medium: Memory
-      media-franxx:
-        enabled: true
-        existingClaim: nfs-media-franxx-pvc
-        readOnly: true
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
-          - matchExpressions:
-            - key: feature.node.kubernetes.io/custom-intel-gpu
-              operator: In
-              values:
-              - "true"
+            - matchExpressions:
+                - key: feature.node.kubernetes.io/custom-intel-gpu
+                  operator: In
+                  values:
+                    - "true"
     resources:
       requests:
         gpu.intel.com/i915: 1
-        cpu: 500m
-        memory: 500Mi
+        cpu: 100m
+        memory: 1000Mi
       limits:
         gpu.intel.com/i915: 1
-        memory: 4000Mi
+        memory: 6000Mi

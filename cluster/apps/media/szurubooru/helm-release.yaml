@@ -5,7 +5,7 @@ metadata:
   name: szurubooru
   namespace: media
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
       # renovate: registryUrl=https://toboshii.github.io/charts
@@ -15,7 +15,14 @@ spec:
         kind: HelmRepository
         name: toboshii-charts
         namespace: flux-system
-      interval: 5m
+      interval: 15m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
     image:
       repository: ghcr.io/toboshii/szurubooru
