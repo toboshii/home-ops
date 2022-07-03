@@ -5,7 +5,7 @@ metadata:
   name: calibre-web
   namespace: media
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
@@ -15,7 +15,7 @@ spec:
         kind: HelmRepository
         name: k8s-at-home-charts
         namespace: flux-system
-      interval: 5m
+      interval: 15m
   values:
     image:
       repository: ghcr.io/linuxserver/calibre-web
@@ -24,8 +24,7 @@ spec:
       TZ: "America/Chicago"
       PUID: 5600
       PGID: 5600
-      DOCKER_MODS: "linuxserver/calibre-web:calibre|ghcr.io/gilbn/theme.park:calibre-web"
-      TP_THEME: "dracula"
+      DOCKER_MODS: "linuxserver/calibre-web:calibre"
     persistence:
       config:
         enabled: true
@@ -37,20 +36,23 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: "traefik"
+        ingressClassName: "nginx"
         annotations:
           external-dns/is-public: "true"
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN}"
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            proxy_set_header Accept-Encoding "";
+            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_PUBLIC_DOMAIN}/css/base/calibreweb/dracula.css"></head>';
+            sub_filter_once on;
           hajimari.io/enable: "true"
           hajimari.io/icon: "bookshelf"
         hosts:
-        - host: "books.${SECRET_DOMAIN}"
+        - host: "books.${SECRET_PUBLIC_DOMAIN}"
           paths:
           - path: /
         tls:
         - hosts:
-          - "books.${SECRET_DOMAIN}"
+          - "books.${SECRET_PUBLIC_DOMAIN}"
     resources:
       requests:
         memory: 256Mi

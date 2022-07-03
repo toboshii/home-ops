@@ -6,6 +6,7 @@ resources:
   - downloads
   - flux-system
   - kube-system
+  - media
   - networking
   - security
   # - home

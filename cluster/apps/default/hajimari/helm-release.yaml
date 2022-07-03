@@ -26,6 +26,7 @@ spec:
       namespaceSelector:
         matchNames:
         - downloads
+        - kube-system
         - media
         - monitoring
         - security
