@@ -35,9 +35,8 @@ spec:
       tag: v1.27.1.5916-6b0e31a64
     env:
       TZ: "${TIMEZONE}"
-      ADVERTISE_IP: "http://${LB_PLEX_IP}:32400/"
+      ADVERTISE_IP: "http://${SVC_PLEX_ADDR}:32400/"
       ALLOWED_NETWORKS: "10.0.0.0/8,172.16.0.0/16"
-      PLEX_CLAIM: "${SECRET_PLEX_CLAIM_TOKEN}"
     service:
       main:
         type: LoadBalancer
