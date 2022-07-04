@@ -14,4 +14,4 @@ resources:
   - node-feature-discovery
   - reflector
   - reloader
-  - starboard-operator
+  - trivy-operator
