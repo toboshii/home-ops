@@ -5,38 +5,37 @@ metadata:
   name: grafana
   namespace: monitoring
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://grafana.github.io/helm-charts
       chart: grafana
-      version: 6.17.10
+      version: 6.32.0
       sourceRef:
         kind: HelmRepository
         name: grafana-charts
         namespace: flux-system
-      interval: 5m
+      interval: 15m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
-    image:
-      repository: ghcr.io/k8s-at-home/grafana
-    replicas: 1
+    replicas: 3
     env:
       GF_EXPLORE_ENABLED: true
       GF_PANELS_DISABLE_SANITIZE_HTML: true
       GF_LOG_FILTERS: rendering:debug
-      GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
       GF_DATE_FORMATS_FULL_DATE: "MMM Do, YYYY hh:mm:ss a"
-      GF_DATE_FORMATS_INTERVAL_SECOND: "hh:mm:ss a"
-      GF_DATE_FORMATS_INTERVAL_MINUTE: "hh:mm a"
-      GF_DATE_FORMATS_INTERVAL_HOUR: "DD/MM hh:mm a"
-      GF_DATE_FORMATS_INTERVAL_DAY: "DD/MM"
-      GF_DATE_FORMATS_INTERVAL_MONTH: "MM-YYYY"
-      GF_DATE_FORMATS_INTERVAL_YEAR: "YYYY"
-      VAR_BLOCKY_URL: "http://blocky.networking.svc.cluster.local:4000"
-    adminPassword: "${SECRET_GRAFANA_PASSWORD}"
+      GF_SECURITY_ALLOW_EMBEDDING: true
+      GF_SECURITY_COOKIE_SAMESITE: grafana
+    admin:
+      existingSecret: grafana-admin-creds
     grafana.ini:
       server:
-        root_url: "https://grafana.${SECRET_DOMAIN}"
+        root_url: "https://grafana.${SECRET_PUBLIC_DOMAIN}"
       paths:
         data: /var/lib/grafana/data
         logs: /var/log/grafana
@@ -81,6 +80,9 @@ spec:
         orgId: 1
       datasources.yaml:
         apiVersion: 1
+        deleteDatasources:
+          - name: Loki
+            orgId: 1
         datasources:
         - name: Prometheus
           type: prometheus
@@ -90,29 +92,9 @@ spec:
         - name: Loki
           type: loki
           access: proxy
-          url: http://loki:3100
+          url: http://loki-gateway:80
     dashboards:
       default:
-        # Ref: https://grafana.com/grafana/dashboards/12175
-        calico-felix:
-          gnetId: 12175
-          revision: 5
-          datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/2842
-        ceph-cluster:
-          gnetId: 2842
-          revision: 14
-          datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/5336
-        ceph-osd:
-          gnetId: 5336
-          revision: 5
-          datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/5342
-        ceph-pools:
-          gnetId: 5342
-          revision: 5
-          datasource: Prometheus
         # Ref: https://grafana.com/grafana/dashboards/7845
         zfs:
           gnetId: 7845
@@ -144,18 +126,9 @@ spec:
         flux-control-plane:
           url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/control-plane.json
           datasource: Prometheus
-        blocky:
-          url: https://raw.githubusercontent.com/0xERR0R/blocky/master/docs/blocky-grafana.json
-          datasource: Prometheus
         apc-smart-ups-1500:
           url: https://raw.githubusercontent.com/k8s-at-home/grafana-dashboards/main/apc-smart-ups-1500-snmp.json
           datasource: Prometheus
-        lidarr:
-          url: https://raw.githubusercontent.com/k8s-at-home/grafana-dashboards/main/lidarr.json
-        radarr:
-          url: https://raw.githubusercontent.com/k8s-at-home/grafana-dashboards/main/radarr.json
-        sonarr:
-          url: https://raw.githubusercontent.com/k8s-at-home/grafana-dashboards/main/sonarr.json
     sidecar:
       dashboards:
         enabled: true
@@ -174,16 +147,31 @@ spec:
       enabled: true
     ingress:
       enabled: true
-      ingressClassName: "traefik"
+      ingressClassName: "nginx"
       annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        nginx.ingress.kubernetes.io/affinity: "cookie"
+        nginx.ingress.kubernetes.io/session-cookie-name: "grafana"
+        nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
+        nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
       hosts:
-      - "grafana.${SECRET_DOMAIN}"
+      - &host "grafana.${SECRET_PUBLIC_DOMAIN}"
       tls:
       - hosts:
-        - "grafana.${SECRET_DOMAIN}"
+        - *host
     serviceAccount:
       create: true
       autoMount: true
     persistence:
       enabled: false
+    affinity:
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/name
+                    operator: In
+                    values:
+                      - grafana
+              topologyKey: kubernetes.io/hostname
