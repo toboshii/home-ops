@@ -35,5 +35,6 @@ resources:
   - toboshii-charts.yaml
   - traefik-charts.yaml
   - uptimerobot-operator-charts.yaml
+  - vector-charts.yaml
   - vernemq-charts.yaml
   - weaveworks-kured-charts.yaml
