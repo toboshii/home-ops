@@ -8,6 +8,7 @@ spec:
   interval: 15m
   chart:
     spec:
+      # renovate: registryUrl=https://stakater.github.io/stakater-charts
       chart: reloader
       version: v0.0.117
       sourceRef:
