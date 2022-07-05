@@ -2,26 +2,48 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: sonarr
-  namespace: downloads
+  name: &app sonarr
+  namespace: media
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: sonarr
-      version: 15.2.0
+      chart: kah-common-chart
+      version: 1.1.2
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
         namespace: flux-system
-      interval: 5m
+      interval: 15m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
+    global:
+      nameOverride: *app
     image:
       repository: ghcr.io/k8s-at-home/sonarr
-      tag: v3.0.6.1342
+      tag: v3.0.8.1507@sha256:605b635a083c6055382cd0efe729e99f6e0af7f48a35a2406892a50c2221caeb
     env:
-      TZ: "America/Chicago"
+      TZ: "${TIMEZONE}"
+      SONARR__INSTANCE_NAME: Sonarr
+      SONARR__PORT: &port 80
+      SONARR__APPLICATION_URL: "https://{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
+      SONARR__LOG_LEVEL: info
+      PUSHOVER_DEBUG: "false"
+      PUSHOVER_APP_URL: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
+    envFrom:
+      - secretRef:
+          name: *app
+    service:
+      main:
+        ports:
+          http:
+            port: *port
     ingress:
       main:
         enabled: true
@@ -30,73 +52,63 @@ spec:
           56k/forward-auth: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "television-box"
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            proxy_set_header Accept-Encoding "";
+            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_PUBLIC_DOMAIN}/css/base/sonarr/dracula.css"></head>';
+            sub_filter_once on;
         hosts:
-        - host: "sonarr.${SECRET_DOMAIN}"
-          paths:
-          - path: /
-            pathType: Prefix
+          - host: *host
+            paths:
+              - path: /
+                pathType: Prefix
         tls:
-        - hosts:
-          - "sonarr.${SECRET_DOMAIN}"
+          - hosts:
+              - *host
       api:
         enabled: true
         ingressClassName: "nginx"
         hosts:
-        - host: "sonarr.${SECRET_DOMAIN}"
-          paths:
-          - path: /api
-            pathType: Prefix
+          - host: *host
+            paths:
+              - path: /api
+                pathType: Prefix
         tls:
-        - hosts:
-          - "sonarr.${SECRET_DOMAIN}"
+          - hosts:
+              - *host
+    podSecurityContext:
+      supplementalGroups:
+        - 5600
     persistence:
       config:
         enabled: true
         existingClaim: sonarr-config-v1
-      media-franxx:
+      media:
         enabled: true
-        existingClaim: nfs-downloads-franxx-pvc
-    podSecurityContext:
-      supplementalGroups:
-      - 5600
+        type: nfs
+        server: "nas01.${SECRET_PRIVATE_DOMAIN}"
+        path: /tank/share
+        mountPath: /media
+      backup:
+        enabled: true
+        type: nfs
+        server: "nas01.${SECRET_PRIVATE_DOMAIN}"
+        path: /tank/data/backups/sonarr
+        mountPath: /config/Backups
+        readOnly: false
+      scripts:
+        enabled: true
+        type: configMap
+        name: sonarr-pushover
+        subPath: notify.sh
+        mountPath: /scripts/pushover-notify.sh
+        defaultMode: 0775
+        readOnly: true
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: sonarr-pushover
+      secret.reloader.stakater.com/reload: *app
     resources:
       requests:
-        cpu: 500m
-        memory: 1800M
+        cpu: 10m
+        memory: 250Mi
       limits:
-        memory: 2850M
-    prometheus:
-      podMonitor:
-        enabled: true
-        interval: 3m
-        scrapeTimeout: 1m30s
-    additionalContainers:
-      exportarr:
-        name: exportarr
-        image: ghcr.io/onedr0p/exportarr:v0.6.1
-        imagePullPolicy: IfNotPresent
-        args: ["exportarr", "sonarr"]
-        env:
-        - name: PORT
-          value: "32123"
-        - name: URL
-          value: "http://localhost"
-        - name: CONFIG
-          value: "/config/config.xml"
-        - name: ENABLE_UNKNOWN_QUEUE_ITEMS
-          value: "true"
-        - name: ENABLE_ADDITIONAL_METRICS
-          value: "true"
-        ports:
-        - name: exportarr
-          containerPort: 32123
-        volumeMounts:
-        - name: config
-          mountPath: /config
-          readOnly: true
-        resources:
-          requests:
-            cpu: 100m
-            memory: 60M
-          limits:
-            memory: 100M
+        memory: 2000Mi

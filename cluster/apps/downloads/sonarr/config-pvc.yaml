@@ -4,6 +4,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: sonarr-config-v1
   namespace: downloads
+  labels:
+    kasten.io/backup-volume: "enabled"
 spec:
   accessModes:
   - ReadWriteOnce
