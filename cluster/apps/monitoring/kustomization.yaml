@@ -10,6 +10,7 @@ resources:
   - loki
   - node-problem-detector
   - snmp-exporter
+  - speedtest-exporter
   - thanos
   - uptimerobot-heartbeat
   - vector

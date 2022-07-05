@@ -95,6 +95,11 @@ spec:
           url: http://loki-gateway:80
     dashboards:
       default:
+        # Ref: https://grafana.com/grafana/dashboards/7845
+        zfs:
+          gnetId: 7845
+          revision: 4
+          datasource: Prometheus
         # Ref: https://grafana.com/grafana/dashboards/13502
         minio:
           gnetId: 13502
