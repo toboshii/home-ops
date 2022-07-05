@@ -436,7 +436,7 @@ data:
           labelname: ifName
           oid: 1.3.6.1.2.1.31.1.1.1.1
           type: DisplayString
-        - name: ifAdminStatus
+      - name: ifAdminStatus
         oid: 1.3.6.1.2.1.2.2.1.7
         type: gauge
         help: The desired state of the interface - 1.3.6.1.2.1.2.2.1.7
