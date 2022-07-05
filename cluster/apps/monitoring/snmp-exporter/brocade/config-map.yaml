@@ -27,7 +27,7 @@ data:
         help: A unique value, greater than zero, for each interface - 1.3.6.1.2.1.2.2.1.1
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -50,7 +50,7 @@ data:
         help: The type of interface - 1.3.6.1.2.1.2.2.1.3
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -373,7 +373,7 @@ data:
         help: The size of the largest packet which can be sent/received on the interface, specified in octets - 1.3.6.1.2.1.2.2.1.4
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -396,7 +396,7 @@ data:
         help: An estimate of the interface's current bandwidth in bits per second - 1.3.6.1.2.1.2.2.1.5
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -419,7 +419,7 @@ data:
         help: The interface's address at its protocol sub-layer - 1.3.6.1.2.1.2.2.1.6
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -442,7 +442,7 @@ data:
         help: The desired state of the interface - 1.3.6.1.2.1.2.2.1.7
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -469,7 +469,7 @@ data:
         help: The current operational state of the interface - 1.3.6.1.2.1.2.2.1.8
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -500,7 +500,7 @@ data:
         help: The value of sysUpTime at the time the interface entered its current operational state - 1.3.6.1.2.1.2.2.1.9
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -523,7 +523,7 @@ data:
         help: The total number of octets received on the interface, including framing characters - 1.3.6.1.2.1.2.2.1.10
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -546,7 +546,7 @@ data:
         help: The number of packets, delivered by this sub-layer to a higher (sub-)layer, which were not addressed to a multicast or broadcast address at this sub-layer - 1.3.6.1.2.1.2.2.1.11
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -569,7 +569,7 @@ data:
         help: The number of packets, delivered by this sub-layer to a higher (sub-)layer, which were addressed to a multicast or broadcast address at this sub-layer - 1.3.6.1.2.1.2.2.1.12
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -592,7 +592,7 @@ data:
         help: The number of inbound packets which were chosen to be discarded even though no errors had been detected to prevent their being deliverable to a higher-layer protocol - 1.3.6.1.2.1.2.2.1.13
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -615,7 +615,7 @@ data:
         help: For packet-oriented interfaces, the number of inbound packets that contained errors preventing them from being deliverable to a higher-layer protocol - 1.3.6.1.2.1.2.2.1.14
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -638,7 +638,7 @@ data:
         help: For packet-oriented interfaces, the number of packets received via the interface which were discarded because of an unknown or unsupported protocol - 1.3.6.1.2.1.2.2.1.15
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -661,7 +661,7 @@ data:
         help: The total number of octets transmitted out of the interface, including framing characters - 1.3.6.1.2.1.2.2.1.16
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -684,7 +684,7 @@ data:
         help: The total number of packets that higher-level protocols requested be transmitted, and which were not addressed to a multicast or broadcast address at this sub-layer, including those that were discarded or not sent - 1.3.6.1.2.1.2.2.1.17
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -707,7 +707,7 @@ data:
         help: The total number of packets that higher-level protocols requested be transmitted, and which were addressed to a multicast or broadcast address at this sub-layer, including those that were discarded or not sent - 1.3.6.1.2.1.2.2.1.18
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -730,7 +730,7 @@ data:
         help: The number of outbound packets which were chosen to be discarded even though no errors had been detected to prevent their being transmitted - 1.3.6.1.2.1.2.2.1.19
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -753,7 +753,7 @@ data:
         help: For packet-oriented interfaces, the number of outbound packets that could not be transmitted because of errors - 1.3.6.1.2.1.2.2.1.20
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -776,7 +776,7 @@ data:
         help: The length of the output packet queue (in packets). - 1.3.6.1.2.1.2.2.1.21
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -799,7 +799,7 @@ data:
         help: A reference to MIB definitions specific to the particular media being used to realize the interface - 1.3.6.1.2.1.2.2.1.22
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -822,7 +822,7 @@ data:
         help: The number of packets, delivered by this sub-layer to a higher (sub-)layer, which were addressed to a multicast address at this sub-layer - 1.3.6.1.2.1.31.1.1.1.2
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -845,7 +845,7 @@ data:
         help: The number of packets, delivered by this sub-layer to a higher (sub-)layer, which were addressed to a broadcast address at this sub-layer - 1.3.6.1.2.1.31.1.1.1.3
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -868,7 +868,7 @@ data:
         help: The total number of packets that higher-level protocols requested be transmitted, and which were addressed to a multicast address at this sub-layer, including those that were discarded or not sent - 1.3.6.1.2.1.31.1.1.1.4
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -891,7 +891,7 @@ data:
         help: The total number of packets that higher-level protocols requested be transmitted, and which were addressed to a broadcast address at this sub-layer, including those that were discarded or not sent - 1.3.6.1.2.1.31.1.1.1.5
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -914,7 +914,7 @@ data:
         help: The total number of octets received on the interface, including framing characters - 1.3.6.1.2.1.31.1.1.1.6
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -937,7 +937,7 @@ data:
         help: The number of packets, delivered by this sub-layer to a higher (sub-)layer, which were not addressed to a multicast or broadcast address at this sub-layer - 1.3.6.1.2.1.31.1.1.1.7
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -960,7 +960,7 @@ data:
         help: The number of packets, delivered by this sub-layer to a higher (sub-)layer, which were addressed to a multicast address at this sub-layer - 1.3.6.1.2.1.31.1.1.1.8
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -983,7 +983,7 @@ data:
         help: The number of packets, delivered by this sub-layer to a higher (sub-)layer, which were addressed to a broadcast address at this sub-layer - 1.3.6.1.2.1.31.1.1.1.9
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -1006,7 +1006,7 @@ data:
         help: The total number of octets transmitted out of the interface, including framing characters - 1.3.6.1.2.1.31.1.1.1.10
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -1029,7 +1029,7 @@ data:
         help: The total number of packets that higher-level protocols requested be transmitted, and which were not addressed to a multicast or broadcast address at this sub-layer, including those that were discarded or not sent - 1.3.6.1.2.1.31.1.1.1.11
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -1052,7 +1052,7 @@ data:
         help: The total number of packets that higher-level protocols requested be transmitted,  and which were addressed to a multicast address at this sub-layer, including those that were discarded or not sent - 1.3.6.1.2.1.31.1.1.1.12
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -1075,7 +1075,7 @@ data:
         help: The total number of packets that higher-level protocols requested be transmitted, and which were addressed to a broadcast address at this sub-layer, including those that were discarded or not sent - 1.3.6.1.2.1.31.1.1.1.13
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -1098,7 +1098,7 @@ data:
         help: Indicates whether linkUp/linkDown traps should be generated for this interface - 1.3.6.1.2.1.31.1.1.1.14
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -1124,7 +1124,7 @@ data:
         help: An estimate of the interface's current bandwidth in units of 1,000,000 bits per second - 1.3.6.1.2.1.31.1.1.1.15
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -1147,7 +1147,7 @@ data:
         help: This object has a value of false(2) if this interface only accepts packets/frames that are addressed to this station - 1.3.6.1.2.1.31.1.1.1.16
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -1173,7 +1173,7 @@ data:
         help: This object has the value 'true(1)' if the interface sublayer has a physical connector and the value 'false(2)' otherwise. - 1.3.6.1.2.1.31.1.1.1.17
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
@@ -1199,7 +1199,7 @@ data:
         help: The value of sysUpTime on the most recent occasion at which any one or more of this interface's counters suffered a discontinuity - 1.3.6.1.2.1.31.1.1.1.19
         indexes:
         - labelname: ifIndex
-            type: gauge
+          type: gauge
         lookups:
         - labels:
             - ifIndex
