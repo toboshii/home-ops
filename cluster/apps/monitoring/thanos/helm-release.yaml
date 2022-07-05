@@ -33,7 +33,7 @@ spec:
     query:
       enabled: true
       replicaCount: 3
-      replicaLabels:
+      replicaLabel:
         - __replica__
       dnsDiscovery:
         sidecarsService: kube-prometheus-stack-thanos-discovery
