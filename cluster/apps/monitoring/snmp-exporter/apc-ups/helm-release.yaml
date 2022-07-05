@@ -39,7 +39,7 @@ spec:
       params:
         - name: apc-ups-0
           module:
-            - apc-ups
+            - apcups
           target: 10.75.10.104
       path: /snmp
       interval: 180s
