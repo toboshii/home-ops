@@ -94,7 +94,7 @@ spec:
             node: >-
               {{`{{ kubernetes.pod_node_name }}`}}
             stream: >-
-              {{`{{ kubernetes.stream }}`}}
+              {{`{{ stream }}`}}
         prometheus_sink:
           type: prometheus_exporter
           inputs:
