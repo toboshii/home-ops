@@ -56,8 +56,8 @@ spec:
           receiver: 'null'
           routes:
           - receiver: 'null'
-            match:
-              alertname: Watchdog
+            matchers:
+                - alertname =~ "InfoInhibitor|Watchdog"
           - receiver: 'discord'
             match_re:
               severity: critical|warning|error
