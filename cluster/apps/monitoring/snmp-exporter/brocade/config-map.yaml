@@ -2,11 +2,8 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: snmp-exporter-switch-0
+  name: snmp-exporter-brocade
   namespace: monitoring
-  labels:
-    app.kubernetes.io/name: snmp-exporter
-    app.kubernetes.io/instance: snmp-exporter
 data:
   snmp.yaml: |
     if_mib:
