@@ -26,8 +26,14 @@ spec:
     image:
       repository: ghcr.io/miguelndecarvalho/speedtest-exporter
       tag: v3.5.1
-    prometheus:
+    metrics:
+      enabled: true
       serviceMonitor:
-        enabled: true
         interval: 1h
         scrapeTimeout: 1m
+      prometheusRule:
+        enabled: true
+        downloadLimit: 2500
+        uploadLimit: 2500
+        pingLimit: 10
+        jitterLimit: 30
