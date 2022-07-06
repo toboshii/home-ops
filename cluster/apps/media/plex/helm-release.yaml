@@ -32,7 +32,7 @@ spec:
       nameOverride: *app
     image:
       repository: ghcr.io/k8s-at-home/plex
-      tag: v1.27.1.5916-6b0e31a64
+      tag: v1.27.2.5929-a806c5905
     env:
       TZ: "${TIMEZONE}"
       ADVERTISE_IP: "http://${SVC_PLEX_ADDR}:32400/"
