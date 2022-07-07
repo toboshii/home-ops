@@ -29,40 +29,61 @@ spec:
           slack_api_url: "${SECRET_ALERT_MANAGER_DISCORD_WEBHOOK}"
           resolve_timeout: 5m
         receivers:
-        - name: 'null'
-        - name: 'discord'
-          slack_configs:
-          - channel: '#prometheus'
-            icon_url: https://avatars3.githubusercontent.com/u/3380462
-            username: 'Prometheus'
-            send_resolved: true
-            title: |-
-              [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ if ne .CommonAnnotations.summary ""}}{{ .CommonAnnotations.summary }} {{ else if ne .CommonAnnotations.message ""}}{{ .CommonAnnotations.message }} {{ else if ne .CommonAnnotations.description ""}}{{ .CommonAnnotations.description }} {{ else }}{{ .CommonLabels.alertname }}{{ end }}
-            text: >-
-              {{ range .Alerts -}}
-                *Alert:* {{ .Annotations.title }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
-
-              {{ if ne .Annotations.summary ""}}*Summary:* {{ .Annotations.summary }} {{ else if ne .Annotations.message ""}}*Message:* {{ .Annotations.message }} {{ else if ne .Annotations.description ""}}*Description:* {{ .Annotations.description }}{{ end }}
-
-              *Details:*
-                {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
-                {{ end }}
-              {{ end }}
+          - name: 'null'
+          - name: "pushover"
+            pushover_configs:
+              - token: "${SECRET_PUSHOVER_ALERT_MANAGER_APIKEY}"
+                user_key: "${SECRET_PUSHOVER_USERKEY}"
+                send_resolved: true
+                html: true
+                priority: |-
+                  {{ if eq .Status "firing" }}1{{ else }}0{{ end }}
+                url_title: View in Alert Manager
+                title: |-
+                  [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
+                message: |-
+                  {{- range .Alerts }}
+                    {{- if ne .Labels.severity "" }}
+                      <b>Severity:</b> <i>{{ .Labels.severity }}</i>
+                    {{- else }}
+                      <b>Severity:</b> <i>N/A</i>
+                    {{- end }}
+                    {{- if ne .Annotations.description "" }}
+                      <b>Description:</b> <i>{{ .Annotations.description }}</i>
+                    {{- else if ne .Annotations.summary "" }}
+                      <b>Summary:</b> <i>{{ .Annotations.summary }}</i>
+                    {{- else if ne .Annotations.message "" }}
+                      <b>Message:</b> <i>{{ .Annotations.message }}</i>
+                    {{- else }}
+                      <b>Description:</b> <i>N/A</i>
+                    {{- end }}
+                    {{- if gt (len .Labels.SortedPairs) 0 }}
+                      <b>Details:</b>
+                      {{- range .Labels.SortedPairs }}
+                        • <b>{{ .Name }}:</b> <i>{{ .Value }}</i>
+                      {{- end }}
+                    {{- end }}
+                  {{- end }}
         route:
           group_by: ['alertname', 'job']
           group_wait: 30s
           group_interval: 5m
           repeat_interval: 6h
-          receiver: 'null'
+          receiver: 'pushover'
           routes:
-          - receiver: 'null'
-            matchers:
+            - receiver: 'null'
+              matchers:
                 - alertname =~ "InfoInhibitor|Watchdog"
-          - receiver: 'discord'
-            match_re:
-              severity: critical|warning|error
-            continue: true
+            - receiver: 'pushover'
+              matchers:
+                - severity =~ "critical|warning|error"
+              continue: true
         inhibit_rules:
+        - source_match:
+            alertname: 'InfoInhibitor'
+          target_match:
+            severity: 'info'
+          equal: ['namespace']
         - source_match:
             severity: 'critical'
           target_match:
