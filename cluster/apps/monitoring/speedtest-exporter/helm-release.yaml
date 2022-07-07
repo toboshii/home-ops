@@ -26,6 +26,9 @@ spec:
     image:
       repository: ghcr.io/miguelndecarvalho/speedtest-exporter
       tag: v3.5.1
+    env:
+      SPEEDTEST_SERVER: ${SECRET_SPEEDTEST_SERVER}
+      SPEEDTEST_CACHE_FOR: 3600
     metrics:
       enabled: true
       serviceMonitor:
