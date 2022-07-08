@@ -26,7 +26,7 @@ spec:
     global:
       nameOverride: *app
     image:
-      repository: ghcr.io/k8s-at-home/calibre-web
+      repository: linuxserver/calibre-web
       tag: version-0.6.18
     env:
       TZ: "${TIMEZONE}"
@@ -76,4 +76,8 @@ spec:
     resources:
       requests:
         memory: 256Mi
+    probes:
+      startup:
+        spec:
+          periodSeconds: 15
         
