@@ -15,13 +15,13 @@ spec:
         name: toboshii-charts
         namespace: flux-system
       interval: 5m
-    install:
-      createNamespace: true
-      remediation:
-        retries: 5
-    upgrade:
-      remediation:
-        retries: 5
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
     image:
       repository: ghcr.io/toboshii/szurubooru
