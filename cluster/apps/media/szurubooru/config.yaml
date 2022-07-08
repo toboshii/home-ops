@@ -1,0 +1,8 @@
+name: Taboobooru
+domain: "https://${SECRET_DOMAIN_3}"
+secret: "${SECRET_BOORU_SECRET}"
+debug: True
+data_url: data/
+data_dir: /data/
+database: "postgres://szurubooru:${SECRET_BOORU_POSTGRES_PASSWORD}@szurubooru-postgresql:5432/szurubooru"
+show_sql: False
