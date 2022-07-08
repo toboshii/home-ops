@@ -2,37 +2,42 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: calibre-web
+  name: &app calibre-web
   namespace: media
 spec:
   interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: calibre-web
-      version: 8.0.1
+      chart: kah-common-chart
+      version: 1.1.2
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
         namespace: flux-system
       interval: 15m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
+    global:
+      nameOverride: *app
     image:
-      repository: ghcr.io/linuxserver/calibre-web
-      tag: version-0.6.13
+      repository: ghcr.io/k8s-at-home/calibre-web
+      tag: version-0.6.18
     env:
-      TZ: "America/Chicago"
+      TZ: "${TIMEZONE}"
       PUID: 5600
       PGID: 5600
       DOCKER_MODS: "linuxserver/calibre-web:calibre"
-    persistence:
-      config:
-        enabled: true
-        existingClaim: calibre-web-config-v1
-      media:
-        enabled: true
-        existingClaim: nfs-media-franxx-pvc
-        mountPath: /data/media-franxx
+    service:
+      main:
+        ports:
+          http:
+            port: 8083
     ingress:
       main:
         enabled: true
@@ -47,16 +52,28 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "bookshelf"
         hosts:
-        - host: "books.${SECRET_PUBLIC_DOMAIN}"
-          paths:
-          - path: /
+          - host: &host "books.${SECRET_PUBLIC_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
         tls:
-        - hosts:
-          - "books.${SECRET_PUBLIC_DOMAIN}"
+          - hosts:
+              - *host
+    podSecurityContext:
+      supplementalGroups:
+        - 5600
+    persistence:
+      config:
+        enabled: true
+        existingClaim: calibre-web-config-v1
+      media:
+        enabled: true
+        type: nfs
+        server: "nas01.${SECRET_PRIVATE_DOMAIN}"
+        path: /tank/share
+        mountPath: /media
+        readOnly: true
     resources:
       requests:
         memory: 256Mi
-    probes:
-      startup:
-        spec:
-          periodSeconds: 15
+

@@ -2,30 +2,39 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: owncast
+  name: &app owncast
   namespace: media
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: owncast
-      version: 3.0.1
+      chart: kah-common-chart
+      version: 1.1.2
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
         namespace: flux-system
-      interval: 5m
+      interval: 15m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  dependsOn:
+    - name: intel-gpu-plugin
+      namespace: kube-system
+    - name: node-feature-discovery
+      namespace: kube-system
   values:
+    global:
+      nameOverride: *app
     image:
-      repository: ghcr.io/toboshii/owncast-nvenc
-      tag: 0.0.7
+      repository: gabekangas/owncast
+      tag: 0.0.11
     env:
-      TZ: "America/Chicago"
-    podSecurityContext:
-      supplementalGroups:
-      - 44
-      - 5600
+      TZ: "${TIMEZONE}"
     service:
       main:
         enabled: true
@@ -35,7 +44,7 @@ spec:
       rtmp:
         enabled: true
         type: LoadBalancer
-        loadBalancerIP: "${LB_OWNCAST_IP}"
+        loadBalancerIP: "${SVC_OWNCAST_ADDR}"
         externalTrafficPolicy: Local
         ports:
           rtmp:
@@ -46,40 +55,40 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: "traefik"
+        ingressClassName: "nginx"
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          traefik.ingress.kubernetes.io/router.middlewares: "networking-cloudflare-ips@kubernetescrd"
           external-dns/is-public: "true"
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN_2}"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_PUBLIC_DOMAIN_2}"
         hosts:
-        - host: "stream.${SECRET_DOMAIN_2}"
-          paths:
-          - path: /
-            pathType: Prefix
+          - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN_2}"
+            paths:
+              - path: /
+                pathType: Prefix
         tls:
-        - secretName: "${SECRET_DOMAIN_2/./-}-tls"
-          hosts:
-          - "stream.${SECRET_DOMAIN_2}"
+          - hosts:
+              - *host
+    podSecurityContext:
+      supplementalGroups:
+        - 44
+        - 5600
     persistence:
       config:
         enabled: true
         existingClaim: owncast-config-v1
     resources:
       requests:
-        memory: 250Mi
+        gpu.intel.com/i915: 1
         cpu: 500m
-        gpu.intel.com/i915: 1
+        memory: 250Mi
       limits:
-        memory: 2Gi
         gpu.intel.com/i915: 1
+        memory: 2000Mi
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
-          - matchExpressions:
-            - key: feature.node.kubernetes.io/custom-intel-gpu
-              operator: In
-              values:
-              - "true"
+            - matchExpressions:
+                - key: feature.node.kubernetes.io/custom-intel-gpu
+                  operator: In
+                  values:
+                    - "true"
