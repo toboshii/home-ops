@@ -2,34 +2,33 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: szurubooru
+  name: &app szurubooru
   namespace: media
 spec:
   interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://toboshii.github.io/charts
-      chart: szurubooru
+      chart: *app
       version: 1.0.1
       sourceRef:
         kind: HelmRepository
         name: toboshii-charts
         namespace: flux-system
-      interval: 15m
-  install:
-    createNamespace: true
-    remediation:
-      retries: 5
-  upgrade:
-    remediation:
-      retries: 5
+      interval: 5m
+    install:
+      createNamespace: true
+      remediation:
+        retries: 5
+    upgrade:
+      remediation:
+        retries: 5
   values:
     image:
       repository: ghcr.io/toboshii/szurubooru
       tag: 2.5-edge
       pullPolicy: Always
     env:
-      TZ: America/Chicago
+      TZ: "${TIMEZONE}"
       BACKEND_HOST: localhost
       BASE_URL: /
     szurubooru:
@@ -53,42 +52,42 @@ spec:
         annotations:
           external-dns/is-public: "true"
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN_3}"
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           hajimari.io/enable: "true"
           hajimari.io/icon: "file-image"
           hajimari.io/appName: "Booru"
         hosts:
-        - host: "${SECRET_DOMAIN_3}"
+        - host: &host "${SECRET_DOMAIN_3}"
           paths:
           - path: /
             pathType: Prefix
         tls:
         - hosts:
-          - "${SECRET_DOMAIN_3}"
+          - *host
     additionalContainers:
       server:
         name: server
         image: ghcr.io/toboshii/szurubooru-server:2.5-edge
         imagePullPolicy: Always
         env:
-        - name: TZ
-          value: America/Chicago
+          TZ: "${TIMEZONE}"
         ports:
         - name: server-http
           containerPort: 6666
           protocol: TCP
         volumeMounts:
-        - name: media-franxx
+        - name: media
           mountPath: /data
-          subPath: Images/Booru
         - name: szurubooru-settings
           mountPath: /opt/app/config.yaml
           subPath: config.yaml
     persistence:
-      media-franxx:
+      media:
         enabled: true
-        existingClaim: nfs-media-franxx-pvc
+        type: nfs
+        server: "nas01.${SECRET_PRIVATE_DOMAIN}"
+        path: /tank/share/Images/Booru
         mountPath: /data
-        subPath: Images/Booru
     podSecurityContext:
       supplementalGroups:
       - 5600
