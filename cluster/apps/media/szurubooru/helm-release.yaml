@@ -61,7 +61,8 @@ spec:
         image: ghcr.io/toboshii/szurubooru-server:2.5-edge
         imagePullPolicy: Always
         env:
-          TZ: "${TIMEZONE}"
+        - name: TZ
+          value: "${TIMEZONE}"
         ports:
         - name: server-http
           containerPort: 6666
