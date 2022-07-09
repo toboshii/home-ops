@@ -8,3 +8,5 @@ configMapGenerator:
   - name: szurubooru-settings
     files:
       - config.yaml
+generatorOptions:
+  disableNameSuffixHash: true
