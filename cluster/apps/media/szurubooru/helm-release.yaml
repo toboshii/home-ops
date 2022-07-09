@@ -23,6 +23,8 @@ spec:
     remediation:
       retries: 5
   values:
+    global:
+      nameOverride: *app
     image:
       repository: ghcr.io/toboshii/szurubooru
       tag: 2.5-edge
@@ -81,7 +83,7 @@ spec:
         subPath: "config.yaml"
         volumeSpec:
           configMap:
-            name: "{{ .Release.Name }}-settings"
+            name: "szurubooru-settings"
       media:
         enabled: true
         type: nfs
