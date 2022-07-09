@@ -8,13 +8,13 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: kah-common-chart
-      version: 1.1.2
+      chart: *app
+      version: 1.0.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: toboshii-charts
         namespace: flux-system
-      interval: 15m
+      interval: 5m
   install:
     createNamespace: true
     remediation:
@@ -23,8 +23,6 @@ spec:
     remediation:
       retries: 5
   values:
-    global:
-      nameOverride: *app
     image:
       repository: ghcr.io/toboshii/szurubooru
       tag: 2.5-edge
@@ -33,6 +31,15 @@ spec:
       TZ: "${TIMEZONE}"
       BACKEND_HOST: localhost
       BASE_URL: /
+    szurubooru:
+      name: Taboobooru
+      domain: "https://${SECRET_PUBLIC_DOMAIN_3}"
+      secret: "${SECRET_BOORU_SECRET}"
+      debug: True
+      data_url: data/
+      data_dir: /data/
+      database: "postgres://szurubooru:${SECRET_BOORU_POSTGRES_PASSWORD}@szurubooru-postgresql:5432/szurubooru"
+      show_sql: False
     service:
       main:
         ports:
@@ -63,8 +70,7 @@ spec:
         image: ghcr.io/toboshii/szurubooru-server:2.5-edge
         imagePullPolicy: Always
         env:
-        - name: TZ
-          value: "${TIMEZONE}"
+          TZ: "${TIMEZONE}"
         ports:
         - name: server-http
           containerPort: 6666
@@ -72,18 +78,10 @@ spec:
         volumeMounts:
         - name: media
           mountPath: /data
-        - name: config
+        - name: szurubooru-settings
           mountPath: /opt/app/config.yaml
           subPath: config.yaml
     persistence:
-      config:
-        enabled: true
-        type: "custom"
-        mountPath: "/opt/app/config.yaml"
-        subPath: "config.yaml"
-        volumeSpec:
-          configMap:
-            name: "szurubooru-settings"
       media:
         enabled: true
         type: nfs
