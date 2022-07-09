@@ -1,5 +1,5 @@
 name: Taboobooru
-domain: "https://${SECRET_DOMAIN_3}"
+domain: "https://${SECRET_PUBLIC_DOMAIN_3}"
 secret: "${SECRET_BOORU_SECRET}"
 debug: True
 data_url: data/
