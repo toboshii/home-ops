@@ -32,7 +32,7 @@ spec:
       nameOverride: *app
     image:
       repository: gabekangas/owncast
-      tag: 0.0.11
+      tag: 0.0.12
     env:
       TZ: "${TIMEZONE}"
     service:
