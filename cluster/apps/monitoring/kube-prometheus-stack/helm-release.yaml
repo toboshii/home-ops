@@ -151,13 +151,29 @@ spec:
     kubeApiServer:
       enabled: true
     kubeControllerManager:
-      enabled: false
+      enabled: true
+      endpoints:
+        - k8s-control01
+        - k8s-control02
+        - k8s-control03
     kubeScheduler:
-      enabled: false
+      enabled: true
+      endpoints:
+        - k8s-control01
+        - k8s-control02
+        - k8s-control03
     kubeProxy:
       enabled: false
     kubeEtcd:
-      enabled: false
+      enabled: true
+      endpoints:
+        - k8s-control01
+        - k8s-control02
+        - k8s-control03
+      service:
+        enabled: true
+        port: 2381
+        targetPort: 2381
     prometheus:
       ingress:
         enabled: true
