@@ -46,6 +46,8 @@ spec:
       mode: "dsr"
     tunnel: "disabled"
     autoDirectNodeRoutes: true
+    endpointRoutes:
+      enabled: true
     ipam:
       mode: "kubernetes"
     operator:
