@@ -29,5 +29,3 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-installation
-  patches:
-    - path: flux-patches.yaml
