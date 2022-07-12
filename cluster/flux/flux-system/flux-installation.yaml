@@ -29,5 +29,3 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-installation
-patchesStrategicMerge:
-  - flux-patches.yaml
