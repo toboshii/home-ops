@@ -30,18 +30,4 @@ spec:
     kind: GitRepository
     name: flux-installation
   patches:
-    - patch: delete
-      target:
-        kind: NetworkPolicy
-        name: allow-egress
-        namespace: flux-system
-    - patch: delete
-      target:
-        kind: NetworkPolicy
-        name: allow-scraping
-        namespace: flux-system
-    - patch: delete
-      target:
-        kind: NetworkPolicy
-        name: allow-webhooks
-        namespace: flux-system
+    - path: flux-patches.yaml
