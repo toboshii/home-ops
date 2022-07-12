@@ -3,5 +3,3 @@ kind: Kustomization
 resources:
   - flux-installation.yaml
   - flux-cluster.yaml
-patchesStrategicMerge:
-  - flux-patches.yaml
