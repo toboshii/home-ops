@@ -153,23 +153,23 @@ spec:
     kubeControllerManager:
       enabled: true
       endpoints:
-        - k8s-control01
-        - k8s-control02
-        - k8s-control03
+        - 10.75.40.20
+        - 10.75.40.21
+        - 10.75.40.22
     kubeScheduler:
       enabled: true
       endpoints:
-        - k8s-control01
-        - k8s-control02
-        - k8s-control03
+        - 10.75.40.20
+        - 10.75.40.21
+        - 10.75.40.22
     kubeProxy:
       enabled: false
     kubeEtcd:
       enabled: true
       endpoints:
-        - k8s-control01
-        - k8s-control02
-        - k8s-control03
+        - 10.75.40.20
+        - 10.75.40.21
+        - 10.75.40.22
       service:
         enabled: true
         port: 2381
