@@ -29,19 +29,4 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-installation
-  patches:
-    - patch: "$patch: delete"
-      target:
-        kind: NetworkPolicy
-        name: allow-egress
-        namespace: flux-system
-    - patch: "$patch: delete"
-      target:
-        kind: NetworkPolicy
-        name: allow-scraping
-        namespace: flux-system
-    - patch: "$patch: delete"
-      target:
-        kind: NetworkPolicy
-        name: allow-webhooks
-        namespace: flux-system
+
