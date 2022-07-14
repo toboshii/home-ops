@@ -8,6 +8,7 @@ resources:
   - bitnami-charts.yaml
   - blakeshome-charts.yaml
   - cilium-charts.yaml
+  - cloudnative-pg-charts.yaml
   - coredns-charts.yaml
   - deliveryhero-charts.yaml
   - drone-charts.yaml
