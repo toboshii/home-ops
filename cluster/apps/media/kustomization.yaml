@@ -8,5 +8,5 @@ resources:
 - jellyfin
 # - owncast
 - plex
-#- szurubooru
+- szurubooru
 - tautulli

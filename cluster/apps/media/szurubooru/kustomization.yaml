@@ -4,9 +4,9 @@ kind: Kustomization
 namespace: media
 resources:
   - helm-release.yaml
-# configMapGenerator:
-#   - name: szurubooru-settings
-#     files:
-#       - config.yaml
-# generatorOptions:
-#   disableNameSuffixHash: true
+configMapGenerator:
+  - name: szurubooru-settings
+    files:
+      - config.yaml
+generatorOptions:
+  disableNameSuffixHash: true
