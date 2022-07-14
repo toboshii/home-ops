@@ -5,4 +5,4 @@ namespace: database
 
 resources:
   - helm-release.yaml
-  - clusters
+  #- clusters
