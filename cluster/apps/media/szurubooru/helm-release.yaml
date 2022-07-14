@@ -8,13 +8,13 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: *app
-      version: 1.0.1
+      chart: kah-common-chart
+      version: 1.1.2
       sourceRef:
         kind: HelmRepository
-        name: toboshii-charts
+        name: k8s-at-home-charts
         namespace: flux-system
-      interval: 5m
+      interval: 15m
   install:
     createNamespace: true
     remediation:
@@ -23,23 +23,31 @@ spec:
     remediation:
       retries: 5
   values:
+    global:
+      nameOverride: *app
     image:
       repository: ghcr.io/toboshii/szurubooru
       tag: 2.5-edge
       pullPolicy: Always
+    initContainers:
+      wait-for-db:
+        image: ghcr.io/patrickdappollonio/wait-for:v1.0.0
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: POSTGRES_HOST
+            valueFrom:
+              secretKeyRef:
+                name: database-szurubooru-user
+                key: HOST
+        command:
+          - /wait-for
+        args:
+          - --host="$(POSTGRES_HOST):5432"
+          - --verbose
     env:
       TZ: "${TIMEZONE}"
       BACKEND_HOST: localhost
       BASE_URL: /
-    szurubooru:
-      name: Taboobooru
-      domain: "https://${SECRET_PUBLIC_DOMAIN_3}"
-      secret: "${SECRET_BOORU_SECRET}"
-      debug: True
-      data_url: data/
-      data_dir: /data/
-      database: "postgres://szurubooru:${SECRET_BOORU_POSTGRES_PASSWORD}@szurubooru-postgresql:5432/szurubooru"
-      show_sql: False
     service:
       main:
         ports:
@@ -70,7 +78,13 @@ spec:
         image: ghcr.io/toboshii/szurubooru-server:2.5-edge
         imagePullPolicy: Always
         env:
-          TZ: "${TIMEZONE}"
+        - name: TZ
+          value: "${TIMEZONE}"
+        - name: POSTGRES_URL
+          valueFrom:
+            secretKeyRef:
+              name: database-szurubooru-user
+              key: POSTGRES_URL
         ports:
         - name: server-http
           containerPort: 6666
@@ -78,10 +92,18 @@ spec:
         volumeMounts:
         - name: media
           mountPath: /data
-        - name: szurubooru-settings
+        - name: config
           mountPath: /opt/app/config.yaml
           subPath: config.yaml
     persistence:
+      config:
+        enabled: true
+        type: "custom"
+        mountPath: "/opt/app/config.yaml"
+        subPath: "config.yaml"
+        volumeSpec:
+          configMap:
+            name: "szurubooru-settings"
       media:
         enabled: true
         type: nfs
@@ -91,14 +113,3 @@ spec:
     podSecurityContext:
       supplementalGroups:
       - 5600
-    postgresql:
-      enabled: true
-      postgresqlUsername: szurubooru
-      postgresqlPassword: "${SECRET_BOORU_POSTGRES_PASSWORD}"
-      postgresqlDatabase: szurubooru
-      persistence:
-        enabled: true
-        storageClass: ceph-block
-        accessModes:
-        - ReadWriteOnce
-        size: 5Gi
