@@ -29,4 +29,22 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-installation
-
+  patchesStrategicMerge:
+    - $patch: delete
+      apiVersion: networking.k8s.io/v1
+      kind: NetworkPolicy
+      metadata:
+        name: allow-egress
+        namespace: flux-system
+    - $patch: delete
+      apiVersion: networking.k8s.io/v1
+      kind: NetworkPolicy
+      metadata:
+        name: allow-scraping
+        namespace: flux-system
+    - $patch: delete
+      apiVersion: networking.k8s.io/v1
+      kind: NetworkPolicy
+      metadata:
+        name: allow-webhooks
+        namespace: flux-system
