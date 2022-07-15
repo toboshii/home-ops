@@ -29,22 +29,8 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-installation
-  patchesStrategicMerge:
-    - apiVersion: networking.k8s.io/v1
-      kind: NetworkPolicy
-      metadata:
-        name: allow-egress
-        namespace: flux-system
-      spec: {}
-    - apiVersion: networking.k8s.io/v1
-      kind: NetworkPolicy
-      metadata:
-        name: allow-scraping
-        namespace: flux-system
-      spec: {}
-    - apiVersion: networking.k8s.io/v1
-      kind: NetworkPolicy
-      metadata:
-        name: allow-webhooks
-        namespace: flux-system
-      spec: {}
+  patches:
+    - $patch: delete    
+      target:
+        kind: NetworkPolicy
+        labelSelector: "app.kubernetes.io/part-of=flux"
