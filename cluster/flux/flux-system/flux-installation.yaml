@@ -33,7 +33,7 @@ spec:
     - patch: |
         - op: replace
           path: /spec
-          value: ~
+          value: {}
       target:
         kind: NetworkPolicy
         labelSelector: "app.kubernetes.io/part-of=flux"
