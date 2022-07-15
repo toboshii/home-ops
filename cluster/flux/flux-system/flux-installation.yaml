@@ -30,10 +30,10 @@ spec:
     kind: GitRepository
     name: flux-installation
   patches:
-    - patch: |-
-        apiVersion: networking.k8s.io/v1
-        kind: NetworkPolicy
-        $patch: delete
+    - patch: |
+        - op: replace
+          path: /spec
+          value: ~
       target:
         kind: NetworkPolicy
         labelSelector: "app.kubernetes.io/part-of=flux"
