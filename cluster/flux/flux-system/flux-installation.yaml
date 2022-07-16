@@ -29,11 +29,3 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-installation
-  patches:
-    - patch: |
-        - op: replace
-          path: /spec
-          value: {}
-      target:
-        kind: NetworkPolicy
-        labelSelector: "app.kubernetes.io/part-of=flux"
