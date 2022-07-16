@@ -226,7 +226,7 @@ spec:
                 requests:
                   storage: 10Gi
         thanos:
-          image: quay.io/thanos/thanos:v0.26.0
+          image: quay.io/thanos/thanos:v0.27.0
           # renovate: datasource=docker depName=quay.io/thanos/thanos
           version: "v0.26.0"
           objectStorageConfig:
