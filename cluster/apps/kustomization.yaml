@@ -11,15 +11,4 @@ resources:
   - monitoring
   - networking
   - security
-  # - home
-  # - backup-system
-  # - downloads
-  # - ext-gateway
-  # - falco-system
-  # - kube-system
-  # - mail
-  # - media
-  # - monitoring
-  # - networking
-  # - security
-  # - vpn-gateway
+  - vpn-gateway

@@ -1,0 +1,7 @@
+charts/
+docs/
+.private/
+.terraform/
+.vscode/
+*.sops.*
+talos/cni/install.yaml

@@ -1,3 +1,4 @@
+---
 clusterName: cluster01
 talosVersion: v1.1.0
 kubernetesVersion: v1.24.2
@@ -9,7 +10,7 @@ clusterSvcNets:
 cniConfig:
   name: custom
   urls:
-    - https://gist.githubusercontent.com/toboshii/72d5570d8a7a6a9f4daf8a2162d07ee9/raw/6225cb24b8905a145e39438babadce771eb9e4ed/install.yaml
+    - https://raw.githubusercontent.com/toboshii/home-ops/main/talos/cni/install.yaml
 nodes:
   - hostname: k8s-control01.${domainName}
     ipAddress: 10.75.40.20
@@ -107,6 +108,7 @@ controlPlane:
         key: ${clusterCertKey}
       controllerManager:
         extraArgs:
+          bind-address: 0.0.0.0
           feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
       discovery:
         registries:
@@ -116,6 +118,8 @@ controlPlane:
         ca:
           crt: ${etcdCert}
           key: ${etcdCertKey}
+        extraArgs:
+          listen-metrics-urls: http://0.0.0.0:2381
       extraManifests:
         - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/v0.5.1/deploy/ha-install.yaml
       proxy:
@@ -124,6 +128,7 @@ controlPlane:
           feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
       scheduler:
         extraArgs:
+          bind-address: 0.0.0.0
           feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
       secret: ${clusterSecret}
       serviceAccount:
@@ -157,9 +162,9 @@ controlPlane:
             ip: ${clusterEndpointIP}
       registries:
         mirrors:
-            docker.io:
-              endpoints:
-                - http://nas01.dfw.56k.sh:5000
+          docker.io:
+            endpoints:
+              - http://nas01.dfw.56k.sh:5000
       time:
         disabled: false
         servers:
@@ -209,9 +214,9 @@ worker:
         fs.inotify.max_user_watches: "1048576"
       registries:
         mirrors:
-            docker.io:
-              endpoints:
-                - http://nas01.dfw.56k.sh:5000
+          docker.io:
+            endpoints:
+              - http://nas01.dfw.56k.sh:5000
       time:
         disabled: false
         servers:

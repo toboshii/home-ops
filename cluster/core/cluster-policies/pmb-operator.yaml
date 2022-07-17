@@ -1,0 +1,107 @@
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: pmb-operator
+  annotations:
+    policies.kyverno.io/title: pmb-operator
+    policies.kyverno.io/subject: Deployment
+    policies.kyverno.io/description: >-
+      This policy generates a backup CronJob for Deployments
+      with the 'pmb.home.arpa/backup-claim' label
+spec:
+  generateExistingOnPolicyUpdate: true
+  mutateExistingOnPolicyUpdate: true
+  rules:
+    - name: create-cronjob
+      match:
+        any:
+          - resources:
+              kinds:
+                - Deployment
+              selector:
+                matchLabels:
+                  pmb.home.arpa/backup-claim: "*"
+      context:
+        - name: appName
+          variable:
+            jmesPath: request.object.metadata.name
+        - name: claimName
+          variable:
+            jmesPath: request.object.metadata.labels."pmb.home.arpa/backup-claim"
+      generate:
+        synchronize: true
+        apiVersion: batch/v1
+        kind: CronJob
+        name: "{{ appName }}-backup"
+        namespace: "{{ request.object.metadata.namespace }}"
+        data:
+          metadata:
+            ownerReferences:
+              - apiVersion: "{{ request.object.apiVersion }}"
+                kind: "{{ request.object.kind }}"
+                name: "{{ request.object.metadata.name }}"
+                uid: "{{ request.object.metadata.uid }}"
+          spec:
+            schedule: "0 3 * * *"
+            suspend: false
+            concurrencyPolicy: Forbid
+            successfulJobsHistoryLimit: 1
+            failedJobsHistoryLimit: 2
+            jobTemplate:
+              spec:
+                ttlSecondsAfterFinished: 86400
+                template:
+                  spec:
+                    automountServiceAccountToken: false
+                    restartPolicy: OnFailure
+                    # Stagger jobs to run randomly within X seconds to avoid bringing down all apps at once
+                    initContainers:
+                      - name: wait
+                        image: ghcr.io/onedr0p/alpine:3.16.0@sha256:e2d3ff4b577f9a3740f2fa4d1f129b83c04a4af0160311d2bb854e71bd56d980
+                        command: ["/scripts/sleep.sh"]
+                        args: ["1", "900"]
+                    containers:
+                      - name: backup
+                        image: ghcr.io/onedr0p/kopia:0.11.3@sha256:db13525a2779b77e4c1db2e14470a369a2c8c9ebac575706c1141f0a786c7f62
+                        env:
+                          - name: KOPIA_CACHE_DIRECTORY
+                            value: /data/backups/{{ appName }}/cache
+                          - name: KOPIA_LOG_DIR
+                            value: /data/backups/{{ appName }}/logs
+                          - name: KOPIA_PASSWORD
+                            value: "none"
+                        command:
+                          - /bin/bash
+                          - -c
+                          - |-
+                            printf "\e[1;32m%-6s\e[m\n" "[01/09] Create repo ..."          && [[ ! -f /data/backups/kopia.repository.f ]] && kopia repository create filesystem --path=/data/backups
+                            printf "\e[1;32m%-6s\e[m\n" "[02/09] Connect to repo ..."      && kopia repo connect filesystem --path=/data/backups --override-hostname=cluster --override-username=root
+                            printf "\e[1;32m%-6s\e[m\n" "[03/09] Set policies ..."         && kopia policy set /{{ appName }} --compression=zstd --keep-latest 14 --keep-hourly 0 --keep-daily 7 --keep-weekly 2 --keep-monthly 0 --keep-annual 0
+                            printf "\e[1;32m%-6s\e[m\n" "[04/09] Freeze config vol ..."    && fsfreeze -f /{{ appName }}
+                            printf "\e[1;32m%-6s\e[m\n" "[05/09] Back up config vol ..."   && kopia snap create /{{ appName }}
+                            printf "\e[1;32m%-6s\e[m\n" "[06/09] Unfreeze config vol ..."  && fsfreeze -u /{{ appName }}
+                            printf "\e[1;32m%-6s\e[m\n" "[07/09] List snaps ..."           && kopia snap list /{{ appName }}
+                            printf "\e[1;32m%-6s\e[m\n" "[08/09] Show stats ..."           && kopia content stats
+                            printf "\e[1;32m%-6s\e[m\n" "[09/09] Disconnect from repo ..." && kopia repo disconnect
+                        volumeMounts:
+                          - name: config
+                            mountPath: "/{{ appName }}"
+                          - name: backups
+                            mountPath: /data/backups
+                        securityContext:
+                          privileged: true
+                    volumes:
+                      - name: config
+                        persistentVolumeClaim:
+                          claimName: "{{ claimName }}"
+                      - name: backups
+                        nfs:
+                          server: "nas01.${SECRET_PRIVATE_DOMAIN}"
+                          path: /tank/data/backups/kopia
+                    affinity:
+                      podAffinity:
+                        requiredDuringSchedulingIgnoredDuringExecution:
+                          - labelSelector:
+                              matchExpressions: "{{ items(request.object.spec.selector.matchLabels, 'key', 'value')[].{key: key, operator: 'In', values: [value] } }}"
+                            topologyKey: kubernetes.io/hostname

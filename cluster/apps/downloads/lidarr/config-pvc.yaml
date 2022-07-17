@@ -4,9 +4,13 @@ kind: PersistentVolumeClaim
 metadata:
   name: lidarr-config-v1
   namespace: downloads
+  labels:
+    app.kubernetes.io/name: &name lidarr
+    app.kubernetes.io/instance: *name
+    pmb.home.arpa/backup: "true"
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 10Gi

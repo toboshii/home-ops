@@ -1,0 +1,41 @@
+---
+name: Schedule - Cloudflare Proxied Networks Update
+
+on: # yamllint disable-line rule:truthy
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
+
+env:
+  CLOUDFLARE_PROXIED_NETWORKS_FILE: >-
+    cluster/apps/networking/ingress-nginx/cloudflare-proxied-networks.txt
+
+jobs:
+  cloudflare-proxied-networks-update:
+    name: Cloudflare Proxied Networks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Generate Token
+        uses: tibdex/github-app-token@v1
+        id: generate-token
+        with:
+          app_id: "${{ secrets.BOT_APP_ID }}"
+          private_key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+      - name: Cloudflare Proxied Networks
+        run: |
+          bash ./.github/scripts/cloudflare-proxied-networks.sh > ${{ env.CLOUDFLARE_PROXIED_NETWORKS_FILE }}
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: "${{ steps.generate-token.outputs.token }}"
+          branch: github-action/update-cloudflare-proxied-networks
+          delete-branch: true
+          title: "chore(github-action): update cloudflare proxied networks"
+          signoff: true
+          commit-message: "chore(github-action): update cloudflare proxied networks"
+          body: |
+            Update cloudflare proxy networks configmap from https://www.cloudflare.com/ips/
+          labels: |
+            renovate/github-action

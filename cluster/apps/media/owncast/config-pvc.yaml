@@ -4,9 +4,13 @@ kind: PersistentVolumeClaim
 metadata:
   name: owncast-config-v1
   namespace: media
+  labels:
+    app.kubernetes.io/name: &name owncast
+    app.kubernetes.io/instance: *name
+    pmb.home.arpa/backup: "true"
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 5Gi

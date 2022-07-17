@@ -9,18 +9,18 @@ metadata:
   namespace: monitoring
 spec:
   groups:
-  - name: ups.rules
-    rules:
-    - alert: UPSOnBattery
-      annotations:
-        summary: ZPM {{$labels.instance}} is running on batteries
+    - name: ups.rules
+      rules:
+        - alert: UPSOnBattery
+          annotations:
+            summary: ZPM {{$labels.instance}} is running on batteries
               and has less than 20 minutes of battery left
-      expr: |
+          expr: |
             (
               upsAdvBatteryRunTimeRemaining/60/100 <= 20
             and
               upsBasicBatteryTimeOnBattery > 0
             )
-      for: 1m
-      labels:
-        severity: critical
+          for: 1m
+          labels:
+            severity: critical

@@ -1,0 +1,21 @@
+---
+- name: container-runtime | add apt key
+  ansible.builtin.apt_key:
+    url: https://nvidia.github.io/nvidia-container-runtime/gpgkey
+    state: present
+
+- name: container-runtime | add apt repos
+  ansible.builtin.apt_repository:
+    repo: "{{ item }}"
+    state: present
+    mode: 0644
+    update_cache: true
+    filename: nvidia-container-runtime
+  with_items:
+    - "deb https://nvidia.github.io/libnvidia-container/stable/{{ ansible_distribution | lower }}{{ ansible_distribution_version }}/$(ARCH) /"
+    - "deb https://nvidia.github.io/nvidia-container-runtime/stable/{{ ansible_distribution | lower }}{{ ansible_distribution_version }}/$(ARCH) /"
+
+- name: container-runtime | install nvidia-container-runtime
+  ansible.builtin.apt:
+    name: "nvidia-container-runtime"
+    state: present

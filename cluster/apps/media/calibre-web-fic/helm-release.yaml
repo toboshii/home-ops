@@ -25,6 +25,9 @@ spec:
   values:
     global:
       nameOverride: *app
+    controller:
+      labels:
+        pmb.home.arpa/backup-claim: &claimName "calibre-web-fic-config-v1"
     image:
       repository: linuxserver/calibre-web
       tag: version-0.6.18
@@ -60,12 +63,16 @@ spec:
           - hosts:
               - *host
     podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
       supplementalGroups:
         - 5600
     persistence:
       config:
         enabled: true
-        existingClaim: calibre-web-fic-config-v1
+        existingClaim: *claimName
       media:
         enabled: true
         type: nfs
@@ -80,4 +87,3 @@ spec:
       startup:
         spec:
           periodSeconds: 15
-        

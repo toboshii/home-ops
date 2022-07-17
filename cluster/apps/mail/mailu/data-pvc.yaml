@@ -6,7 +6,7 @@ metadata:
   namespace: mail
 spec:
   accessModes:
-  - ReadWriteMany
+    - ReadWriteMany
   resources:
     requests:
       storage: 50Gi

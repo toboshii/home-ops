@@ -30,6 +30,9 @@ spec:
   values:
     global:
       nameOverride: *app
+    controller:
+      labels:
+        pmb.home.arpa/backup-claim: &claimName "owncast-config-v1"
     image:
       repository: gabekangas/owncast
       tag: 0.0.11
@@ -68,13 +71,17 @@ spec:
           - hosts:
               - *host
     podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
       supplementalGroups:
         - 44
         - 5600
     persistence:
       config:
         enabled: true
-        existingClaim: owncast-config-v1
+        existingClaim: *claimName
     resources:
       requests:
         gpu.intel.com/i915: 1

@@ -44,4 +44,3 @@ data:
               category: logs
             annotations:
               summary: "{{ $labels.app }} is experiencing malformed database disk image issues"
-

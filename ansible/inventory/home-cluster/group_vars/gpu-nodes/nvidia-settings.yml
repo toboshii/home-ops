@@ -1,0 +1,9 @@
+---
+
+nvidia_driver:
+  version: "465.27"
+  checksum: "sha256:7e69ffa85bdee6aaaa6b6ea7e1db283b0199f9ab21e41a27dc9048f249dc3171"
+
+nvidia_patch:
+  version: "d5d564b888aaef99fdd45e23f2fc3eae8e337a39"
+  checksum: "sha256:d80928c381d141734c13463d69bfaecff77ac66ee6f9036b2f0348b8602989d8"

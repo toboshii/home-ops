@@ -4,9 +4,13 @@ kind: PersistentVolumeClaim
 metadata:
   name: sabnzbd-config-v1
   namespace: downloads
+  labels:
+    app.kubernetes.io/name: &name sabnzbd
+    app.kubernetes.io/instance: *name
+    pmb.home.arpa/backup: "true"
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi

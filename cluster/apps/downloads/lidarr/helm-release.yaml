@@ -2,99 +2,99 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: lidarr
+  name: &app lidarr
   namespace: downloads
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: lidarr
-      version: 13.1.0
+      chart: kah-common-chart
+      version: 1.1.2
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
         namespace: flux-system
-      interval: 5m
+      interval: 15m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
+    global:
+      nameOverride: *app
+    controller:
+      labels:
+        pmb.home.arpa/backup-claim: &claimName "lidarr-config-v1"
     image:
-      repository: ghcr.io/k8s-at-home/lidarr
-      tag: v1.0.0.2255
+      repository: ghcr.io/onedr0p/lidarr
+      tag: 1.0.2.2592@sha256:bc8b15eca2f4982f06d145b559d670f2a89f8361355320451593b2298ba9f023
     env:
-      TZ: "America/Chicago"
+      TZ: "${TIMEZONE}"
+      LIDARR__INSTANCE_NAME: Lidarr
+      LIDARR__PORT: &port 80
+      LIDARR__BRANCH: master
+      LIDARR__LOG_LEVEL: info
+    envFrom:
+      - secretRef:
+          name: *app
+    service:
+      main:
+        ports:
+          http:
+            port: *port
     ingress:
       main:
         enabled: true
-        ingressClassName: "traefik"
+        ingressClassName: "nginx"
         annotations:
-          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
-          hajimari.io/enable: "true"
+          56k/forward-auth: "true"
           hajimari.io/icon: "music-box"
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            proxy_set_header Accept-Encoding "";
+            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_PUBLIC_DOMAIN}/css/base/lidarr/dracula.css"></head>';
+            sub_filter_once on;
         hosts:
-        - host: "lidarr.${SECRET_DOMAIN}"
-          paths:
-          - path: /
-            pathType: Prefix
+          - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
         tls:
-        - hosts:
-          - "lidarr.${SECRET_DOMAIN}"
+          - hosts:
+              - *host
       api:
         enabled: true
-        ingressClassName: "traefik"
-        annotations:
-          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
+        ingressClassName: "nginx"
         hosts:
-        - host: "lidarr.${SECRET_DOMAIN}"
-          paths:
-          - path: /api
-            pathType: Prefix
+          - host: *host
+            paths:
+              - path: /api
+                pathType: Prefix
         tls:
-        - hosts:
-          - "lidarr.${SECRET_DOMAIN}"
+          - hosts:
+              - *host
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
+      supplementalGroups:
+        - 5600
     persistence:
       config:
         enabled: true
-        existingClaim: lidarr-config-v1
-      media-franxx:
+        existingClaim: *claimName
+      media:
         enabled: true
-        existingClaim: nfs-downloads-franxx-pvc
-    podSecurityContext:
-      supplementalGroups:
-      - 100
+        type: nfs
+        server: "nas01.${SECRET_PRIVATE_DOMAIN}"
+        path: /tank/share
+        mountPath: /media
     resources:
       requests:
-        memory: 650Mi
-        cpu: 1000m
+        cpu: 10m
+        memory: 250Mi
       limits:
-        memory: 1500Mi
-    prometheus:
-      podMonitor:
-        enabled: true
-        interval: 3m
-        scrapeTimeout: 1m30s
-    additionalContainers:
-      exportarr:
-        name: exportarr
-        image: ghcr.io/onedr0p/exportarr:v0.6.1
-        imagePullPolicy: IfNotPresent
-        args: ["exportarr", "lidarr"]
-        env:
-        - name: PORT
-          value: "32123"
-        - name: URL
-          value: "http://localhost"
-        - name: CONFIG
-          value: "/config/config.xml"
-        - name: ENABLE_UNKNOWN_QUEUE_ITEMS
-          value: "true"
-        - name: ENABLE_ADDITIONAL_METRICS
-          value: "false"
-        ports:
-        - name: exportarr
-          containerPort: 32123
-        volumeMounts:
-        - name: config
-          mountPath: /config
-          readOnly: true
+        memory: 2000Mi

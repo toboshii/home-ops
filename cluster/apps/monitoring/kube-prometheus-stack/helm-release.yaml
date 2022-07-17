@@ -29,7 +29,7 @@ spec:
           slack_api_url: "${SECRET_ALERT_MANAGER_DISCORD_WEBHOOK}"
           resolve_timeout: 5m
         receivers:
-          - name: 'null'
+          - name: "null"
           - name: "pushover"
             pushover_configs:
               - token: "${SECRET_PUSHOVER_ALERT_MANAGER_APIKEY}"
@@ -65,30 +65,30 @@ spec:
                     {{- end }}
                   {{- end }}
         route:
-          group_by: ['alertname', 'job']
+          group_by: ["alertname", "job"]
           group_wait: 30s
           group_interval: 5m
           repeat_interval: 6h
-          receiver: 'pushover'
+          receiver: "pushover"
           routes:
-            - receiver: 'null'
+            - receiver: "null"
               matchers:
                 - alertname =~ "InfoInhibitor|Watchdog"
-            - receiver: 'pushover'
+            - receiver: "pushover"
               matchers:
                 - severity =~ "critical|warning|error"
               continue: true
         inhibit_rules:
-        - source_match:
-            alertname: 'InfoInhibitor'
-          target_match:
-            severity: 'info'
-          equal: ['namespace']
-        - source_match:
-            severity: 'critical'
-          target_match:
-            severity: 'warning'
-          equal: ['alertname', 'namespace']
+          - source_match:
+              alertname: "InfoInhibitor"
+            target_match:
+              severity: "info"
+            equal: ["namespace"]
+          - source_match:
+              severity: "critical"
+            target_match:
+              severity: "warning"
+            equal: ["alertname", "namespace"]
       ingress:
         enabled: true
         pathType: Prefix
@@ -96,10 +96,10 @@ spec:
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
-        - &host "alert-manager.${SECRET_PUBLIC_DOMAIN}"
+          - &host "alert-manager.${SECRET_PUBLIC_DOMAIN}"
         tls:
-        - hosts:
-          - *host
+          - hosts:
+              - *host
       alertmanagerSpec:
         replicas: 3
         podAntiAffinity: hard
@@ -113,12 +113,12 @@ spec:
     nodeExporter:
       serviceMonitor:
         relabelings:
-        - action: replace
-          regex: (.*)
-          replacement: $1
-          sourceLabels:
-          - __meta_kubernetes_pod_node_name
-          targetLabel: kubernetes_node
+          - action: replace
+            regex: (.*)
+            replacement: $1
+            sourceLabels:
+              - __meta_kubernetes_pod_node_name
+            targetLabel: kubernetes_node
     kube-state-metrics:
       metricLabelsAllowlist:
         - "persistentvolumeclaims=[*]"
@@ -144,10 +144,10 @@ spec:
       enabled: true
       serviceMonitor:
         metricRelabelings:
-        - action: replace
-          sourceLabels:
-          - node
-          targetLabel: instance
+          - action: replace
+            sourceLabels:
+              - node
+            targetLabel: instance
     kubeApiServer:
       enabled: true
     kubeControllerManager:
@@ -180,10 +180,10 @@ spec:
         pathType: Prefix
         ingressClassName: "nginx"
         hosts:
-        - &host "prometheus.${SECRET_DOMAIN}"
+          - &host "prometheus.${SECRET_DOMAIN}"
         tls:
-        - hosts:
-          - *host
+          - hosts:
+              - *host
       thanosService:
         enabled: true
       thanosServiceMonitor:
@@ -233,28 +233,28 @@ spec:
             name: thanos-objstore-secret
             key: objstore.yml
         additionalScrapeConfigs:
-        - job_name: 'node-exporter'
-          scrape_interval: 1m
-          scrape_timeout: 10s
-          honor_timestamps: true
-          static_configs:
-          - targets:
-            # # opnsense
-            # - 10.75.1.1:9100
-            # franxx nas
-            - 10.75.30.15:9100
-        - job_name: 'minio-job'
-          scrape_interval: 1m
-          scrape_timeout: 10s
-          honor_timestamps: true
-          metrics_path: /minio/v2/metrics/cluster
-          static_configs:
-          - targets:
-            - 10.75.30.15:9000
-        - job_name: "coredns"
-          scrape_interval: 1m
-          scrape_timeout: 10s
-          honor_timestamps: true
-          static_configs:
-          - targets:
-            - "${GATEWAY_IP}:9153"
+          - job_name: "node-exporter"
+            scrape_interval: 1m
+            scrape_timeout: 10s
+            honor_timestamps: true
+            static_configs:
+              - targets:
+                  # # opnsense
+                  # - 10.75.1.1:9100
+                  # franxx nas
+                  - 10.75.30.15:9100
+          - job_name: "minio-job"
+            scrape_interval: 1m
+            scrape_timeout: 10s
+            honor_timestamps: true
+            metrics_path: /minio/v2/metrics/cluster
+            static_configs:
+              - targets:
+                  - 10.75.30.15:9000
+          - job_name: "coredns"
+            scrape_interval: 1m
+            scrape_timeout: 10s
+            honor_timestamps: true
+            static_configs:
+              - targets:
+                  - "${GATEWAY_IP}:9153"
