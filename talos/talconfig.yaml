@@ -141,6 +141,13 @@ controlPlane:
       certSANs:
         - ${clusterEndpointIP}
         - cluster01.${domainName}
+      files:
+        - content: |
+            [plugins."io.containerd.grpc.v1.cri"]
+              enable_unprivileged_ports = true
+              enable_unprivileged_icmp = true
+          path: /var/cri/conf.d/allow-unpriv-ports.toml
+          op: create
       install:
         extraKernelArgs:
           - talos.logging.kernel=udp://10.75.45.102:6050/
@@ -190,6 +197,13 @@ worker:
       certSANs:
         - ${clusterEndpointIP}
         - cluster01.${domainName}
+      files:
+        - content: |
+            [plugins."io.containerd.grpc.v1.cri"]
+              enable_unprivileged_ports = true
+              enable_unprivileged_icmp = true
+          path: /var/cri/conf.d/allow-unpriv-ports.toml
+          op: create
       install:
         extraKernelArgs:
           - talos.logging.kernel=udp://10.75.45.102:6050/
