@@ -41,10 +41,6 @@ spec:
       [global]
       bdev_enable_discard = true
       bdev_async_discard = true
-      public network =  10.75.42.0/24
-      cluster network = 10.75.42.0/24
-      public addr = ""
-      cluster addr = ""
     cephClusterSpec:
       network:
         provider: host
@@ -62,13 +58,13 @@ spec:
         nodes:
           - name: "k8s-worker01"
             devices:
-              - name: "nvme0n1"
+              - name: "/dev/disk/by-id/nvme-SHGP31-1000GM-2_AS0AN94711030AU4H"
           - name: "k8s-worker02"
             devices:
-              - name: "nvme0n1"
+              - name: "/dev/disk/by-id/nvme-SHGP31-1000GM-2_AS0AN94711030AU4H"
           - name: "k8s-worker03"
             devices:
-              - name: "nvme0n1"
+              - name: "/dev/disk/by-id/nvme-SHGP31-1000GM-2_AS0AN94711030AU4H"
       resources:
         mgr:
           limits:

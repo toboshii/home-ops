@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-shell-HOSTNAME
+  namespace: kube-system
+spec:
+  nodeName: HOSTNAME
+  terminationGracePeriodSeconds: 5
+  containers:
+    - name: shell
+      image: ubuntu
+      tty: true
+      stdin: true
+      securityContext:
+        privileged: true

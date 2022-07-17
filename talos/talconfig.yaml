@@ -45,51 +45,21 @@ nodes:
     installDisk: /dev/sda
     networkInterfaces:
       - interface: eth0
-        mtu: 9000
-        vlans:
-          - vlanId: 40
-            dhcp: true
-            mtu: 1500
-          - addresses:
-              - 10.75.42.30/24
-            dhcp: false
-            vlanId: 42
-            mtu: 9000
-        dhcp: false
+        dhcp: true
   - hostname: k8s-worker02.${domainName}
     ipAddress: 10.75.40.31
     controlPlane: false
     installDisk: /dev/sda
     networkInterfaces:
       - interface: eth0
-        mtu: 9000
-        vlans:
-          - vlanId: 40
-            dhcp: true
-            mtu: 1500
-          - addresses:
-              - 10.75.42.31/24
-            dhcp: false
-            vlanId: 42
-            mtu: 9000
-        dhcp: false
+        dhcp: true
   - hostname: k8s-worker03.${domainName}
     ipAddress: 10.75.40.32
     controlPlane: false
     installDisk: /dev/sda
     networkInterfaces:
       - interface: eth0
-        mtu: 9000
-        vlans:
-          - vlanId: 40
-            dhcp: true
-            mtu: 1500
-          - addresses:
-              - 10.75.42.32/24
-            dhcp: false
-            vlanId: 42
-            mtu: 9000
-        dhcp: false
+        dhcp: true
 controlPlane:
   inlinePatch:
     cluster:
