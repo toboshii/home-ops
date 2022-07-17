@@ -1,0 +1,17 @@
+---
+
+- include: driver.yml
+  tags:
+  - driver
+
+- include: patch.yml
+  tags:
+  - patch
+
+- include: container-runtime.yml
+  tags:
+  - container-runtime
+
+- include: k3s-agent.yml
+  tags:
+  - k3s-agent

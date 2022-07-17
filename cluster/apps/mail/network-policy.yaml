@@ -7,15 +7,15 @@ metadata:
 spec:
   podSelector: {}
   ingress:
-  - from:
-    # Only allow ingress from K8S
-    - ipBlock:
-        cidr: 172.16.0.0/12
+    - from:
+        # Only allow ingress from K8S
+        - ipBlock:
+            cidr: 172.16.0.0/12
   egress:
-  - to:
-    # Only allow egress to K8S
-    - ipBlock:
-        cidr: 172.16.0.0/12
+    - to:
+        # Only allow egress to K8S
+        - ipBlock:
+            cidr: 172.16.0.0/12
   policyTypes:
-  - Ingress
-  - Egress
+    - Ingress
+    - Egress

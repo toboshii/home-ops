@@ -4,9 +4,13 @@ kind: PersistentVolumeClaim
 metadata:
   name: jellyfin-config-v1
   namespace: media
+  labels:
+    app.kubernetes.io/name: &name jellyfin
+    app.kubernetes.io/instance: *name
+    pmb.home.arpa/backup: "true"
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 100Gi

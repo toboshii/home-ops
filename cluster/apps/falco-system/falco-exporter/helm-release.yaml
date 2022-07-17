@@ -23,5 +23,5 @@ spec:
       enabled: true
       namespace: falco-system
     tolerations:
-    - effect: NoSchedule
-      operator: Exists
+      - effect: NoSchedule
+        operator: Exists

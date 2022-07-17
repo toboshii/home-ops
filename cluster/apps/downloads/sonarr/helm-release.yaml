@@ -25,12 +25,16 @@ spec:
   values:
     global:
       nameOverride: *app
+    controller:
+      labels:
+        pmb.home.arpa/backup-claim: &claimName "sonarr-config-v1"
     image:
-      repository: ghcr.io/k8s-at-home/sonarr
-      tag: v3.0.8.1507@sha256:605b635a083c6055382cd0efe729e99f6e0af7f48a35a2406892a50c2221caeb
+      repository: ghcr.io/onedr0p/sonarr
+      tag: v3.0.8.1507@sha256:0b737320b6400e1a2e16aca64458b337950589c5bdc4e1270614345a6ed0f326
     env:
       TZ: "${TIMEZONE}"
       SONARR__INSTANCE_NAME: Sonarr
+      SONARR__PORT: &port 80
       SONARR__APPLICATION_URL: "https://{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
       SONARR__LOG_LEVEL: info
       PUSHOVER_DEBUG: "false"
@@ -42,14 +46,13 @@ spec:
       main:
         ports:
           http:
-            port: 8989
+            port: *port
     ingress:
       main:
         enabled: true
         ingressClassName: "nginx"
         annotations:
           56k/forward-auth: "true"
-          hajimari.io/enable: "true"
           hajimari.io/icon: "television-box"
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_set_header Accept-Encoding "";
@@ -75,25 +78,22 @@ spec:
           - hosts:
               - *host
     podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
       supplementalGroups:
         - 5600
     persistence:
       config:
         enabled: true
-        existingClaim: sonarr-config-v1
+        existingClaim: *claimName
       media:
         enabled: true
         type: nfs
         server: "nas01.${SECRET_PRIVATE_DOMAIN}"
         path: /tank/share
         mountPath: /media
-      backup:
-        enabled: true
-        type: nfs
-        server: "nas01.${SECRET_PRIVATE_DOMAIN}"
-        path: /tank/data/backups/sonarr
-        mountPath: /config/Backups
-        readOnly: false
       scripts:
         enabled: true
         type: configMap

@@ -123,4 +123,3 @@ spec:
       name: csi-rbdplugin-snapclass
       annotations:
         k10.kasten.io/is-snapshot-class: "true"
-

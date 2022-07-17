@@ -1,0 +1,18 @@
+# See https://toolkit.fluxcd.io/components/source/gitrepositories/#excluding-files
+.github/
+.taskfiles/
+.vscode/
+ansible/
+docs/
+hack/
+shared/
+terraform/
+talos/
+.envrc
+.gitattributes
+.gitignore
+.pre-commit-config.yaml
+.sops.yaml
+LICENSE
+README.md
+Taskfile.yaml

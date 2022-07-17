@@ -4,9 +4,13 @@ kind: PersistentVolumeClaim
 metadata:
   name: calibre-web-config-v1
   namespace: media
+  labels:
+    app.kubernetes.io/name: &name calibre-web
+    app.kubernetes.io/instance: *name
+    pmb.home.arpa/backup: "true"
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi

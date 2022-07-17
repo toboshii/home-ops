@@ -25,9 +25,12 @@ spec:
   values:
     global:
       nameOverride: *app
+    controller:
+      labels:
+        pmb.home.arpa/backup-claim: &claimName "tautulli-config-v1"
     image:
-      repository: ghcr.io/k8s-at-home/tautulli
-      tag: v2.10.2@sha256:e41ec08eac00f4d6bea10aa234289bbe73ac78c97f2ca3a21136791b4a55a4c3
+      repository: ghcr.io/onedr0p/tautulli
+      tag: 2.10.2@sha256:5321a6ea24ffd5463e9758d64c478595dd74d50b53fe8693e4a5e07f9b5fd238
     env:
       TZ: "${TIMEZONE}"
     service:
@@ -54,17 +57,17 @@ spec:
         tls:
           - hosts:
               - *host
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
+      supplementalGroups:
+        - 5600
     persistence:
       config:
         enabled: true
-        existingClaim: tautulli-config-v1
-      backup:
-        enabled: true
-        type: nfs
-        server: "nas01.${SECRET_PRIVATE_DOMAIN}"
-        path: /tank/data/backups/tautulli
-        mountPath: /config/backups
-        readOnly: false
+        existingClaim: *claimName
     resources:
       requests:
         cpu: 10m

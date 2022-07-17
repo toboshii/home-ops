@@ -65,36 +65,43 @@ spec:
           hajimari.io/icon: "file-image"
           hajimari.io/appName: "Booru"
         hosts:
-        - host: &host "${SECRET_PUBLIC_DOMAIN_3}"
-          paths:
-          - path: /
-            pathType: Prefix
+          - host: &host "${SECRET_PUBLIC_DOMAIN_3}"
+            paths:
+              - path: /
+                pathType: Prefix
         tls:
-        - hosts:
-          - *host
+          - hosts:
+              - *host
     additionalContainers:
       server:
         name: server
         image: ghcr.io/toboshii/szurubooru-server:2.5-edge
         imagePullPolicy: Always
         env:
-        - name: TZ
-          value: "${TIMEZONE}"
-        - name: POSTGRES_URL
-          valueFrom:
-            secretKeyRef:
-              name: database-szurubooru-user
-              key: POSTGRES_URL
+          - name: TZ
+            value: "${TIMEZONE}"
+          - name: POSTGRES_URL
+            valueFrom:
+              secretKeyRef:
+                name: database-szurubooru-user
+                key: POSTGRES_URL
         ports:
-        - name: server-http
-          containerPort: 6666
-          protocol: TCP
+          - name: server-http
+            containerPort: 6666
+            protocol: TCP
         volumeMounts:
-        - name: media
-          mountPath: /data
-        - name: config
-          mountPath: /opt/app/config.yaml
-          subPath: config.yaml
+          - name: media
+            mountPath: /data
+          - name: config
+            mountPath: /opt/app/config.yaml
+            subPath: config.yaml
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
+      supplementalGroups:
+        - 5600
     persistence:
       config:
         enabled: true
@@ -110,6 +117,3 @@ spec:
         server: "nas01.${SECRET_PRIVATE_DOMAIN}"
         path: /tank/share/Images/Booru
         mountPath: /data
-    podSecurityContext:
-      supplementalGroups:
-      - 5600

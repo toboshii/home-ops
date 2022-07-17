@@ -1,5 +1,6 @@
 # Editors
 .vscode/
+.fttemplates/
 # Trash
 .DS_Store
 Thumbs.db
@@ -16,11 +17,24 @@ bin
 .private/
 .logs/
 .task/
-# Terraform
-.terraform*
-terraform.tfstate*
 # Ansible
-server/ansible/inventory/e2e/hosts.yml
+ansible/inventory/e2e/hosts.yml
 xanmanning.k3s*
 nvidia.nvidia_driver*
 node_modules
+# Terraform
+.terraform*
+.terraform.tfstate*
+terraform.tfstate*
+# Sops
+.decrypted~*
+*.agekey
+# Kubernetes
+kubeconfig*
+talosconfig*
+*.pub
+*.key
+# Extras
+config.xml
+*.pid
+kubernetes
