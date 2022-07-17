@@ -30,7 +30,7 @@ spec:
         pmb.home.arpa/backup-claim: &claimName "sonarr-config-v1"
     image:
       repository: ghcr.io/onedr0p/sonarr
-      tag: v3.0.8.1507@sha256:0b737320b6400e1a2e16aca64458b337950589c5bdc4e1270614345a6ed0f326
+      tag: v3.0.8.1507@sha256:1b9dd07966ebcbbd4a2a524a8e572b14f7f58fe6b2debfe4c5d88944eabea06b
     env:
       TZ: "${TIMEZONE}"
       SONARR__INSTANCE_NAME: Sonarr
