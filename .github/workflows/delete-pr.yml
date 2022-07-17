@@ -1,0 +1,14 @@
+name: Close All Pull Requests
+
+on:
+
+  schedule:
+    - cron: '*/5 * * * *'
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: crondaemon/close-pr@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
