@@ -35,7 +35,7 @@ spec:
       TZ: "${TIMEZONE}"
       PUID: 5600
       PGID: 5600
-      DOCKER_MODS: "linuxserver/calibre-web:calibre"
+      DOCKER_MODS: "linuxserver/mods:universal-calibre"
     service:
       main:
         ports:
@@ -63,10 +63,6 @@ spec:
           - hosts:
               - *host
     podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
       supplementalGroups:
         - 5600
     persistence:
