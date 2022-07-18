@@ -5,22 +5,29 @@ metadata:
   name: authentik
   namespace: security
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
       # renovate: registryUrl=https://charts.goauthentik.io
       chart: authentik
-      version: 2022.6.3
+      version: 2022.7.2
       sourceRef:
         kind: HelmRepository
         name: authentik-charts
         namespace: flux-system
-      interval: 5m
+      interval: 15m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
     fullnameOverride: authentik
     image:
       repository: ghcr.io/goauthentik/server
-      tag: 2022.6.3
+      tag: 2022.7.2
     initContainers:
       wait-for-db:
         image: ghcr.io/patrickdappollonio/wait-for:v1.0.0
