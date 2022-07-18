@@ -80,6 +80,8 @@ spec:
       tls:
         - hosts:
             - "id.${SECRET_DOMAIN}"
+    postgresql:
+      enabled: false
     redis:
       enabled: true
     prometheus:
