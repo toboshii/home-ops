@@ -43,23 +43,6 @@ spec:
         args:
           - --host="$(POSTGRES_HOST):5432"
           - --verbose
-    envValueFrom:
-      AUTHENTIK_POSTGRESQL__HOST:
-        secretKeyRef:
-          name: database-authentik-user
-          key: HOST
-      AUTHENTIK_POSTGRESQL__NAME:
-        secretKeyRef:
-          name: database-authentik-user
-          key: DATABASE_NAME
-      AUTHENTIK_POSTGRESQL__USER:
-        secretKeyRef:
-          name: database-authentik-user
-          key: LOGIN
-      AUTHENTIK_POSTGRESQL__PASSWORD:
-        secretKeyRef:
-          name: database-authentik-user
-          key: PASSWORD
     authentik:
       outposts:
         docker_image_base: ghcr.io/goauthentik/%(type)s:%(version)s
@@ -94,3 +77,20 @@ spec:
     prometheus:
       serviceMonitor:
         create: false
+  valuesFrom:
+    - kind: Secret
+      name: database-authentik-user
+      valuesKey: HOST
+      targetPath: authentik.postgresql.host
+    - kind: Secret
+      name: database-authentik-user
+      valuesKey: DATABASE_NAME
+      targetPath: authentik.postgresql.name
+    - kind: Secret
+      name: database-authentik-user
+      valuesKey: LOGIN
+      targetPath: authentik.postgresql.user
+    - kind: Secret
+      name: database-authentik-user
+      valuesKey: PASSWORD
+      targetPath: authentik.postgresql.password
