@@ -15,4 +15,5 @@ includes:
   debug: .taskfiles/DebugTasks.yml
   precommit: .taskfiles/PreCommitTasks.yml
   restore: .taskfiles/RestoreTasks.yml
+  rook: .taskfiles/RookTasks.yml
   terraform: .taskfiles/TerraformTasks.yml

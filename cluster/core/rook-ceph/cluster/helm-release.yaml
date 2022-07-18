@@ -61,10 +61,10 @@ spec:
               - name: "/dev/disk/by-id/nvme-SHGP31-1000GM-2_AS0AN94711030AU4H"
           - name: "k8s-worker02"
             devices:
-              - name: "/dev/disk/by-id/nvme-SHGP31-1000GM-2_AS0AN94711030AU4H"
+              - name: "/dev/disk/by-id/nvme-SHGP31-1000GM-2_AS0AN94711030AU4V"
           - name: "k8s-worker03"
             devices:
-              - name: "/dev/disk/by-id/nvme-SHGP31-1000GM-2_AS0AN94711030AU4H"
+              - name: "/dev/disk/by-id/nvme-SHGP31-1000GM-2_AS0AN94711030AU20"
       resources:
         mgr:
           limits:
