@@ -1,6 +1,13 @@
 ---
 version: "3"
 
+vars:
+  PROJECT_DIR:
+    sh: "git rev-parse --show-toplevel"
+  CLUSTER_DIR: "{{.PROJECT_DIR}}/cluster"
+  ANSIBLE_DIR: "{{.PROJECT_DIR}}/provision/ansible"
+  TERRAFORM_DIR: "{{.PROJECT_DIR}}/provision/terraform"
+
 includes:
   ansible: .taskfiles/AnsibleTasks.yml
   backup: .taskfiles/BackupTasks.yml
