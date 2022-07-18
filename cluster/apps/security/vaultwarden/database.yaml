@@ -2,18 +2,18 @@
 apiVersion: db.movetokube.com/v1alpha1
 kind: Postgres
 metadata:
-  name: szurubooru-db
-  namespace: media
+  name: vaultwarden-db
+  namespace: security
 spec:
-  database: szurubooru
+  database: vaultwarden
 ---
 apiVersion: db.movetokube.com/v1alpha1
 kind: PostgresUser
 metadata:
-  name: szurubooru-user
-  namespace: media
+  name: vaultwarden-user
+  namespace: security
 spec:
-  role: szurubooru
-  database: szurubooru-db
+  role: vaultwarden
+  database: vaultwarden-db
   secretName: database
   privileges: OWNER

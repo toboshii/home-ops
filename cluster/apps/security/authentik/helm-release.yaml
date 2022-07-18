@@ -21,15 +21,42 @@ spec:
     image:
       repository: ghcr.io/goauthentik/server
       tag: 2022.6.3
+    initContainers:
+      wait-for-db:
+        image: ghcr.io/patrickdappollonio/wait-for:v1.0.0
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: POSTGRES_HOST
+            valueFrom:
+              secretKeyRef:
+                name: database-authentik-user
+                key: HOST
+        command:
+          - /wait-for
+        args:
+          - --host="$(POSTGRES_HOST):5432"
+          - --verbose
+    envValueFrom:
+      AUTHENTIK_POSTGRESQL__HOST:
+        secretKeyRef:
+          name: database-authentik-user
+          key: HOST
+      AUTHENTIK_POSTGRESQL__NAME:
+        secretKeyRef:
+          name: database-authentik-user
+          key: DATABASE_NAME
+      AUTHENTIK_POSTGRESQL__USER:
+        secretKeyRef:
+          name: database-authentik-user
+          key: LOGIN
+      AUTHENTIK_POSTGRESQL__PASSWORD:
+        secretKeyRef:
+          name: database-authentik-user
+          key: PASSWORD
     authentik:
       outposts:
         docker_image_base: ghcr.io/goauthentik/%(type)s:%(version)s
       secret_key: "${SECRET_AUTHENTIK_SECRET_KEY}"
-      postgresql:
-        host: "authentik-postgresql"
-        name: "authentik"
-        user: "authentik"
-        password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
       redis:
         host: "authentik-redis-master"
       email:
@@ -53,9 +80,6 @@ spec:
       tls:
         - hosts:
             - "id.${SECRET_DOMAIN}"
-    postgresql:
-      enabled: true
-      postgresqlPassword: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
     redis:
       enabled: true
     prometheus:

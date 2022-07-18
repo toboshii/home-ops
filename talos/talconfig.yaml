@@ -68,6 +68,7 @@ controlPlane:
         crt: ${k8sAggregatorCert}
         key: ${k8sAggregatorCertKey}
       apiServer:
+        admissionControl: []
         certSANs:
           - ${clusterEndpointIP}
           - cluster01.${domainName}
