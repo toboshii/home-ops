@@ -62,6 +62,7 @@ spec:
       annotations:
         external-dns/is-public: "true"
         external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+        hajimari.io/icon: "account-outline"
       hosts:
         - host: "id.${SECRET_DOMAIN}"
           paths:

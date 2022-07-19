@@ -73,6 +73,8 @@ spec:
       api:
         enabled: true
         ingressClassName: "nginx"
+        annotations:
+          hajimari.io/enable: "false"
         hosts:
           - host: *host-release
             paths:
