@@ -2,13 +2,13 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: goldilocks
+  name: &app goldilocks
   namespace: monitoring
 spec:
   interval: 15m
   chart:
     spec:
-      chart: goldilocks
+      chart: *app
       version: 6.1.3
       sourceRef:
         kind: HelmRepository
@@ -35,8 +35,10 @@ spec:
       ingress:
         enabled: true
         ingressClassName: "nginx"
+        annotations:
+          hajimari.io/appName: *app
         hosts:
-          - host: &host "goldilocks.${SECRET_PUBLIC_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
             paths:
               - path: /
                 type: Prefix
