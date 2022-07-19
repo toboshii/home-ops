@@ -67,6 +67,14 @@ spec:
           secretKeyRef:
             name: database-vaultwarden-user
             key: POSTGRES_URL
+    service:
+      main:
+        ports:
+          http:
+            port: 80
+          websocket:
+            enabled: true
+            port: 3012
     ingress:
       main:
         enabled: true
@@ -80,11 +88,16 @@ spec:
             paths:
               - path: /
                 pathType: Prefix
+                service:
+                  port: http
               - path: /notifications/hub/negotiate
                 pathType: Prefix
+                service:
+                  port: http
               - path: /notifications/hub
                 pathType: Prefix
-                servicePort: 3012
+                service:
+                  port: websocket
         tls:
           - hosts:
               - "warden.${SECRET_DOMAIN}"
