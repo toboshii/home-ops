@@ -101,3 +101,7 @@ spec:
         tls:
           - hosts:
               - "warden.${SECRET_DOMAIN}"
+    persistence:
+      config:
+        enabled: true
+        existingClaim: *claimName
