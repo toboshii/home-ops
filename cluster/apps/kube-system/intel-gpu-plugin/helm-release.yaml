@@ -31,6 +31,8 @@ spec:
     controller:
       type: daemonset
       strategy: RollingUpdate
+      rollingUpdate:
+        surge: 1
     image:
       repository: docker.io/intel/intel-gpu-plugin
       tag: 0.24.0

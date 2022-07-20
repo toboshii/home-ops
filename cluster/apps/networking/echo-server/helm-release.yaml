@@ -28,6 +28,8 @@ spec:
     controller:
       replicas: 3
       strategy: RollingUpdate
+      rollingUpdate:
+        surge: 1
     image:
       repository: docker.io/jmalloc/echo-server
       tag: 0.3.3
