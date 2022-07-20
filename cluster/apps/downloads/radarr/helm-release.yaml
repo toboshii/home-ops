@@ -30,7 +30,7 @@ spec:
         pmb.home.arpa/backup-claim: &claimName "radarr-config-v1"
     image:
       repository: ghcr.io/onedr0p/radarr
-      tag: 4.1.0.6175@sha256:1ff807b4048f873b1dcc3ba2a37d02fe21a5f9bc6c691b56b923e2eb9b09a359
+      tag: 4.1.0.6175@sha256:c3baccfd410803cf94a31111c43c5bceb55b7838be70bf3d6624a95272c2ee17
     env:
       TZ: "${TIMEZONE}"
       RADARR__INSTANCE_NAME: Radarr
