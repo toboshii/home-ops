@@ -1,0 +1,38 @@
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: Postgres
+metadata:
+  name: radarr-config-db
+  namespace: media
+spec:
+  database: radarr-config
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: Postgres
+metadata:
+  name: radarr-log-db
+  namespace: media
+spec:
+  database: radarr-log
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: PostgresUser
+metadata:
+  name: radarr-config-user
+  namespace: media
+spec:
+  role: radarr
+  database: radarr-config-db
+  secretName: database
+  privileges: OWNER
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: PostgresUser
+metadata:
+  name: radarr-log-user
+  namespace: media
+spec:
+  role: radarr
+  database: radarr-log-db
+  secretName: database
+  privileges: OWNER
