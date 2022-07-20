@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sonarr-uhd-config-v1
+  namespace: downloads
+  labels:
+    app.kubernetes.io/name: &name sonarr-uhd
+    app.kubernetes.io/instance: *name
+    policy.home.arpa/snapshot: "true"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: ceph-block
