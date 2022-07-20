@@ -9,7 +9,7 @@ resources:
   - qbittorrent
   - radarr
   - radarr-uhd
-  - recylarr
+  - recyclarr
   - sabnzbd
   - scripts
   - sonarr
