@@ -45,51 +45,21 @@ nodes:
     installDisk: /dev/sda
     networkInterfaces:
       - interface: eth0
-        mtu: 9000
-        vlans:
-          - vlanId: 40
-            dhcp: true
-            mtu: 1500
-          - addresses:
-              - 10.75.42.30/24
-            dhcp: false
-            vlanId: 42
-            mtu: 9000
-        dhcp: false
+        dhcp: true
   - hostname: k8s-worker02.${domainName}
     ipAddress: 10.75.40.31
     controlPlane: false
     installDisk: /dev/sda
     networkInterfaces:
       - interface: eth0
-        mtu: 9000
-        vlans:
-          - vlanId: 40
-            dhcp: true
-            mtu: 1500
-          - addresses:
-              - 10.75.42.31/24
-            dhcp: false
-            vlanId: 42
-            mtu: 9000
-        dhcp: false
+        dhcp: true
   - hostname: k8s-worker03.${domainName}
     ipAddress: 10.75.40.32
     controlPlane: false
     installDisk: /dev/sda
     networkInterfaces:
       - interface: eth0
-        mtu: 9000
-        vlans:
-          - vlanId: 40
-            dhcp: true
-            mtu: 1500
-          - addresses:
-              - 10.75.42.32/24
-            dhcp: false
-            vlanId: 42
-            mtu: 9000
-        dhcp: false
+        dhcp: true
 controlPlane:
   inlinePatch:
     cluster:
@@ -98,6 +68,7 @@ controlPlane:
         crt: ${k8sAggregatorCert}
         key: ${k8sAggregatorCertKey}
       apiServer:
+        admissionControl: []
         certSANs:
           - ${clusterEndpointIP}
           - cluster01.${domainName}
@@ -141,6 +112,13 @@ controlPlane:
       certSANs:
         - ${clusterEndpointIP}
         - cluster01.${domainName}
+      files:
+        - content: |
+            [plugins."io.containerd.grpc.v1.cri"]
+              enable_unprivileged_ports = true
+              enable_unprivileged_icmp = true
+          path: /var/cri/conf.d/allow-unpriv-ports.toml
+          op: create
       install:
         extraKernelArgs:
           - talos.logging.kernel=udp://10.75.45.102:6050/
@@ -190,6 +168,13 @@ worker:
       certSANs:
         - ${clusterEndpointIP}
         - cluster01.${domainName}
+      files:
+        - content: |
+            [plugins."io.containerd.grpc.v1.cri"]
+              enable_unprivileged_ports = true
+              enable_unprivileged_icmp = true
+          path: /var/cri/conf.d/allow-unpriv-ports.toml
+          op: create
       install:
         extraKernelArgs:
           - talos.logging.kernel=udp://10.75.45.102:6050/

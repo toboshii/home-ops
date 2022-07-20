@@ -27,8 +27,6 @@ spec:
     worker:
       annotations:
         configmap.reloader.stakater.com/reload: node-feature-discovery-worker-conf
-      nodeSelector:
-        node-role.kubernetes.io/worker: "true"
       config:
         core:
           sources:

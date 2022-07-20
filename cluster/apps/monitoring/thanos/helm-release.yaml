@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: thanos
-      version: 10.5.5
+      version: 11.1.2
       sourceRef:
         kind: HelmRepository
         name: bitnami-charts
@@ -42,6 +42,8 @@ spec:
         enabled: true
         hostname: &host "thanos.${SECRET_PUBLIC_DOMAIN}"
         ingressClassName: "nginx"
+        annotations:
+          hajimari.io/icon: "table-search"
         tls: true
         extraTls:
           - hosts:
@@ -56,6 +58,8 @@ spec:
         enabled: true
         hostname: &host "thanos-bucketweb.${SECRET_PUBLIC_DOMAIN}"
         ingressClassName: "nginx"
+        annotations:
+          hajimari.io/enable: "false"
         tls: true
         extraTls:
           - hosts:
@@ -72,6 +76,8 @@ spec:
         enabled: true
         hostname: &host "thanos-compactor.${SECRET_PUBLIC_DOMAIN}"
         ingressClassName: "nginx"
+        annotations:
+          hajimari.io/enable: "false"
         tls: true
         extraTls:
           - hosts:
@@ -88,6 +94,8 @@ spec:
         enabled: true
         hostname: &host "thanos-storegateway.${SECRET_PUBLIC_DOMAIN}"
         ingressClassName: "nginx"
+        annotations:
+          hajimari.io/enable: "false"
         tls: true
         extraTls:
           - hosts:
@@ -117,6 +125,8 @@ spec:
         enabled: true
         hostname: &host "thanos-ruler.${SECRET_PUBLIC_DOMAIN}"
         ingressClassName: "nginx"
+        annotations:
+          hajimari.io/enable: "false"
         tls: true
         extraTls:
           - hosts:

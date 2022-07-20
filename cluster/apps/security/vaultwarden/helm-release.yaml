@@ -2,27 +2,51 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: vaultwarden
+  name: &app vaultwarden
   namespace: security
 spec:
-  releaseName: vaultwarden
-  interval: 5m
+  releaseName: *app
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: vaultwarden
-      version: 3.3.1
+      chart: kah-common-chart
+      version: 1.1.2
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
         namespace: flux-system
-      interval: 5m
+      interval: 15m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
-    nameOverride: vaultwarden
-    fullnameOverride: vaultwarden
+    global:
+      nameOverride: *app
+    controller:
+      labels:
+        pmb.home.arpa/backup-claim: &claimName "vaultwarden-config-v1"
     image:
-      repository: vaultwarden/server
-      tag: 1.23.0-alpine
+      repository: ghcr.io/k8s-at-home/vaultwarden
+      tag: 1.25.1@sha256:ea7901a9629897801b38b6afbce1869d357ebb9e080ec6ffff5839d85d8a79e4
+    initContainers:
+      wait-for-db:
+        image: ghcr.io/patrickdappollonio/wait-for:v1.0.0
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: POSTGRES_HOST
+            valueFrom:
+              secretKeyRef:
+                name: database-vaultwarden-user
+                key: HOST
+        command:
+          - /wait-for
+        args:
+          - --host="$(POSTGRES_HOST):5432"
+          - --verbose
     env:
       DATA_FOLDER: "config"
       SIGNUPS_ALLOWED: false
@@ -38,12 +62,25 @@ spec:
       SMTP_PORT: 587
       SMTP_USERNAME: "apikey"
       SMTP_PASSWORD: "${SECRET_SENDGRID_API_KEY}"
-      DATABASE_URL: "postgresql://vaultwarden:${SECRET_VAULTWARDEN_DB_PASSWORD}@vaultwarden-postgresql/vaultwarden"
+      DATABASE_URL:
+        valueFrom:
+          secretKeyRef:
+            name: database-vaultwarden-user
+            key: POSTGRES_URL
+    service:
+      main:
+        ports:
+          http:
+            port: &port 80
+          websocket:
+            enabled: true
+            port: &websocket-port 3012
     ingress:
       main:
         enabled: true
         ingressClassName: "nginx"
         annotations:
+          hajimari.io/icon: "form-textbox-password"
           external-dns/is-public: "true"
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
         hosts:
@@ -51,28 +88,20 @@ spec:
             paths:
               - path: /
                 pathType: Prefix
+                service:
+                  port: *port
               - path: /notifications/hub/negotiate
                 pathType: Prefix
+                service:
+                  port: *port
               - path: /notifications/hub
                 pathType: Prefix
-                servicePort: 3012
+                service:
+                  port: *websocket-port
         tls:
           - hosts:
               - "warden.${SECRET_DOMAIN}"
     persistence:
       config:
         enabled: true
-        storageClass: ceph-block
-        accessMode: ReadWriteOnce
-        size: 10Gi
-    postgresql:
-      enabled: true
-      postgresqlUsername: "vaultwarden"
-      postgresqlPassword: "${SECRET_VAULTWARDEN_DB_PASSWORD}"
-      postgresqlDatabase: "vaultwarden"
-      persistence:
-        enabled: true
-        storageClass: ceph-block
-        accessModes:
-          - ReadWriteOnce
-        size: 10Gi
+        existingClaim: *claimName

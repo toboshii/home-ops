@@ -2,16 +2,13 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  - secret.sops.yaml
   - cron-job.yaml
-  - rbac.yaml
-namespace: rook-ceph
+namespace: downloads
 configMapGenerator:
-  - name: secret-reflector
+  - name: recyclarr
     files:
-      - secret-reflector.sh
-  - name: configmap-reflector
-    files:
-      - configmap-reflector.sh
+      - recyclarr.yaml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:

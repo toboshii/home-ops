@@ -3,7 +3,7 @@ apiVersion: db.movetokube.com/v1alpha1
 kind: Postgres
 metadata:
   name: szurubooru-db
-  namespace: selfhosted
+  namespace: media
 spec:
   database: szurubooru
 ---
@@ -11,7 +11,7 @@ apiVersion: db.movetokube.com/v1alpha1
 kind: PostgresUser
 metadata:
   name: szurubooru-user
-  namespace: selfhosted
+  namespace: media
 spec:
   role: szurubooru
   database: szurubooru-db

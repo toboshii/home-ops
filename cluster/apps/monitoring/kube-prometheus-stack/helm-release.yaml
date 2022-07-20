@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: kube-prometheus-stack
-      version: 36.2.1
+      version: 37.3.0
       sourceRef:
         kind: HelmRepository
         name: prometheus-community-charts
@@ -94,7 +94,7 @@ spec:
         pathType: Prefix
         ingressClassName: "nginx"
         annotations:
-          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          hajimari.io/appName: "alertmanager"
         hosts:
           - &host "alert-manager.${SECRET_PUBLIC_DOMAIN}"
         tls:
@@ -179,6 +179,8 @@ spec:
         enabled: true
         pathType: Prefix
         ingressClassName: "nginx"
+        annotations:
+          hajimari.io/enable: "false"
         hosts:
           - &host "prometheus.${SECRET_DOMAIN}"
         tls:
@@ -195,6 +197,7 @@ spec:
         annotations:
           nginx.ingress.kubernetes.io/ssl-redirect: "true"
           nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+          hajimari.io/enable: "false"
         hosts:
           - &host "thanos-sidecar.${SECRET_PUBLIC_DOMAIN}"
         tls:

@@ -30,7 +30,7 @@ spec:
         pmb.home.arpa/backup-claim: &claimName "prowlarr-config-v1"
     image:
       repository: ghcr.io/onedr0p/prowlarr-nightly
-      tag: 0.4.3.1898@sha256:4fcca511b8198deb79afdbf9edefadb44ef1bce0058b789f261dd158fc234ba5
+      tag: 0.4.3.1905@sha256:65a3cfa1ff022b549f2b6862a48954a593b35fb824c2d9da1e218c936ae0304f
     env:
       TZ: "${TIMEZONE}"
       PROWLARR__INSTANCE_NAME: Prowlarr

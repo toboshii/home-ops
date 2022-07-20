@@ -2,4 +2,33 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - github.com/fluxcd/flux2/manifests/install?ref=v0.31.3
+  - github.com/fluxcd/flux2/manifests/install?ref=v0.31.4
+patches:
+  - target:
+      kind: Deployment
+      labelSelector: control-plane=controller
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: not-used
+      spec:
+        template:
+          spec:
+            containers:
+              - name: manager
+                resources:
+                  requests:
+                    memory: 512Mi
+                  limits:
+                    memory: "2Gi"
+  - target:
+      group: networking.k8s.io
+      version: v1
+      kind: NetworkPolicy
+    patch: |-
+      $patch: delete
+      apiVersion: networking.k8s.io/v1
+      kind: NetworkPolicy
+      metadata:
+        name: not-used

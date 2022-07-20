@@ -96,10 +96,6 @@ spec:
             mountPath: /opt/app/config.yaml
             subPath: config.yaml
     podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
       supplementalGroups:
         - 5600
     persistence:
