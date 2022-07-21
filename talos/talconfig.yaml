@@ -1,6 +1,6 @@
 ---
 clusterName: cluster01
-talosVersion: v1.1.0
+talosVersion: v1.1.1
 kubernetesVersion: v1.24.2
 endpoint: https://cluster01.${domainName}:6443
 clusterPodNets:
