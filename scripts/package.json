@@ -12,6 +12,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "ws": "^8.8.1"
+    "ws": "^8.8.1",
+    "zx": "^7.0.7"
   }
 }

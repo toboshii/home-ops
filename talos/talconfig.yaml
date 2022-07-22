@@ -14,6 +14,7 @@ cniConfig:
 nodes:
   - hostname: k8s-control01.${domainName}
     ipAddress: 10.75.40.20
+    kvmChannel: 3
     controlPlane: true
     installDisk: /dev/sda
     networkInterfaces:
@@ -23,6 +24,7 @@ nodes:
           ip: 10.75.40.10
   - hostname: k8s-control02.${domainName}
     ipAddress: 10.75.40.21
+    kvmChannel: 2
     controlPlane: true
     installDisk: /dev/sda
     networkInterfaces:
@@ -32,6 +34,7 @@ nodes:
           ip: 10.75.40.10
   - hostname: k8s-control03.${domainName}
     ipAddress: 10.75.40.22
+    kvmChannel: 1
     controlPlane: true
     installDisk: /dev/sda
     networkInterfaces:
@@ -41,6 +44,7 @@ nodes:
           ip: 10.75.40.10
   - hostname: k8s-worker01.${domainName}
     ipAddress: 10.75.40.30
+    kvmChannel: 5
     controlPlane: false
     installDisk: /dev/sda
     networkInterfaces:
@@ -48,6 +52,7 @@ nodes:
         dhcp: true
   - hostname: k8s-worker02.${domainName}
     ipAddress: 10.75.40.31
+    kvmChannel: 4
     controlPlane: false
     installDisk: /dev/sda
     networkInterfaces:
@@ -55,6 +60,7 @@ nodes:
         dhcp: true
   - hostname: k8s-worker03.${domainName}
     ipAddress: 10.75.40.32
+    kvmChannel: 6
     controlPlane: false
     installDisk: /dev/sda
     networkInterfaces:
