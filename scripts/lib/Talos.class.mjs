@@ -10,9 +10,10 @@ class Talos {
         this.kvmPassword  = argv["password"] || argv["p"] || process.env.KVM_PASSWORD
         this.nodes        = argv["nodes"] || argv["n"] || process.env.TALOS_NODES
         this.reset        = argv["reset"] || argv["r"] || process.env.TALOS_RESET
-        this.image        = argv["image"] || argv["i"] || process.env.TALOS_IMAGE
-
-        this.nodes = this.nodes.split(',')
+        this.image        = argv["image"] || argv["m"] || process.env.TALOS_IMAGE
+        this.insecure     = argv["insecure"] || argv["i"] || process.env.INSECURE
+        this.nodes        = this.nodes.split(',')
+        this.proto        = this.insecure ? 'http' : 'https'
 
         if (this.debug) {
             $.verbose = true
@@ -26,7 +27,8 @@ class Talos {
                          --password <piKVM password>
                          --nodes <comma-delimited list of Talos node hostnames>
                          [ --image <url to Talos ISO> ]
-                         [ --reset]`)
+                         [ --reset ]
+                         [ --insecure ]`)
             process.exit(0);
         }
         if (!this.kvm)           { throw new Error("Argument --kvm, -k or env KVM_HOST not set") }
@@ -60,14 +62,17 @@ class Talos {
 
             console.log(`Switching to KVM channel ${nodeConfig.kvmChannel}`)
             await this.setChannel(headers, nodeConfig.kvmChannel)
-            // wait for devices to settle
-            await sleep(3000)
+
+            console.log(`Waiting for KVM devices to settle`)
+            await sleep(5000)
 
             console.log(`Rebooting machine into Talos installer`)
             // // @TODO: add support for running `talosctl reset` and ceph wipe if(--reset)
             // // @TODO: add dry-run support - comment out for now
             // //await this.sendReboot(headers)
 
+            console.log(`Waiting for Talos apid to be available`)
+            await sleep(30000)
             let healthCheck = await retry(30, expBackoff(), () => $`curl -k https://${nodeConfig.ipAddress}:50000`)
             if (await healthCheck.exitCode === 0) {
                 console.log(`${chalk.green.bold('Success:')} You can now push a machine config to ${this.nodes}`)
@@ -81,7 +86,7 @@ class Talos {
 
     // Set TESMART switch channel
     async setChannel(headers, channel) {
-        const response = await fetch(`https://${this.kvm}/api/gpio/pulse?channel=server${channel}_switch`, { method: 'POST', headers })
+        const response = await fetch(`${this.proto}://${this.kvm}/api/gpio/pulse?channel=server${channel}_switch`, { method: 'POST', headers })
         if (!response.ok) {
             const json = await response.json()
             throw new Error(`${json.result.error} - ${json.result.error_msg}`)
@@ -91,7 +96,7 @@ class Talos {
 
     // Upload provided or latest image to piKVM
     async uploadImage(headers, imageName) {
-        const response = await fetch(`https://${this.kvm}/api/msd/write_remote?url=${this.image}&image=${imageName}&timeout=60`, { method: 'POST', headers })
+        const response = await fetch(`${this.proto}://${this.kvm}/api/msd/write_remote?url=${this.image}&image=${imageName}&timeout=60`, { method: 'POST', headers })
         if (!response.ok) {
             const json = await response.json()
             throw new Error(`${json.result.error} - ${json.result.error_msg}`)
@@ -101,7 +106,7 @@ class Talos {
 
     // Select active ISO image for piKVM virtual CD-ROM
     async selectImage(headers, imageName) {
-        const response = await fetch(`https://${this.kvm}/api/msd/set_params?image=${imageName}&cdrom=1`, { method: 'POST', headers })
+        const response = await fetch(`${this.proto}://${this.kvm}/api/msd/set_params?image=${imageName}&cdrom=1`, { method: 'POST', headers })
         if (!response.ok) {
             const json = await response.json()
             throw new Error(`${json.result.error} - ${json.result.error_msg}`)
@@ -111,7 +116,7 @@ class Talos {
 
     // Delete ISO image from piKVM
     async deleteImage(headers, imageName) {
-        const response = await fetch(`https://${this.kvm}/api/msd/remove?image=${imageName}`, { method: 'POST', headers })
+        const response = await fetch(`${this.proto}://${this.kvm}/api/msd/remove?image=${imageName}`, { method: 'POST', headers })
         if (!response.ok) {
             const json = await response.json()
             throw new Error(`${json.result.error} - ${json.result.error_msg}`)
@@ -121,7 +126,7 @@ class Talos {
 
     // Attach piKVM virtual CD-ROM to server
     async attachDrive(headers, attach) {
-        const response = await fetch(`https://${this.kvm}/api/msd/set_connected?connected=${attach ? 1 : 0}`, { method: 'POST', headers })
+        const response = await fetch(`${this.proto}://${this.kvm}/api/msd/set_connected?connected=${attach ? 1 : 0}`, { method: 'POST', headers })
         if (!response.ok) {
             const json = await response.json()
             if (json.result.error == 'MsdDisconnectedError' && attach === false) {
@@ -136,17 +141,17 @@ class Talos {
     // Send CTRL-ALT-DEL to piKVM
     async sendReboot(headers) {
         await Promise.all([
-            fetch(`https://${this.kvm}/api/hid/events/send_key?key=ControlLeft&state=true`, { method: 'POST', headers }),
-            fetch(`https://${this.kvm}/api/hid/events/send_key?key=AltLeft&state=true`, { method: 'POST', headers }),
-            fetch(`https://${this.kvm}/api/hid/events/send_key?key=Delete&state=true`, { method: 'POST', headers }),
+            fetch(`${this.proto}://${this.kvm}/api/hid/events/send_key?key=ControlLeft&state=true`, { method: 'POST', headers }),
+            fetch(`${this.proto}://${this.kvm}/api/hid/events/send_key?key=AltLeft&state=true`, { method: 'POST', headers }),
+            fetch(`${this.proto}://${this.kvm}/api/hid/events/send_key?key=Delete&state=true`, { method: 'POST', headers }),
         ])
 
         await sleep(500)
 
         await Promise.all([
-            fetch(`https://${this.kvm}/api/hid/events/send_key?key=ControlLeft&state=false`, { method: 'POST', headers }),
-            fetch(`https://${this.kvm}/api/hid/events/send_key?key=AltLeft&state=false`, { method: 'POST', headers }),
-            fetch(`https://${this.kvm}/api/hid/events/send_key?key=Delete&state=false`, { method: 'POST', headers }),
+            fetch(`${this.proto}://${this.kvm}/api/hid/events/send_key?key=ControlLeft&state=false`, { method: 'POST', headers }),
+            fetch(`${this.proto}://${this.kvm}/api/hid/events/send_key?key=AltLeft&state=false`, { method: 'POST', headers }),
+            fetch(`${this.proto}://${this.kvm}/api/hid/events/send_key?key=Delete&state=false`, { method: 'POST', headers }),
         ])
     }
 
