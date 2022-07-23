@@ -5,6 +5,7 @@ resources:
   - namespace.yaml
   - lidarr
   - overseerr
+  - postgres
   - prowlarr
   - qbittorrent
   - radarr

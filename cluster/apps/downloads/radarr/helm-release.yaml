@@ -29,8 +29,8 @@ spec:
       labels:
         pmb.home.arpa/backup-claim: &claimName "radarr-config-v1"
     image:
-      repository: ghcr.io/onedr0p/radarr
-      tag: 4.1.0.6175@sha256:1c8d41ba023b139126fe47e7748eb8fb518f92e9cae11fed6c12ce9cce3f2af5
+      repository: ghcr.io/onedr0p/radarr-develop
+      tag: 4.2.0.6438@sha256:2816f6d35ce1c622024dbcb69bcf509f03e624e2f7407ece7a62deb66411543d
     env:
       TZ: "${TIMEZONE}"
       RADARR__INSTANCE_NAME: Radarr
@@ -39,6 +39,19 @@ spec:
       RADARR__LOG_LEVEL: info
       PUSHOVER_DEBUG: "false"
       PUSHOVER_APP_URL: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
+      RADARR__POSTGRES_HOST: postgres-downloads-rw
+      RADARR__POSTGRES_MAIN_DB: radarr
+      RADARR__POSTGRES_MAIN_LOG: radarr-log
+      RADARR__POSTGRES_USER:
+        valueFrom:
+          secretKeyRef:
+            name: postgres-downloads-app
+            key: username
+      RADARR__POSTGRES_PASSWORD:
+        valueFrom:
+          secretKeyRef:
+            name: postgres-downloads-app
+            key: password
     envFrom:
       - secretRef:
           name: *app
