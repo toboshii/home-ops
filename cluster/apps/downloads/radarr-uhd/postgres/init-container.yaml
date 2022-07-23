@@ -13,7 +13,7 @@ spec:
           - name: POSTGRES_HOST
             value: postgres-downloads-rw
           - name: POSTGRES_DB
-            value: radarr-uhd radarr-uhd-log
+            value: radarr_uhd radarr_uhd_log
           - name: POSTGRES_SUPER_PASS
             valueFrom:
               secretKeyRef:

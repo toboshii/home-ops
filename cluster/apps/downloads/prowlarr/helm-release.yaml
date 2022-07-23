@@ -42,7 +42,7 @@ spec:
       PROWLARR__LOG_LEVEL: info
       PROWLARR__POSTGRES_HOST: postgres-downloads-rw
       PROWLARR__POSTGRES_MAIN_DB: prowlarr
-      PROWLARR__POSTGRES_MAIN_LOG: prowlarr-log
+      PROWLARR__POSTGRES_MAIN_LOG: prowlarr_log
       PROWLARR__POSTGRES_USER:
         valueFrom:
           secretKeyRef:

@@ -40,8 +40,8 @@ spec:
       PUSHOVER_DEBUG: "false"
       PUSHOVER_APP_URL: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
       RADARR__POSTGRES_HOST: postgres-downloads-rw
-      RADARR__POSTGRES_MAIN_DB: radarr-uhd
-      RADARR__POSTGRES_MAIN_LOG: radarr-uhd-log
+      RADARR__POSTGRES_MAIN_DB: radarr_uhd
+      RADARR__POSTGRES_MAIN_LOG: radarr_uhd_log
       RADARR__POSTGRES_USER:
         valueFrom:
           secretKeyRef:
