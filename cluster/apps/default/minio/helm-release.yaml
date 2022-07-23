@@ -81,6 +81,8 @@ spec:
             paths:
               - path: /
                 pathType: Prefix
+                service:
+                  port: *port-api
         tls:
           - hosts:
               - *host-console
