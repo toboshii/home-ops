@@ -29,13 +29,3 @@ spec:
               secretKeyRef:
                 name: postgres-app
                 key: password
-      wait-for-db:
-        image: ghcr.io/patrickdappollonio/wait-for:v1.0.0
-        env:
-          - name: POSTGRES_HOST
-            value: postgres-downloads-rw
-        command:
-          - /wait-for
-        args:
-          - --host="$(POSTGRES_HOST):5432"
-          - --verbose
