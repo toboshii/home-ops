@@ -29,8 +29,8 @@ spec:
     global:
       nameOverride: *app
     image:
-      repository: ghcr.io/onedr0p/radarr
-      tag: 4.1.0.6175@sha256:1c8d41ba023b139126fe47e7748eb8fb518f92e9cae11fed6c12ce9cce3f2af5
+      repository: ghcr.io/onedr0p/radarr-develop
+      tag: 4.2.0.6438@sha256:ef4335cc1224c684e4b89ae53e50b4c976ae6466d1eb03f3365d603ace5777b6
     env:
       TZ: "${TIMEZONE}"
       RADARR__INSTANCE_NAME: Radarr (UHD)
@@ -69,7 +69,7 @@ spec:
           hajimari.io/icon: "movie"
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_PUBLIC_DOMAIN}/css/base/radarr/dracula.css"></head>';
+            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_PUBLIC_DOMAIN}/css/base/radarr/dracula.css"><link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_PUBLIC_DOMAIN}/css/addons/radarr/radarr-4k-logo/radarr-4k-logo.css"></head>';
             sub_filter_once on;
         hosts:
           - host: *host
