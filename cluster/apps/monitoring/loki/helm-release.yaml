@@ -133,8 +133,11 @@ spec:
       persistence:
         size: 10Gi
         storageClass: ceph-block
-    serviceMonitor:
-      enabled: true
+    monitoring:
+      selfMonitoring:
+        enabled: false
+        grafanaAgent:
+          installOperator: false
   valuesFrom:
     - targetPath: loki.structuredConfig.common.storage.s3.bucketnames
       kind: ConfigMap
