@@ -1,0 +1,31 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: prowlarr
+  namespace: downloads
+spec:
+  values:
+    initContainers:
+      init-db:
+        image: ghcr.io/onedr0p/postgres-initdb:14.4@sha256:0196ea10d36c2e28f4d7b7f3cb36eb2fdec6e8278b503ea17b96f7fd15d5cfd4
+        env:
+          - name: POSTGRES_HOST
+            value: postgres-downloads-rw
+          - name: POSTGRES_DB
+            value: prowlarr prowlarr-log
+          - name: POSTGRES_SUPER_PASS
+            valueFrom:
+              secretKeyRef:
+                name: postgres-superuser
+                key: password
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: postgres-app
+                key: username
+          - name: POSTGRES_PASS
+            valueFrom:
+              secretKeyRef:
+                name: postgres-app
+                key: password
