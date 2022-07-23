@@ -17,17 +17,17 @@ spec:
           - name: POSTGRES_SUPER_PASS
             valueFrom:
               secretKeyRef:
-                name: postgres-downloads-superuser
+                name: postgres-superuser
                 key: password
           - name: POSTGRES_USER
             valueFrom:
               secretKeyRef:
-                name: postgres-downloads-app
+                name: postgres-app
                 key: username
           - name: POSTGRES_PASS
             valueFrom:
               secretKeyRef:
-                name: postgres-downloads-app
+                name: postgres-app
                 key: password
       wait-for-db:
         image: ghcr.io/patrickdappollonio/wait-for:v1.0.0

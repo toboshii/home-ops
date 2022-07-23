@@ -45,12 +45,12 @@ spec:
       RADARR__POSTGRES_USER:
         valueFrom:
           secretKeyRef:
-            name: postgres-downloads-app
+            name: postgres-app
             key: username
       RADARR__POSTGRES_PASSWORD:
         valueFrom:
           secretKeyRef:
-            name: postgres-downloads-app
+            name: postgres-app
             key: password
     envFrom:
       - secretRef:
