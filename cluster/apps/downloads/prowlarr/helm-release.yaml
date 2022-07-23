@@ -22,6 +22,9 @@ spec:
   upgrade:
     remediation:
       retries: 5
+  dependsOn:
+    - name: cloudnative-pg
+      namespace: database
   values:
     global:
       nameOverride: *app
@@ -37,6 +40,19 @@ spec:
       PROWLARR__PORT: &port 80
       PROWLARR__BRANCH: nightly
       PROWLARR__LOG_LEVEL: info
+      PROWLARR__POSTGRES_HOST: postgres-downloads-rw
+      PROWLARR__POSTGRES_MAIN_DB: prowlarr
+      PROWLARR__POSTGRES_MAIN_LOG: prowlarr-log
+      PROWLARR__POSTGRES_USER:
+        valueFrom:
+          secretKeyRef:
+            name: postgres-app
+            key: username
+      PROWLARR__POSTGRES_PASSWORD:
+        valueFrom:
+          secretKeyRef:
+            name: postgres-app
+            key: password
     envFrom:
       - secretRef:
           name: *app

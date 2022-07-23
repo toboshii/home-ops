@@ -22,6 +22,9 @@ spec:
   upgrade:
     remediation:
       retries: 5
+  dependsOn:
+    - name: cloudnative-pg
+      namespace: database
   values:
     global:
       nameOverride: *app
@@ -36,6 +39,19 @@ spec:
       RADARR__LOG_LEVEL: info
       PUSHOVER_DEBUG: "false"
       PUSHOVER_APP_URL: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
+      RADARR__POSTGRES_HOST: postgres-downloads-rw
+      RADARR__POSTGRES_MAIN_DB: radarr-uhd
+      RADARR__POSTGRES_MAIN_LOG: radarr-uhd-log
+      RADARR__POSTGRES_USER:
+        valueFrom:
+          secretKeyRef:
+            name: postgres-app
+            key: username
+      RADARR__POSTGRES_PASSWORD:
+        valueFrom:
+          secretKeyRef:
+            name: postgres-app
+            key: password
     envFrom:
       - secretRef:
           name: *app
