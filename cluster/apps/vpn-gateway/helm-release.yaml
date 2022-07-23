@@ -5,24 +5,33 @@ metadata:
   name: vpn-gateway
   namespace: vpn-gateway
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: pod-gateway
-      version: 5.0.1
+      version: 5.5.1
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
         namespace: flux-system
-      interval: 5m
-
-  # See https://github.com/k8s-at-home/charts/blob/master/charts/pod-gateway/values.yaml
+      interval: 15m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
     image:
       repository: ghcr.io/k8s-at-home/pod-gateway
-      tag: v1.4.0
+      tag: v1.6.0@sha256:62397550aea110d4ec3d01885bc73f0ca679603eb44653ff7874ddad7d40d173
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: "downloads-gateway-pod-gateway"
+      secret.reloader.stakater.com/reload: "downloads-gateway-vpnconfig"
     addons:
+      netshoot:
+        enabled: true
       vpn:
         enabled: true
         type: wireguard
@@ -30,12 +39,12 @@ spec:
           image:
             repository: ghcr.io/k8s-at-home/wireguard
             tag: v1.0.20210914
-        securityContext:
-          runAsUser: 568
-          runAsGroup: 568
-          capabilities:
-            drop:
-              - "SYS_MODULE"
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            capabilities:
+              drop:
+                - "SYS_MODULE"
         env:
           TZ: "America/Chicago"
           IPTABLES_BACKEND: nft
@@ -90,7 +99,7 @@ spec:
     webhook:
       image:
         repository: ghcr.io/k8s-at-home/gateway-admision-controller
-        tag: v3.4.0
+        tag: v3.5.0
       gatewayDefault: false
       gatewayLabel: setGateway
       gatewayAnnotation: setGateway
