@@ -38,7 +38,7 @@ spec:
         annotations:
           hajimari.io/appName: *app
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
+          - host: &host "goldilocks.${SECRET_PUBLIC_DOMAIN}"
             paths:
               - path: /
                 type: Prefix
