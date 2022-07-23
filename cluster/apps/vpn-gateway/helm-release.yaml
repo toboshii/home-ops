@@ -39,12 +39,12 @@ spec:
           image:
             repository: ghcr.io/k8s-at-home/wireguard
             tag: v1.0.20210914
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            capabilities:
-              drop:
-                - "SYS_MODULE"
+        securityContext:
+          runAsUser: 568
+          runAsGroup: 568
+          capabilities:
+            drop:
+              - "SYS_MODULE"
         env:
           TZ: "America/Chicago"
           IPTABLES_BACKEND: nft
