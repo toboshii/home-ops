@@ -7,6 +7,7 @@ _... managed by Flux and serviced with RenovateBot_ :robot:
 <br />
 <br />
 
+
 [![Discord](https://img.shields.io/discord/673534664354430999?color=7289da&label=DISCORD&style=for-the-badge)](https://discord.gg/sTMX7Vh)
 [![k3s](https://img.shields.io/badge/k3s-v1.20.6-orange?style=for-the-badge)](https://k3s.io/)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white&style=for-the-badge)](https://github.com/pre-commit/pre-commit)
