@@ -26,8 +26,8 @@ spec:
     global:
       nameOverride: *app
     image:
-      repository: ghcr.io/onedr0p/sonarr
-      tag: v3.0.8.1507@sha256:1b9dd07966ebcbbd4a2a524a8e572b14f7f58fe6b2debfe4c5d88944eabea06b
+      repository: ghcr.io/onedr0p/sonarr-develop
+      tag: 3.0.8.1540@sha256:65c3855bde447f608ba97da3f8bd77c1633f8c0b04a54523058985504a822b20
     env:
       TZ: "${TIMEZONE}"
       SONARR__INSTANCE_NAME: Sonarr (UHD)
@@ -53,7 +53,7 @@ spec:
           hajimari.io/icon: "television-box"
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_PUBLIC_DOMAIN}/css/base/sonarr/dracula.css"></head>';
+            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_PUBLIC_DOMAIN}/css/base/sonarr/dracula.css"><link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_PUBLIC_DOMAIN}/css/addons/sonarr/sonarr-4k-logo/sonarr-4k-logo.css"></head>';
             sub_filter_once on;
         hosts:
           - host: *host
