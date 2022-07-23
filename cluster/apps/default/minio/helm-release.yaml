@@ -91,12 +91,10 @@ spec:
               - *host-api
               - *host-api-custom
     podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
+      runAsUser: 5600
+      runAsGroup: 5600
+      fsGroup: 5600
       fsGroupChangePolicy: "OnRootMismatch"
-      supplementalGroups:
-        - 5600
     persistence:
       config:
         enabled: true
