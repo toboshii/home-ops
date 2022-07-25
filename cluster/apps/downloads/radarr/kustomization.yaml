@@ -6,4 +6,4 @@ resources:
   - secret.sops.yaml
   - helm-release.yaml
 patchesStrategicMerge:
-  - postgres/init-container.yaml
+  - patches/postgres.yaml
