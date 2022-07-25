@@ -7,6 +7,7 @@ resources:
   - downloads
   - flux-system
   - kube-system
+  - kyverno
   - media
   - monitoring
   - networking
