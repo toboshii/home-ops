@@ -4,4 +4,6 @@ kind: Kustomization
 namespace: database
 
 resources:
+  - secret.sops.yaml
   - postgres-default.yaml
+  - scheduled-backup.yaml
