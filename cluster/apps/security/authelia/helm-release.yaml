@@ -39,7 +39,7 @@ spec:
         surge: 1
     image:
       repository: docker.io/authelia/authelia
-      tag: 4.36.2
+      tag: 4.36.3
     envFrom:
       - secretRef:
           name: *app
