@@ -53,6 +53,9 @@ spec:
     bucketweb:
       enabled: true
       replicaCount: 3
+      updateStrategy:
+        type: RollingUpdate
+        maxSurge: 1
       podAntiAffinityPreset: hard
       ingress:
         enabled: true

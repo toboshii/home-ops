@@ -95,6 +95,9 @@ spec:
     gateway:
       enabled: true
       replicas: 3
+      deploymentStrategy:
+        type: RollingUpdate
+        maxSurge: 1
       ingress:
         enabled: true
         ingressClassName: "nginx"
