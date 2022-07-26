@@ -97,7 +97,8 @@ spec:
       replicas: 3
       deploymentStrategy:
         type: RollingUpdate
-        maxSurge: 1
+        rollingUpdate:
+          maxSurge: 1
       ingress:
         enabled: true
         ingressClassName: "nginx"
