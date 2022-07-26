@@ -68,7 +68,7 @@ spec:
         name_attribute_path: name
         use_pkce: true
         role_attribute_path: |
-          "contains(groups[*], 'monitor-admins') && 'Admin' || contains(groups[*], 'monitor-editors') && 'Editor' || contains(groups[*], 'monitor-viewers') && 'Viewer'"
+          contains(groups[*], 'monitor-admins') && 'Admin' || contains(groups[*], 'monitor-editors') && 'Editor' || contains(groups[*], 'monitor-viewers') && 'Viewer'
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
