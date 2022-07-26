@@ -35,6 +35,8 @@ spec:
     controller:
       replicas: 3
       strategy: RollingUpdate
+      rollingUpdate:
+        surge: 1
     image:
       repository: docker.io/authelia/authelia
       tag: 4.36.2
