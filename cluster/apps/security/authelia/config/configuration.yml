@@ -24,6 +24,13 @@ access_control:
 
 identity_providers:
   oidc:
+    cors:
+      endpoints:
+        - authorization
+        - token
+        - revocation
+        - introspection
+      allowed_origins_from_client_redirect_uris: true
     clients:
       - id: grafana
         description: Grafana
