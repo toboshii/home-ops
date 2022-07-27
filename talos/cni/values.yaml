@@ -4,6 +4,10 @@ kubeProxyReplacement: "strict"
 k8sServiceHost: cluster01.dfw.56k.sh
 k8sServicePort: 6443
 
+ipv4NativeRoutingCIDR: 172.22.0.0/16
+tunnel: "disabled"
+auto-direct-node-routes: true
+
 ipam:
   mode: "kubernetes"
 

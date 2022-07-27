@@ -38,3 +38,4 @@ talosconfig*
 config.xml
 *.pid
 kubernetes
+talos/cni/charts
