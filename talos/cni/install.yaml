@@ -278,6 +278,7 @@ data:
   install-iptables-rules: "true"
   install-no-conntrack-iptables-rules: "false"
   ipam: kubernetes
+  ipv4-native-routing-cidr: 172.22.0.0/16
   kube-proxy-replacement: strict
   kube-proxy-replacement-healthz-bind-address: ""
   monitor-aggregation: medium
@@ -290,7 +291,7 @@ data:
   remove-cilium-node-taints: "true"
   set-cilium-is-up-condition: "true"
   sidecar-istio-proxy-image: cilium/istio_proxy
-  tunnel: vxlan
+  tunnel: disabled
   unmanaged-pod-watcher-interval: "15"
 kind: ConfigMap
 metadata:
