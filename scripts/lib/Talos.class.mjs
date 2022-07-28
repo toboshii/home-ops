@@ -73,7 +73,7 @@ class Talos {
 
             console.log(`Waiting for Talos apid to be available`)
             await sleep(30000)
-            let healthCheck = await retry(30, expBackoff(), () => $`curl -k https://${nodeConfig.ipAddress}:50000`)
+            let healthCheck = await retry(30, expBackoff(), () => $`nc -z ${nodeConfig.ipAddress} 50000`)
             if (await healthCheck.exitCode === 0) {
                 console.log(`${chalk.green.bold('Success:')} You can now push a machine config to ${this.nodes}`)
             }
@@ -86,7 +86,7 @@ class Talos {
 
     // Set TESMART switch channel
     async setChannel(headers, channel) {
-        const response = await fetch(`${this.proto}://${this.kvm}/api/gpio/pulse?channel=server${channel}_switch`, { method: 'POST', headers })
+        const response = await fetch(`${this.proto}://${this.kvm}/api/gpio/pulse?channel=server${--channel}_switch`, { method: 'POST', headers })
         if (!response.ok) {
             const json = await response.json()
             throw new Error(`${json.result.error} - ${json.result.error_msg}`)
@@ -140,19 +140,19 @@ class Talos {
 
     // Send CTRL-ALT-DEL to piKVM
     async sendReboot(headers) {
-        await Promise.all([
-            fetch(`${this.proto}://${this.kvm}/api/hid/events/send_key?key=ControlLeft&state=true`, { method: 'POST', headers }),
-            fetch(`${this.proto}://${this.kvm}/api/hid/events/send_key?key=AltLeft&state=true`, { method: 'POST', headers }),
-            fetch(`${this.proto}://${this.kvm}/api/hid/events/send_key?key=Delete&state=true`, { method: 'POST', headers }),
-        ])
+        // await Promise.all([
+        await fetch(`${this.proto}://${this.kvm}/api/hid/events/send_key?key=ControlLeft&state=true`, { method: 'POST', headers })
+        await fetch(`${this.proto}://${this.kvm}/api/hid/events/send_key?key=AltLeft&state=true`, { method: 'POST', headers })
+        await fetch(`${this.proto}://${this.kvm}/api/hid/events/send_key?key=Delete&state=true`, { method: 'POST', headers })
+        // ])
 
-        await sleep(500)
+        await sleep(2000)
 
-        await Promise.all([
-            fetch(`${this.proto}://${this.kvm}/api/hid/events/send_key?key=ControlLeft&state=false`, { method: 'POST', headers }),
-            fetch(`${this.proto}://${this.kvm}/api/hid/events/send_key?key=AltLeft&state=false`, { method: 'POST', headers }),
-            fetch(`${this.proto}://${this.kvm}/api/hid/events/send_key?key=Delete&state=false`, { method: 'POST', headers }),
-        ])
+        // await Promise.all([
+        await fetch(`${this.proto}://${this.kvm}/api/hid/events/send_key?key=ControlLeft&state=false`, { method: 'POST', headers })
+        await fetch(`${this.proto}://${this.kvm}/api/hid/events/send_key?key=AltLeft&state=false`, { method: 'POST', headers })
+        await fetch(`${this.proto}://${this.kvm}/api/hid/events/send_key?key=Delete&state=false`, { method: 'POST', headers })
+        // ])
     }
 
 }
