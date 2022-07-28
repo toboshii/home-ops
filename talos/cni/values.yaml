@@ -18,6 +18,3 @@ bgp:
 
 hubble:
   enabled: false
-
-ipv6:
-  enabled: false

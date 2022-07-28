@@ -1,5 +1,0 @@
----
-
-ansible_host: "10.75.30.15"
-ansible_user: toboshii
-ansible_become: true
