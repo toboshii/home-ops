@@ -29,21 +29,6 @@ spec:
       repository: ghcr.io/toboshii/szurubooru
       tag: 2.5-edge
       pullPolicy: Always
-    initContainers:
-      wait-for-db:
-        image: ghcr.io/patrickdappollonio/wait-for:v1.0.0
-        imagePullPolicy: IfNotPresent
-        env:
-          - name: POSTGRES_HOST
-            valueFrom:
-              secretKeyRef:
-                name: database-szurubooru-user
-                key: HOST
-        command:
-          - /wait-for
-        args:
-          - --host="$(POSTGRES_HOST):5432"
-          - --verbose
     env:
       TZ: "${TIMEZONE}"
       BACKEND_HOST: localhost
