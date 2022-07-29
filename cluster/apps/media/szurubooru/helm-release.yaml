@@ -63,11 +63,20 @@ spec:
         env:
           - name: TZ
             value: "${TIMEZONE}"
-          - name: POSTGRES_URL
+          - name: POSTGRES_HOST
+            value: postgres-rw.database
+          - name: POSTGRES_DB
+            value: *app
+          - name: POSTGRES_USER
             valueFrom:
               secretKeyRef:
-                name: database-szurubooru-user
-                key: POSTGRES_URL
+                name: szurubooru-postgres
+                key: username
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: szurubooru-postgres
+                key: password
         ports:
           - name: server-http
             containerPort: 6666
