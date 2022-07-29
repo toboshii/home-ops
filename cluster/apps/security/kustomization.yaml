@@ -5,7 +5,5 @@ resources:
   - namespace.yaml
   - authelia
   - authelia-redis
-  - authentik
   - glauth
-  - postgres
   - vaultwarden
