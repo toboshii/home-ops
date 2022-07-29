@@ -25,7 +25,7 @@ spec:
   values:
     image:
       repository: ghcr.io/k8s-at-home/pod-gateway
-      tag: v1.6.0@sha256:62397550aea110d4ec3d01885bc73f0ca679603eb44653ff7874ddad7d40d173
+      tag: v1.6.1@sha256:dcb2d814a4f7dc175f096e5a14035b5afbd2ae5b9e07eb623847a121bd46bca4
     podAnnotations:
       configmap.reloader.stakater.com/reload: "downloads-gateway-pod-gateway"
       secret.reloader.stakater.com/reload: "downloads-gateway-vpnconfig"
