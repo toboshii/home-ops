@@ -50,7 +50,7 @@ spec:
       DATABASE_URL:
         valueFrom:
           secretKeyRef:
-            name: database-vaultwarden-user
+            name: vaultwarden-postgres
             key: POSTGRES_URL
     service:
       main:
