@@ -22,6 +22,9 @@ spec:
   upgrade:
     remediation:
       retries: 5
+  dependsOn:
+    - name: cloudnative-pg
+      namespace: database
   values:
     global:
       nameOverride: *app
@@ -63,20 +66,9 @@ spec:
         env:
           - name: TZ
             value: "${TIMEZONE}"
-          - name: POSTGRES_HOST
-            value: postgres-rw.database
-          - name: POSTGRES_DB
-            value: *app
-          - name: POSTGRES_USER
-            valueFrom:
-              secretKeyRef:
-                name: szurubooru-postgres
-                key: username
-          - name: POSTGRES_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: szurubooru-postgres
-                key: password
+        envFrom:
+          - secretRef:
+              name: szurubooru-postgres
         ports:
           - name: server-http
             containerPort: 6666

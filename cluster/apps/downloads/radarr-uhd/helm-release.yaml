@@ -39,19 +39,19 @@ spec:
       RADARR__LOG_LEVEL: info
       PUSHOVER_DEBUG: "false"
       PUSHOVER_APP_URL: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
-      RADARR__POSTGRES_HOST: postgres-downloads-rw
+      RADARR__POSTGRES_HOST: postgres-rw.database
       RADARR__POSTGRES_MAIN_DB: radarr_uhd
       RADARR__POSTGRES_MAIN_LOG: radarr_uhd_log
       RADARR__POSTGRES_USER:
         valueFrom:
           secretKeyRef:
-            name: postgres-app
-            key: username
+            name: radarr-uhd-postgres
+            key: POSTGRES_USER
       RADARR__POSTGRES_PASSWORD:
         valueFrom:
           secretKeyRef:
-            name: postgres-app
-            key: password
+            name: radarr-uhd-postgres
+            key: POSTGRES_PASSWORD
     envFrom:
       - secretRef:
           name: *app

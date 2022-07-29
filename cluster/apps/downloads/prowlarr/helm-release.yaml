@@ -40,19 +40,19 @@ spec:
       PROWLARR__PORT: &port 80
       PROWLARR__BRANCH: nightly
       PROWLARR__LOG_LEVEL: info
-      PROWLARR__POSTGRES_HOST: postgres-downloads-rw
+      PROWLARR__POSTGRES_HOST: postgres-rw.database
       PROWLARR__POSTGRES_MAIN_DB: prowlarr
       PROWLARR__POSTGRES_MAIN_LOG: prowlarr_log
       PROWLARR__POSTGRES_USER:
         valueFrom:
           secretKeyRef:
-            name: postgres-app
-            key: username
+            name: prowlarr-postgres
+            key: POSTGRES_USER
       PROWLARR__POSTGRES_PASSWORD:
         valueFrom:
           secretKeyRef:
-            name: postgres-app
-            key: password
+            name: prowlarr-postgres
+            key: POSTGRES_PASSWORD
     envFrom:
       - secretRef:
           name: *app
