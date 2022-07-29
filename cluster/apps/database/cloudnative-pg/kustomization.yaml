@@ -7,4 +7,3 @@ resources:
   - helm-release.yaml
   - cluster.yaml
   - scheduled-backup.yaml
-  - clusters
