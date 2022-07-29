@@ -6,7 +6,11 @@ creation_rules:
       - age:
           - age1nfn3vxpsgm49ljgs8kxevga9makhh9aply6ddgf9wplsfuwpcv2qzmqatc
   - path_regex: cluster/.*\.sops\.ya?ml
-    encrypted_regex: "^(data|stringData)$"
+    encrypted_regex: '((?i)(pass|secret($|[^N])|key|token|^data$|^stringData))'
+    key_groups:
+      - age:
+          - age1nfn3vxpsgm49ljgs8kxevga9makhh9aply6ddgf9wplsfuwpcv2qzmqatc
+  - path_regex: .*\.sops\.ya?ml
     key_groups:
       - age:
           - age1nfn3vxpsgm49ljgs8kxevga9makhh9aply6ddgf9wplsfuwpcv2qzmqatc
