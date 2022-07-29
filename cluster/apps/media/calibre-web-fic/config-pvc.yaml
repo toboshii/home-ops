@@ -7,7 +7,7 @@ metadata:
   labels:
     app.kubernetes.io/name: &name calibre-web-fic
     app.kubernetes.io/instance: *name
-    pmb.home.arpa/backup: "true"
+    snapshot.home.arpa/enabled: "true"
 spec:
   accessModes:
     - ReadWriteOnce

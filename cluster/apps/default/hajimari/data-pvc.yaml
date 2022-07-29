@@ -4,6 +4,10 @@ kind: PersistentVolumeClaim
 metadata:
   name: hajimari-data-v1
   namespace: default
+  labels:
+    app.kubernetes.io/name: &name lidarr
+    app.kubernetes.io/instance: *name
+    snapshot.home.arpa/enabled: "true"
 spec:
   accessModes:
     - ReadWriteOnce
