@@ -242,15 +242,17 @@ data:
   agent-not-ready-taint-key: node.cilium.io/agent-not-ready
   annotate-k8s-node: "true"
   arping-refresh-period: 30s
-  auto-direct-node-routes: "false"
+  auto-direct-node-routes: "true"
+  bpf-lb-algorithm: maglev
   bpf-lb-external-clusterip: "false"
   bpf-lb-map-max: "65536"
+  bpf-lb-mode: dsr
   bpf-map-dynamic-size-ratio: "0.0025"
   bpf-policy-map-max: "16384"
   cgroup-root: /run/cilium/cgroupv2
   cilium-endpoint-gc-interval: 5m0s
-  cluster-id: ""
-  cluster-name: default
+  cluster-id: "1"
+  cluster-name: cluster01
   custom-cni-conf: "false"
   debug: "false"
   disable-cnp-status-updates: "true"
@@ -259,6 +261,7 @@ data:
   enable-bandwidth-manager: "false"
   enable-bpf-clock-probe: "true"
   enable-endpoint-health-checking: "true"
+  enable-endpoint-routes: "true"
   enable-health-check-nodeport: "true"
   enable-health-checking: "true"
   enable-ipv4: "true"
@@ -268,7 +271,7 @@ data:
   enable-k8s-terminating-endpoint: "true"
   enable-l2-neigh-discovery: "true"
   enable-l7-proxy: "true"
-  enable-local-redirect-policy: "false"
+  enable-local-redirect-policy: "true"
   enable-policy: default
   enable-remote-node-identity: "true"
   enable-session-affinity: "true"
@@ -280,7 +283,7 @@ data:
   ipam: kubernetes
   ipv4-native-routing-cidr: 172.22.0.0/16
   kube-proxy-replacement: strict
-  kube-proxy-replacement-healthz-bind-address: ""
+  kube-proxy-replacement-healthz-bind-address: 0.0.0.0:10256
   monitor-aggregation: medium
   monitor-aggregation-flags: all
   monitor-aggregation-interval: 5s
@@ -330,6 +333,7 @@ spec:
   template:
     metadata:
       annotations:
+        cilium.io/cilium-configmap-checksum: bfa52dc85e13bebac352d2556de22d1a0945f1e9a627897a6cf7361aeedf1559
         meta.helm.sh/release-name: cilium
         meta.helm.sh/release-namespace: kube-system
       labels:
@@ -371,7 +375,7 @@ spec:
               name: cilium-config
               optional: true
         - name: KUBERNETES_SERVICE_HOST
-          value: cluster01.dfw.56k.sh
+          value: 10.75.40.10
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
         image: quay.io/cilium/operator-generic:v1.11.6@sha256:9f6063c7bcaede801a39315ec7c166309f6a6783e98665f6693939cf1701bc17
@@ -421,6 +425,7 @@ spec:
   template:
     metadata:
       annotations:
+        cilium.io/cilium-configmap-checksum: bfa52dc85e13bebac352d2556de22d1a0945f1e9a627897a6cf7361aeedf1559
         meta.helm.sh/release-name: cilium
         meta.helm.sh/release-namespace: kube-system
       labels:
@@ -481,7 +486,7 @@ spec:
               name: cilium-config
               optional: true
         - name: KUBERNETES_SERVICE_HOST
-          value: cluster01.dfw.56k.sh
+          value: 10.75.40.10
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
         image: quay.io/cilium/cilium:v1.11.6@sha256:f7f93c26739b6641a3fa3d76b1e1605b15989f25d06625260099e01c8243f54c
@@ -599,7 +604,7 @@ spec:
               name: cilium-config
               optional: true
         - name: KUBERNETES_SERVICE_HOST
-          value: cluster01.dfw.56k.sh
+          value: 10.75.40.10
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
         image: quay.io/cilium/cilium:v1.11.6@sha256:f7f93c26739b6641a3fa3d76b1e1605b15989f25d06625260099e01c8243f54c

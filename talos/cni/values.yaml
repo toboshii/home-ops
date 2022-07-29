@@ -1,20 +1,32 @@
 ---
+cluster:
+  name: "cluster01"
+  id: "1"
+rollOutCiliumPods: true
+localRedirectPolicy: true
 kubeProxyReplacement: "strict"
-
-k8sServiceHost: cluster01.dfw.56k.sh
-k8sServicePort: 6443
-
+kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 ipv4NativeRoutingCIDR: 172.22.0.0/16
+k8sServiceHost: 10.75.40.10
+k8sServicePort: 6443
+loadBalancer:
+  algorithm: "maglev"
+  mode: "dsr"
 tunnel: "disabled"
-auto-direct-node-routes: true
-
+autoDirectNodeRoutes: true
+endpointRoutes:
+  enabled: true
 ipam:
   mode: "kubernetes"
-
+operator:
+  rollOutPods: true
+containerRuntime:
+  integration: containerd
+securityContext:
+  privileged: true
+hubble:
+  enabled: false
 bgp:
   enabled: false
   announce:
     loadbalancerIP: true
-
-hubble:
-  enabled: false

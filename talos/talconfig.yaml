@@ -8,9 +8,7 @@ clusterPodNets:
 clusterSvcNets:
   - 172.24.0.0/16
 cniConfig:
-  name: custom
-  urls:
-    - https://raw.githubusercontent.com/toboshii/home-ops/main/talos/cni/install.yaml
+  name: none
 nodes:
   - hostname: k8s-control01.${domainName}
     ipAddress: 10.75.40.20
