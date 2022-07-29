@@ -2,17 +2,21 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: postgres-restore
+  name: postgres
   namespace: database
 spec:
   instances: 3
+  primaryUpdateStrategy: unsupervised
   storage:
-    size: 50Gi
-  monitoring:
-    enablePodMonitor: true
+    size: 15Gi
+    storageClass: ceph-block
+  superuserSecret:
+    name: postgres-superuser
   bootstrap:
     recovery:
-      source: postgres-default-v1
+      source: postgres-backup
+  monitoring:
+    enablePodMonitor: true
   backup:
     retentionPolicy: 30d
     barmanObjectStore:
@@ -21,7 +25,7 @@ spec:
         maxParallel: 8
       destinationPath: s3://postgresql/
       endpointURL: http://minio.default:9000
-      serverName: "postgres-restore-v1"
+      serverName: "postgres-v1"
       s3Credentials:
         accessKeyId:
           name: postgres-minio
@@ -30,13 +34,14 @@ spec:
           name: postgres-minio
           key: MINIO_SECRET_KEY
   externalClusters:
-    - name: postgres-default-v1
+    - name: postgres-backup
       barmanObjectStore:
         wal:
           compression: bzip2
           maxParallel: 8
         destinationPath: s3://postgresql/
         endpointURL: http://minio.default:9000
+        serverName: "postgres-v0"
         s3Credentials:
           accessKeyId:
             name: postgres-minio
