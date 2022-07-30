@@ -2,8 +2,8 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: $APP-restore
-  namespace: $NAMESPACE
+  name: ${APP}-${CLAIM}-restore-snapshot
+  namespace: ${NAMESPACE}
 spec:
   ttlSecondsAfterFinished: 3600
   template:
@@ -21,22 +21,22 @@ spec:
             - -c
             - |-
               shopt -s dotglob
-              printf "\e[1;32m%-6s\e[m\n" "[01/03] Remove previous data ..." && rm -rf /data/config/*
-              printf "\e[1;32m%-6s\e[m\n" "[02/03] Connect to repo ..."      && kopia repo connect filesystem --path=/data/backups --override-hostname=cluster --override-username=root
-              printf "\e[1;32m%-6s\e[m\n" "[03/03] Restore latest snap ..."  && kopia snap restore "$(kopia snapshot list /$APP --json | jq --raw-output '.[-1] | .id')" /data/config
-              printf "\e[1;32m%-6s\e[m\n" "[09/09] Disconnect from repo ..." && kopia repo disconnect
+              printf "\e[1;32m%-6s\e[m\n" "[01/04] Connect to repo ..."      && kopia repo connect filesystem --path=/snapshots --override-hostname=cluster --override-username=root
+              printf "\e[1;32m%-6s\e[m\n" "[02/04] Remove previous data ..." && rm -rf /data/${NAMESPACE}/${APP}/${CLAIM}/*
+              printf "\e[1;32m%-6s\e[m\n" "[03/04] Restore snapshot ..."     && kopia snap restore "${SNAPSHOT}" /data/${NAMESPACE}/${APP}/${CLAIM}
+              printf "\e[1;32m%-6s\e[m\n" "[04/04] Disconnect from repo ..." && kopia repo disconnect
           volumeMounts:
-            - name: config
-              mountPath: /data/config
-            - name: backups
-              mountPath: /data/backups
+            - name: data
+              mountPath: /data/${NAMESPACE}/${APP}/${CLAIM}
+            - name: snapshots
+              mountPath: /snapshots
           securityContext:
             privileged: true
       volumes:
-        - name: config
+        - name: data
           persistentVolumeClaim:
-            claimName: $PVC
-        - name: backups
+            claimName: ${CLAIM}
+        - name: snapshots
           nfs:
             server: nas01
             path: /tank/data/backups/kopia
