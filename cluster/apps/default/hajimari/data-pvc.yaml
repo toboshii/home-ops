@@ -5,7 +5,7 @@ metadata:
   name: hajimari-data-v1
   namespace: default
   labels:
-    app.kubernetes.io/name: &name lidarr
+    app.kubernetes.io/name: &name hajimari
     app.kubernetes.io/instance: *name
     snapshot.home.arpa/enabled: "true"
 spec:
