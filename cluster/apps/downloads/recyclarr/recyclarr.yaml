@@ -14,9 +14,29 @@ sonarr:
     quality_definition: hybrid
     release_profiles:
       - trash_ids:
+          - d428eda85af1df8904b4bbe4fc2f537c # Anime - First release profile
+          - 6cd9e10bb5bb4c63d2d7cd3279924c7b # Anime - Second release profile
+        strict_negative_scores: true
+        tags: [anime]
+      - trash_ids:
           - EBC725268D687D588A20CBC5F97E538B # Low Quality Groups
           - 1B018E0C53EC825085DD911102E2CA36 # Release Sources (Streaming Service)
           - 71899E6C303A07AF0E4746EFF9873532 # P2P Groups + Repack/Proper
+        strict_negative_scores: false
+        tags: [series]
+      - trash_ids: [76e060895c5b8a765c310933da0a5357] # Optionals
+        filter:
+          include:
+            - cec8880b847dd5d31d29167ee0112b57 # Golden rule
+            - 436f5a7d08fbf02ba25cb5e5dfe98e55 # Ignore Dolby Vision without HDR10 fallback
+            - f3f0f3691c6a1988d4a02963e69d11f2 # Ignore The Group -SCENE
+            - ea83f4740cec4df8112f3d6dd7c82751 # Prefer Season Packs
+            - 6f2aefa61342a63387f2a90489e90790 # Dislike retags: rartv, rarbg, eztv, TGx
+            - 19cd5ecc0a24bf493a75e80a51974cdd # Dislike retagged groups
+            - 6a7b462c6caee4a991a9d8aa38ce2405 # Dislike release ending: en
+            - 236a3626a07cacf5692c73cc947bc280 # Dislike release containing: 1-
+            - 538bad00ee6f8aced8e0db5218b8484c # Dislike Bad Dual Audio Groups
+        tags: [series]
 
   - base_url: http://sonarr-uhd
     api_key: ${SONARR_UHD_APIKEY}
@@ -26,6 +46,18 @@ sonarr:
           - EBC725268D687D588A20CBC5F97E538B # Low Quality Groups
           - 1B018E0C53EC825085DD911102E2CA36 # Release Sources (Streaming Service)
           - 71899E6C303A07AF0E4746EFF9873532 # P2P Groups + Repack/Proper
+      - trash_ids: [76e060895c5b8a765c310933da0a5357] # Optionals
+        filter:
+          include:
+            - cec8880b847dd5d31d29167ee0112b57 # Golden rule
+            - 436f5a7d08fbf02ba25cb5e5dfe98e55 # Ignore Dolby Vision without HDR10 fallback
+            - f3f0f3691c6a1988d4a02963e69d11f2 # Ignore The Group -SCENE
+            - ea83f4740cec4df8112f3d6dd7c82751 # Prefer Season Packs
+            - 6f2aefa61342a63387f2a90489e90790 # Dislike retags: rartv, rarbg, eztv, TGx
+            - 19cd5ecc0a24bf493a75e80a51974cdd # Dislike retagged groups
+            - 6a7b462c6caee4a991a9d8aa38ce2405 # Dislike release ending: en
+            - 236a3626a07cacf5692c73cc947bc280 # Dislike release containing: 1-
+            - 538bad00ee6f8aced8e0db5218b8484c # Dislike Bad Dual Audio Groups
 
 radarr:
   - base_url: http://radarr
