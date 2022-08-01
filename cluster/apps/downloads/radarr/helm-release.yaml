@@ -44,7 +44,7 @@ spec:
       PUSHOVER_APP_URL: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
       RADARR__POSTGRES_HOST: postgres-rw.database
       RADARR__POSTGRES_MAIN_DB: radarr
-      RADARR__POSTGRES_MAIN_LOG: radarr_log
+      RADARR__POSTGRES_LOG_DB: radarr_log
       RADARR__POSTGRES_USER:
         valueFrom:
           secretKeyRef:
