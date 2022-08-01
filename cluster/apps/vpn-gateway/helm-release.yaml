@@ -46,9 +46,12 @@ spec:
             drop:
               - "SYS_MODULE"
         env:
-          TZ: "America/Chicago"
-          IPTABLES_BACKEND: nft
-          KILLSWITCH: "false"
+          - name: TZ
+            value: "America/Chicago"
+          - name: IPTABLES_BACKEND
+            value: nft
+          - name: KILLSWITCH
+            value: "false"
         configFileSecret: vpn-gateway-vpnconfig
         resources:
           requests:
