@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - radarr-pushover
   - sonarr-pushover
+  - sonarr-anime-delete
