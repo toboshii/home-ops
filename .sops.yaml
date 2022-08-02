@@ -14,3 +14,7 @@ creation_rules:
     key_groups:
       - age:
           - age1nfn3vxpsgm49ljgs8kxevga9makhh9aply6ddgf9wplsfuwpcv2qzmqatc
+  - path_regex: .*\.sops\.toml
+    key_groups:
+      - age:
+          - age1nfn3vxpsgm49ljgs8kxevga9makhh9aply6ddgf9wplsfuwpcv2qzmqatc
