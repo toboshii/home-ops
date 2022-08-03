@@ -56,6 +56,12 @@ spec:
           external-dns.home.arpa/enabled: "true"
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
           hajimari.io/icon: plex
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            location = / {
+              if ($http_x_plex_device = ""){
+                return 301 $scheme://$host/web/index.html;
+              }
+            }
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_PUBLIC_DOMAIN}"
             paths:
