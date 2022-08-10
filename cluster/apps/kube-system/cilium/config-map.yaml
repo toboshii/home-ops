@@ -7,12 +7,12 @@ metadata:
 data:
   config.yaml: |
     peers:
-      - peer-address: 10.75.40.1
+      - peer-address: ${GATEWAY_IP}
         peer-asn: 64512
         my-asn: 64512
     address-pools:
       - name: default
         protocol: bgp
         addresses:
-          - 10.75.45.0/24
+          - ${NETWORK_BGP_SVC_RANGE}
         avoid-buggy-ips: true

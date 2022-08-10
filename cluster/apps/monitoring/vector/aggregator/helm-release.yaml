@@ -141,7 +141,7 @@ spec:
             patch:
               - op: add
                 path: /spec/loadBalancerIP
-                value: "${SVC_SYSLOG_ADDR}"
+                value: "${SVC_VECTOR_AGGREGATOR_ADDR}"
               - op: replace
                 path: /spec/externalTrafficPolicy
                 value: Local
