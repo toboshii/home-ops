@@ -33,6 +33,7 @@ spec:
       strategy: RollingUpdate
       rollingUpdate:
         surge: 1
+        unavailable: 1
     image:
       repository: docker.io/intel/intel-gpu-plugin
       tag: 0.24.0

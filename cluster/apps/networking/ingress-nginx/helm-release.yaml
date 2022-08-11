@@ -30,6 +30,7 @@ spec:
       replicaCount: 3
       updateStrategy:
         rollingUpdate:
+          maxUnavailable: 1
           maxSurge: 1
         type: RollingUpdate
       extraEnvs:
