@@ -28,6 +28,10 @@ spec:
   values:
     controller:
       replicaCount: 3
+      updateStrategy:
+        rollingUpdate:
+          maxSurge: 1
+        type: RollingUpdate
       extraEnvs:
         - name: TZ
           value: "${TIMEZONE}"
@@ -62,7 +66,7 @@ spec:
       extraArgs:
         default-ssl-certificate: "networking/${SECRET_DOMAIN/./-}-tls"
       topologySpreadConstraints:
-        - maxSkew: 2
+        - maxSkew: 1
           topologyKey: kubernetes.io/hostname
           whenUnsatisfiable: DoNotSchedule
           labelSelector:

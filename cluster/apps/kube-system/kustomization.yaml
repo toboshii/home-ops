@@ -6,7 +6,6 @@ resources:
   - cert-manager
   - cilium
   - descheduler
-  - external-snapshotter
   - intel-gpu-plugin
   - kube-cleanup-operator
   - metrics-server
