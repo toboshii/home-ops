@@ -7,7 +7,7 @@ metadata:
 data:
   config.yaml: |
     peers:
-      - peer-address: ${GATEWAY_IP}
+      - peer-address: 10.75.40.1
         peer-asn: 64512
         my-asn: 64512
     address-pools:
