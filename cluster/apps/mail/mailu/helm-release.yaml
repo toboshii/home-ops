@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://mailu.github.io/helm-charts
       chart: mailu
-      version: 0.3.2
+      version: 0.3.3
       sourceRef:
         kind: HelmRepository
         name: mailu-charts
