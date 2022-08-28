@@ -30,7 +30,7 @@ spec:
         pmb.home.arpa/backup-claim: &claimName "lidarr-config-v1"
     image:
       repository: ghcr.io/onedr0p/lidarr
-      tag: 1.0.2.2592@sha256:39ca1d7b499b300cb096d8f905c9275d57d72ce303c40af379a7b9b9912d5e69
+      tag: 1.0.2.2592@sha256:b23522768b5a53396db224e982ab969646a23694ab72dd65bf81e08db5b6c732
     env:
       TZ: "${TIMEZONE}"
       LIDARR__INSTANCE_NAME: Lidarr
