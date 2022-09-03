@@ -35,7 +35,7 @@ spec:
         pmb.home.arpa/backup-claim: &claimName "plex-config-v1"
     image:
       repository: ghcr.io/onedr0p/plex
-      tag: 1.28.0.5999-97678ded3@sha256:b31303a77f363d19b1ff2946c106abf58a456b2cc939616711f394fc83dfdd96
+      tag: 1.28.2.6151-914ddd2b3@sha256:0b1c10bda8403bb984eb8ae77ec19dd5abdaacc57e2ec42be4316f9dafec6977
     env:
       TZ: "${TIMEZONE}"
       ADVERTISE_IP: "http://${SVC_PLEX_ADDR}:32400/"
