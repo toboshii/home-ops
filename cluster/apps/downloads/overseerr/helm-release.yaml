@@ -30,7 +30,7 @@ spec:
         pmb.home.arpa/backup-claim: &claimName "overseerr-config-v1"
     image:
       repository: ghcr.io/sct/overseerr
-      tag: 1.29.1
+      tag: 1.30.1
     env:
       TZ: "${TIMEZONE}"
       LOG_LEVEL: "info"
