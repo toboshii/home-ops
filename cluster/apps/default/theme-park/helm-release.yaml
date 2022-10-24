@@ -33,7 +33,7 @@ spec:
         unavailable: 1
     image:
       repository: ghcr.io/k8s-at-home/theme-park
-      tag: v1.9.11
+      tag: v1.13.1
     service:
       main:
         ports:
