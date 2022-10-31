@@ -8,11 +8,11 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: kah-common-chart
-      version: 1.2.2
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
       interval: 15m
   install:
@@ -25,12 +25,9 @@ spec:
   values:
     global:
       nameOverride: *app
-    controller:
-      labels:
-        pmb.home.arpa/backup-claim: &claimName "sabnzbd-config-v1"
     image:
       repository: ghcr.io/onedr0p/sabnzbd
-      tag: 3.6.0@sha256:1803edbc4d671b6e32853648358fd1c439986d489d9089d30c8fc2ffecfd6520
+      tag: 3.6.1@sha256:64e23a151f0b9e52474bf8edc12d7e0fced10d24970cc2fe1346a91489e6e80e
     env:
       TZ: "${TIMEZONE}"
       SABNZBD__PORT: &port 80
@@ -91,7 +88,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: *claimName
+        existingClaim: sabnzbd-config-v1
       media:
         enabled: true
         type: nfs

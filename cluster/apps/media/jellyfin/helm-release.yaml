@@ -8,11 +8,11 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: kah-common-chart
-      version: 1.2.2
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
   install:
     createNamespace: true
@@ -29,12 +29,9 @@ spec:
   values:
     global:
       nameOverride: *app
-    controller:
-      labels:
-        pmb.home.arpa/backup-claim: &claimName "jellyfin-config-v1"
     image:
       repository: ghcr.io/onedr0p/jellyfin
-      tag: 10.8.3@sha256:7c1ffa6112380d2ab03171bc56c60f53c56260e116543b34bea3d8cf7fcfe305
+      tag: 10.8.6@sha256:8c4a8050b376c5cb87f8815a7c9da51205d700041628394d14a26c63963c4e44
     env:
       TZ: "${TIMEZONE}"
     service:
@@ -70,7 +67,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: *claimName
+        existingClaim: jellyfin-config-v1
       media:
         enabled: true
         type: nfs

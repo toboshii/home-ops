@@ -8,11 +8,11 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: kah-common-chart
-      version: 1.2.2
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
       interval: 15m
   install:
@@ -42,6 +42,17 @@ spec:
         ports:
           http:
             port: 8080
+        monitor:
+          enabled: true
+          endpoints:
+            - port: http
+              scheme: http
+              path: /metrics
+              interval: 1m
+              scrapeTimeout: 10s
+              relabelings:
+                - sourceLabels: [__meta_kubernetes_pod_node_name]
+                  targetLabel: node
     securityContext:
       privileged: true
     affinity:

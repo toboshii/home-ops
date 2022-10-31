@@ -8,11 +8,11 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: kah-common-chart
-      version: 1.2.2
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
       interval: 15m
   install:
@@ -25,12 +25,9 @@ spec:
   values:
     global:
       nameOverride: *app
-    controller:
-      labels:
-        pmb.home.arpa/backup-claim: &claimName "sonarr-config-v1"
     image:
       repository: ghcr.io/onedr0p/sonarr-develop
-      tag: 3.0.9.1555@sha256:63e06362f8c14829086c908e6e92768bc22568b70095bc21124cdf21f235e785
+      tag: 4.0.0.142@sha256:59909855434bf7a8fb3d54607b4064fbae6262627bd847e6194e3785fc03191f
     env:
       TZ: "${TIMEZONE}"
       SONARR__INSTANCE_NAME: Sonarr
@@ -89,7 +86,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: *claimName
+        existingClaim: sonarr-config-v1
       media:
         enabled: true
         type: nfs

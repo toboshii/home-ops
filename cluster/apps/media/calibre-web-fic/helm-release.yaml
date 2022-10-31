@@ -8,11 +8,11 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: kah-common-chart
-      version: 1.2.2
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
       interval: 15m
   install:
@@ -25,16 +25,13 @@ spec:
   values:
     global:
       nameOverride: *app
-    controller:
-      labels:
-        pmb.home.arpa/backup-claim: &claimName "calibre-web-fic-config-v1"
     image:
       repository: linuxserver/calibre-web
       tag: version-0.6.18
     env:
       TZ: "${TIMEZONE}"
-      PUID: 5600
-      PGID: 5600
+      PUID: 1000
+      PGID: 1000
       DOCKER_MODS: "linuxserver/mods:universal-calibre"
     service:
       main:
@@ -62,12 +59,16 @@ spec:
           - hosts:
               - *host
     podSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+      fsGroupChangePolicy: "OnRootMismatch"
       supplementalGroups:
         - 5600
     persistence:
       config:
         enabled: true
-        existingClaim: *claimName
+        existingClaim: calibre-web-fic-config-v1
       media:
         enabled: true
         type: nfs

@@ -8,11 +8,11 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: kah-common-chart
-      version: 1.2.2
+      chart: app-template
+      version: 0.2.2
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
       interval: 15m
   install:
@@ -25,12 +25,9 @@ spec:
   values:
     global:
       nameOverride: *app
-    controller:
-      labels:
-        pmb.home.arpa/backup-claim: &claimName "overseerr-config-v1"
     image:
       repository: ghcr.io/sct/overseerr
-      tag: 1.29.1
+      tag: 1.30.1
     env:
       TZ: "${TIMEZONE}"
       LOG_LEVEL: "info"
@@ -64,15 +61,19 @@ spec:
               - *host-release
               - *host-custom
     podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
       fsGroupChangePolicy: "OnRootMismatch"
     persistence:
       config:
         enabled: true
-        existingClaim: *claimName
+        existingClaim: overseerr-config-v1
         mountPath: /app/config
+      cache:
+        enabled: true
+        type: emptyDir
+        mountPath: /app/.next/cache
     resources:
       requests:
         cpu: 10m
