@@ -10,5 +10,4 @@ resources:
   - kube-cleanup-operator
   - metrics-server
   - node-feature-discovery
-  - reflector
   - reloader
