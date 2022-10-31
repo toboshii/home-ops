@@ -12,4 +12,3 @@ resources:
   - node-feature-discovery
   - reflector
   - reloader
-  - trivy-operator
