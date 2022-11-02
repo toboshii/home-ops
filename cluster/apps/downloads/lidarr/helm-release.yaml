@@ -27,7 +27,7 @@ spec:
       nameOverride: *app
     image:
       repository: ghcr.io/onedr0p/lidarr-develop
-      tag: 1.1.0.2649@sha256:a87f4bd9dff012ecd77a715e2d70c850d214ff8810fed92af13db34ffddba90b
+      tag: 1.1.0.2649@sha256:4bf1adc313beab47febeb0a6c15fef40781448a9a7b26bb3eb92dfdb738578c6
     env:
       TZ: "${TIMEZONE}"
       LIDARR__INSTANCE_NAME: Lidarr
