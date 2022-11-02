@@ -32,7 +32,7 @@ spec:
       nameOverride: *app
     image:
       repository: ghcr.io/onedr0p/plex
-      tag: 1.29.1.6316-f4cdfea9c@sha256:04ad5efce2add9c6d2e4e9ff2ff9b2f9a5bdd511af70899e0bd14d828d367ee2
+      tag: 1.29.1.6316-f4cdfea9c@sha256:d2f446f1c446393247ad58b0fb986a98484b0a114f51af2291dcc36b9dd66fcd
     env:
       TZ: "${TIMEZONE}"
       ADVERTISE_IP: "http://${SVC_PLEX_ADDR}:32400/"
