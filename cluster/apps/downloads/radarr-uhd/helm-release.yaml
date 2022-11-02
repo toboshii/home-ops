@@ -30,7 +30,7 @@ spec:
       nameOverride: *app
     image:
       repository: ghcr.io/onedr0p/radarr-develop
-      tag: 4.3.0.6671@sha256:193e270fef1a0a4e1d6905d3520aa95a23fe70bb7b497a7493ff0020faffc977
+      tag: 4.3.0.6671@sha256:9d0b59314b79a1a93a66a0f87bae63e63be7b6275042aaaa0ad1260e1f0dea6c
     env:
       TZ: "${TIMEZONE}"
       RADARR__INSTANCE_NAME: Radarr (UHD)
