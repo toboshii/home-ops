@@ -18,7 +18,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: *app
-              image: ghcr.io/k8s-at-home/kubectl:v1.24.3@sha256:92c52efe8a94a19ffb27f5534f7b000999558fb6908dee5d8b50104590b795a5
+              image: ghcr.io/k8s-at-home/kubectl:v1.25.4@sha256:7c79e72d9b194e856e4cee0dabd0a30fc7b42863975ddb70bdffe5ac69ce2c17
               envFrom:
                 - secretRef:
                     name: *app
