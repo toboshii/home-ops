@@ -17,7 +17,7 @@ spec:
       source: postgres-backup
   postgresql:
     parameters:
-      max_connections: "600"
+      max_connections: "800"
       shared_buffers: "512MB"
   monitoring:
     enablePodMonitor: true
