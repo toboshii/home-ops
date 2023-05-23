@@ -1,7 +1,7 @@
 ---
 clusterName: cluster01
-talosVersion: v1.2.6
-kubernetesVersion: v1.24.3
+talosVersion: v1.3.7
+kubernetesVersion: v1.26.5
 endpoint: https://cluster01.${domainName}:6443
 clusterPodNets:
   - 172.22.0.0/16
@@ -72,6 +72,7 @@ controlPlane:
         crt: ${k8sAggregatorCert}
         key: ${k8sAggregatorCertKey}
       apiServer:
+        disablePodSecurityPolicy: true
         admissionControl: []
         certSANs:
           - ${clusterEndpointIP}
@@ -96,7 +97,7 @@ controlPlane:
         extraArgs:
           listen-metrics-urls: http://0.0.0.0:2381
       extraManifests:
-        - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/v0.5.1/deploy/ha-install.yaml
+        - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/v0.6.10/deploy/ha-install.yaml
       proxy:
         disabled: true
         extraArgs:
@@ -121,7 +122,7 @@ controlPlane:
             [plugins."io.containerd.grpc.v1.cri"]
               enable_unprivileged_ports = true
               enable_unprivileged_icmp = true
-          path: /var/cri/conf.d/allow-unpriv-ports.toml
+          path: /etc/cri/conf.d/20-customization.part
           op: create
       install:
         extraKernelArgs:
@@ -177,7 +178,7 @@ worker:
             [plugins."io.containerd.grpc.v1.cri"]
               enable_unprivileged_ports = true
               enable_unprivileged_icmp = true
-          path: /var/cri/conf.d/allow-unpriv-ports.toml
+          path: /etc/cri/conf.d/20-customization.part
           op: create
       install:
         extraKernelArgs:

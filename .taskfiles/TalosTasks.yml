@@ -1,0 +1,99 @@
+---
+version: "3"
+
+vars:
+  DOMAIN: "dfw.56k.sh"
+  # renovate: datasource=github-releases depName=siderolabs/talos
+  TALOS_VERSION: "v1.4.4"
+  # renovate: datasource=github-releases depName=budimanjojo/talhelper
+  TALHELPER_VERSION: "v1.7.3"
+  # renovate: datasource=github-releases depName=siderolabs/kubelet
+  KUBERNETES_VERSION: "v1.26.5"
+
+tasks:
+
+  init:
+    desc: Init talosctl and grab kubeconfig (task talos:init)
+    cmds:
+      - mkdir config || true
+      - sudo curl -Lo /usr/local/bin/talosctl https://github.com/siderolabs/talos/releases/download/{{.TALOS_VERSION}}/talosctl-$(uname -s | tr "[:upper:]" "[:lower:]")-$(uname -m) && sudo chmod +x /usr/local/bin/talosctl
+      - curl -Lo /tmp/talhelper-{{.TALHELPER_VERSION}}.tar.gz https://github.com/budimanjojo/talhelper/releases/download/{{.TALHELPER_VERSION}}/talhelper_$(uname -s | tr "[:upper:]" "[:lower:]")_$(uname -m).tar.gz && tar -xzf /tmp/talhelper-{{.TALHELPER_VERSION}}.tar.gz -C /tmp && sudo mv /tmp/talhelper /usr/local/bin/talhelper
+      - task: generate
+      - talosctl --talosconfig=talos/clusterconfig/talosconfig kubeconfig --nodes k8s-control01 $KUBECONFIG
+
+  install:cni:
+    desc: Install CNI and cert approver helm releases (task talos:cni)
+    cmds:
+      - kubectl kustomize talos --enable-helm | kubectl apply -f -
+
+  upgrade:k8s:
+    dir: talos
+    desc: Upgrade Kubernetes to {{ .KUBERNETES_VERSION }} (task talos:upgrade:k8s)
+    cmds:
+      - talosctl --nodes k8s-control01 upgrade-k8s --to {{ .KUBERNETES_VERSION }}
+
+  upgrade:all:
+    desc: Upgrade all nodes to Talos version {{ .TALOS_VERSION }} (task talos:upgrade:all)
+    dir: talos
+    cmds:
+      - task: generate
+      # control-plane
+      - task: upgrade
+        vars: {NODE: k8s-control01}
+      - task: upgrade
+        vars: {NODE: k8s-control02}
+      - task: upgrade
+        vars: {NODE: k8s-control03}
+      # workers
+      - task: upgrade
+        vars: {NODE: k8s-worker01}
+      - task: upgrade
+        vars: {NODE: k8s-worker02}
+      - task: upgrade
+        vars: {NODE: k8s-worker03}
+      # Restart nginx, sometimes it has issues...
+      - kubectl -n networking rollout restart deployment ingress-nginx-controller
+
+  generate:
+    internal: True
+    desc: Generate Talos machine configurations (task talos:generate)
+    dir: talos
+    cmds:
+      - talhelper genconfig
+    sources:
+      - talconfig.yaml
+      - talenv.sops.yaml
+      - talenv.yaml
+      - talsecret.sops.yaml
+    generates:
+      - clusterconfig/*.yaml
+      - clusterconfig/talosconfig
+
+  apply:
+    desc: Apply Talos config to a specific node (task talos:apply NODE=k8s-control01)
+    dir: talos
+    cmds:
+      - task: generate
+      - talosctl apply-config --nodes {{ .NODE }} --file clusterconfig/cluster01-{{ .NODE }}.{{ .DOMAIN }}.yaml {{ .CLI_ARGS }}
+
+  upgrade:
+    internal: True
+    desc: Upgrade a single node to Talos version {{ .TALOS_VERSION }} (task talos:upgrade NODE=k8s-control01)
+    dir: talos
+    status:
+      - talosctl version --nodes {{ .NODE }} --short | grep 'Tag.*{{ .TALOS_VERSION }}'
+    cmds:
+      - task: wait_for_health
+        vars: {TIMEOUT: 10m}
+      - task: apply
+        vars: {NODE: "{{ .NODE }}", CLI_ARGS: "-m staged"}
+      - talosctl upgrade --nodes {{ .NODE }} --image ghcr.io/siderolabs/installer:{{ .TALOS_VERSION }}
+
+  wait_for_health:
+    internal: True
+    desc: Wait for services in cluster to be healthy
+    cmds:
+      # Ensure CephCluster is healthy
+      - kubectl -n rook-ceph wait --for jsonpath='{.status.ceph.health}'='HEALTH_OK' --timeout {{ .TIMEOUT | default "30s" }} cephcluster rook-ceph
+      # Ensure CloudNative-PG cluster has 3 ready instances
+      - kubectl -n database wait --for jsonpath='{.status.readyInstances}'='3' --timeout {{ .TIMEOUT | default "30s" }} cluster postgres
