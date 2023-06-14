@@ -8,7 +8,7 @@ spec:
   values:
     initContainers:
       init-db:
-        image: ghcr.io/onedr0p/postgres-initdb:14.4@sha256:1f92a48b49b71a4bfa0bfaf5c248dda7d745df2fc4a7a2b0d88e01f2df0aea52
+        image: ghcr.io/onedr0p/postgres-initdb:14.8@sha256:0141cf427c47f2d534711a3f9e8c5f9008bc6b585463ccd9288cf0f027e20deb
         env:
           - name: POSTGRES_SUPER_PASS
             valueFrom:
