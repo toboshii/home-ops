@@ -25,7 +25,7 @@ spec:
   values:
     image:
       repository: ghcr.io/miguelndecarvalho/speedtest-exporter
-      tag: v3.5.2
+      tag: v3.5.4
     env:
       SPEEDTEST_SERVER: ${SECRET_SPEEDTEST_SERVER}
       SPEEDTEST_CACHE_FOR: 3600
