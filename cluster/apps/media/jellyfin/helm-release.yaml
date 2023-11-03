@@ -31,7 +31,7 @@ spec:
       nameOverride: *app
     image:
       repository: ghcr.io/onedr0p/jellyfin
-      tag: 10.8.6@sha256:8c4a8050b376c5cb87f8815a7c9da51205d700041628394d14a26c63963c4e44
+      tag: 10.8.11@sha256:acb5ea8fa8c9f3b893e870cefe539629af9e33ff84a7bcf1283a094883d2b7ff
     env:
       TZ: "${TIMEZONE}"
     service:
