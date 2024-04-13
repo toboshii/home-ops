@@ -36,7 +36,7 @@ spec:
         unavailable: 1
     image:
       repository: ghcr.io/onedr0p/intel-gpu-exporter
-      tag: rolling@sha256:37c69760f83c04435de77f820d73be97c2c468d3dc4376c8099959512b32e75c
+      tag: rolling@sha256:724671c249e494fcaeacf67b23149da440cf3191b12e9f8481c826496d742ea8
     service:
       main:
         ports:
