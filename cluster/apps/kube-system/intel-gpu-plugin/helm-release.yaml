@@ -36,7 +36,7 @@ spec:
         unavailable: 1
     image:
       repository: docker.io/intel/intel-gpu-plugin
-      tag: 0.25.0
+      tag: 0.31.1
     args:
       - -shared-dev-num
       - "4"
