@@ -27,7 +27,7 @@ spec:
       nameOverride: *app
     image:
       repository: ghcr.io/onedr0p/sabnzbd
-      tag: 3.6.1@sha256:201894af022608789be3c8e5fc878819d7115d07231b9a6a457ba1d34d299b4a
+      tag: 4.4.0@sha256:aa7e5b33beca67f2cd14cf26c313c840c554644b1da4f240db7f1bf6b9b8d2a6
     env:
       TZ: "${TIMEZONE}"
       SABNZBD__PORT: &port 80
