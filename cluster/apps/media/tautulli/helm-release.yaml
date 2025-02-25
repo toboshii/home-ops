@@ -30,7 +30,7 @@ spec:
         pmb.home.arpa/backup-claim: &claimName "tautulli-config-v1"
     image:
       repository: ghcr.io/onedr0p/tautulli
-      tag: 2.10.4@sha256:89bed5815ecf542c5b3b0fd6650eddc00e0e80fa99832b70511e54b1dfdeb5b2
+      tag: 2.15.1@sha256:2d5a1bce27a8e29e287aec1735001e68fc23dea08806c7124587cdbfaf0ddcff
     env:
       TZ: "${TIMEZONE}"
     service:
