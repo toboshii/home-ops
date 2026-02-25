@@ -13,6 +13,6 @@
   "license": "MIT",
   "dependencies": {
     "ws": "^8.8.1",
-    "zx": "^7.0.7"
+    "zx": "^8.0.0"
   }
 }
